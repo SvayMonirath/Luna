@@ -2,9 +2,9 @@ from flask_smorest import Blueprint, abort
 from flask_jwt_extended import jwt_required, get_jwt_identity
 
 from ..schemas.room_schemas import CreateRoomSchema, EditRoomSchema
-from ..models.rooms import Room, db
+from ..models.models import Room, db
 
-rooms_blp = Blueprint("Rooms", __name__, url_prefix="api/v1/rooms")
+rooms_blp = Blueprint("Rooms", __name__, url_prefix="/api/v1/rooms")
 
 @rooms_blp.route('/create', methods=['POST'])
 @jwt_required()
@@ -44,7 +44,7 @@ def create_room(room_data):
     return {"message": "Room created successfully.", "room_id": room.id}, 201
 
 # DELETE ROOM OPERATION
-@rooms_blp.route('/<int:room_id>', methods=['DELETE'])
+@rooms_blp.route('delete_room/<int:room_id>', methods=['DELETE'])
 @jwt_required()
 def delete_room(room_id):
     user_id = int(get_jwt_identity())
@@ -75,7 +75,7 @@ def get_all_rooms():
     return {"rooms": rooms_data}, 200
 
 # GET ROOM BY ID OPERATION
-@rooms_blp.route('/<int:room_id>', methods=['GET'])
+@rooms_blp.route('get_room/<int:room_id>', methods=['GET'])
 @jwt_required()
 def get_room_by_id(room_id):
     room = Room.query.get_or_404(room_id)
@@ -90,7 +90,7 @@ def get_room_by_id(room_id):
     return {"room": room_data}, 200
 
 # UPDATE ROOM OPERATION
-@rooms_blp.route('/<int:room_id>', methods=['PUT'])
+@rooms_blp.route('update_room/<int:room_id>', methods=['PUT'])
 @jwt_required()
 @rooms_blp.arguments(EditRoomSchema)
 def update_room(room_data, room_id):

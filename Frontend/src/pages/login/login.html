@@ -36,18 +36,22 @@
                 Welcome Back
             </h2>
 
-            <form class="flex flex-col gap-6">
+            <form id="loginForm" class="flex flex-col gap-6">
+                <p class="text-red-400 text-center mt-4 hidden" id="generalError"></p>
+                <!-- Username -->
                 <div class="flex flex-col gap-2">
                     <label class="text-white/80 text-lg">Username</label>
-                    <input type="name" placeholder="YouBroName" class="p-4 rounded-xl bg-white/5 border border-white/10 text-white/90 focus:outline-none focus:border-purple-500 placeholder-white/40" />
+                    <input type="text" name="username" placeholder="YouBroName" class="p-4 rounded-xl bg-white/5 border border-white/10 text-white/90 focus:outline-none focus:border-purple-500 placeholder-white/40" />
                 </div>
 
+                <!-- Password -->
                 <div class="flex flex-col gap-2">
                     <label class="text-white/80 text-lg">Password</label>
-                    <input type="password" placeholder="••••••••" class="p-4 rounded-xl bg-white/5 border border-white/10 text-white/90 focus:outline-none focus:border-purple-500 placeholder-white/40" />
+                    <input name="password" type="password" placeholder="••••••••" class="p-4 rounded-xl bg-white/5 border border-white/10 text-white/90 focus:outline-none focus:border-purple-500 placeholder-white/40" />
                 </div>
 
-                <button class="bg-gradient-to-r from-purple-600 to-blue-700 p-4 rounded-xl text-white text-xl font-medium mt-6 hover:scale-[1.03] hover:shadow-[0_0_20px_rgba(129,0,255,0.4)] transition-transform">
+                <!-- Login Button -->
+                <button type="submit" class="bg-gradient-to-r from-purple-600 to-blue-700 p-4 rounded-xl text-white text-xl font-medium mt-6 hover:scale-[1.03] hover:shadow-[0_0_20px_rgba(129,0,255,0.4)] transition-transform">
                     Login
                 </button>
             </form>
@@ -58,5 +62,6 @@
 
         </div>
     </section>
+    <script src="login.js"></script>
 </body>
 </html>

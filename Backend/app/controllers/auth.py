@@ -2,9 +2,9 @@ from flask_smorest import Blueprint
 from flask_jwt_extended import create_access_token
 
 from ..schemas.auth_schemas import LoginInput, LoginOutput, RegisterInput, RegisterOutput
-from ..models.users import User, db
+from ..models.models import User, db
 
-auth_blp = Blueprint("Auth", __name__, url_prefix="api/v1/auth")
+auth_blp = Blueprint("Auth", __name__, url_prefix="/api/v1/auth")
 
 @auth_blp.route('/register', methods=['POST'])
 @auth_blp.arguments(RegisterInput)
@@ -39,6 +39,6 @@ def login(data):
     if not user or not user.check_password(password):
         return {"message": "Invalid username or password."}, 401
 
-    access_token = create_access_token(str(user.id))
+    accessToken = create_access_token(str(user.id))
 
-    return {"message": "Login successful.", "access_token": access_token}, 200
+    return {"message": "Login successful.", "accessToken": accessToken}, 200

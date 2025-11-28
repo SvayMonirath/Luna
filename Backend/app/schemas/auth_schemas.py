@@ -6,7 +6,7 @@ class LoginInput(Schema):
 
 class LoginOutput(Schema):
     message = fields.Str(required=True)
-    access_token = fields.Str(required=True)
+    accessToken = fields.Str(required=True)
 
 class RegisterInput(Schema):
     username = fields.Str(required=True)

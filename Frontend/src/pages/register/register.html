@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>LUNA Register</title>
     <script src="https://cdn.tailwindcss.com"></script>
+
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
@@ -12,9 +13,11 @@
 
 <body class="bg-gradient-to-tr from-slate-950 via-slate-900 to-slate-950 min-h-screen font-[Poppins] relative overflow-hidden">
 
+    <!-- Background Glow Effects -->
     <div class="absolute top-[-10%] left-[-10%] w-[400px] h-[400px] bg-purple-700 blur-[180px] opacity-30 rounded-full"></div>
     <div class="absolute bottom-[-10%] right-[-10%] w-[400px] h-[400px] bg-blue-700 blur-[180px] opacity-30 rounded-full"></div>
 
+    <!-- Navigation -->
     <nav class="bg-gradient-to-r from-black to-white/5 bg-opacity-30 backdrop-blur-md flex items-center justify-between p-4 fixed top-0 left-0 right-0 z-50">
         <div class="flex items-center gap-0 ml-8">
             <span id="logo-title" class="font-sans font-bold text-4xl text-white">LUNA</span>
@@ -29,44 +32,51 @@
     <section class="flex justify-center items-center min-h-screen px-4">
         <div class="backdrop-blur-2xl bg-white/10 border border-white/20 p-10 rounded-3xl shadow-[0_0_40px_rgba(255,255,255,0.05)] w-full max-w-md mt-20 animate-fadeIn">
 
+            <!-- Header -->
             <h2 class="text-center text-transparent bg-clip-text bg-gradient-to-r from-purple-300 to-blue-300 text-5xl font-semibold tracking-wide mb-10">
                 Create Your Account
             </h2>
 
-            <form class="flex flex-col gap-6">
+            <form id="registerForm" class="flex flex-col gap-6">
+                <p class="text-red-400 text-center mt-4 hidden" id="generalError"></p>
 
+                <!-- Username -->
                 <div class="flex flex-col gap-2">
                     <label class="text-white/80 text-lg">Username</label>
-                    <input type="name" placeholder="YouBroName"
+                    <input type="text" name="username" placeholder="YouBroName"
                         class="p-4 rounded-xl bg-white/5 border border-white/10 text-white/90
                         focus:outline-none focus:border-purple-500 placeholder-white/40 w-full" />
                 </div>
 
+                <!-- Email -->
                 <div class="flex flex-col gap-2">
                     <label class="text-white/80 text-lg">Email</label>
-                    <input type="email" placeholder="yourEmail@example.com"
+                    <input type="email" name="email" placeholder="yourEmail@example.com"
                         class="p-4 rounded-xl bg-white/5 border border-white/10 text-white/90
                         focus:outline-none focus:border-purple-500 placeholder-white/40 w-full" />
                 </div>
 
+                <!-- Password -->
                 <div class="flex flex-row gap-4 w-full">
                     <div class="flex flex-col gap-2 w-1/2">
                         <label class="text-white/80 text-lg">Password</label>
-                        <input type="password" placeholder="••••••••"
+                        <input type="password" name="password" placeholder="••••••••"
                             class="p-4 rounded-xl bg-white/5 border border-white/10 text-white/90
                             focus:outline-none focus:border-purple-500 placeholder-white/40 w-full" />
                     </div>
 
+                    <!-- Confirm -->
                     <div class="flex flex-col gap-2 w-1/2">
                         <label class="text-white/80 text-lg">Confirm Password</label>
-                        <input type="password" placeholder="••••••••"
+                        <input type="password" name="confirm_password" placeholder="••••••••"
                             class="p-4 rounded-xl bg-white/5 border border-white/10 text-white/90
                             focus:outline-none focus:border-purple-500 placeholder-white/40 w-full" />
                     </div>
                 </div>
 
+                <!-- Signup button -->
                 <button
-                    class="bg-gradient-to-r from-purple-600 to-blue-700 p-4 rounded-xl text-white text-xl font-medium mt-6
+                    type="submit" class="bg-gradient-to-r from-purple-600 to-blue-700 p-4 rounded-xl text-white text-xl font-medium mt-6
                     hover:scale-[1.03] hover:shadow-[0_0_20px_rgba(129,0,255,0.4)] transition-transform">
                     Register
                 </button>
@@ -79,5 +89,7 @@
         </div>
     </section>
 
+    <!-- link register.js -->
+    <script src="register.js"></script>
 </body>
 </html>
