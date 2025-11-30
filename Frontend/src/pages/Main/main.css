@@ -1,0 +1,31 @@
+/* Base style */
+.vibe-btn {
+    background-color: rgba(55, 65, 81, 0.3);
+    border: 1px solid rgba(107, 114, 128, 0.2);
+    color: white;
+    padding: 20px;
+    border-radius: 10px;
+    transition: 0.2s ease;
+    font-size: 1rem;
+    width: 100%;
+}
+
+/* Hover */
+.vibe-btn:hover {
+    background-color: rgba(55, 65, 81, 0.5);
+}
+
+/* When SELECTED */
+.vibe-btn.selected {
+    background-color: rgba(147, 51, 234, 0.3);
+    border-color: rgba(147, 51, 234, 0.8);
+    box-shadow: 0 0 10px rgba(147, 51, 234, 0.6);
+}
+
+/* Responsive sizing */
+@media (max-width: 600px) {
+    .vibe-btn {
+        padding: 16px;
+        font-size: 0.9rem;
+    }
+}

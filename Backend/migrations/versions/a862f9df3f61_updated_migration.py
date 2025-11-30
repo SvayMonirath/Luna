@@ -1,8 +1,8 @@
-"""Initial Migate
+"""Updated Migration
 
-Revision ID: 05d667976d75
+Revision ID: a862f9df3f61
 Revises: 
-Create Date: 2025-11-28 21:37:03.645220
+Create Date: 2025-12-01 02:18:18.899893
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = '05d667976d75'
+revision = 'a862f9df3f61'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -25,7 +25,7 @@ def upgrade():
     sa.Column('album', sa.String(length=100), nullable=True),
     sa.Column('genre', sa.String(length=50), nullable=True),
     sa.Column('audio_file_path', sa.String(length=500), nullable=False),
-    sa.Column('cover_image_path', sa.String(length=500), nullable=True),
+    sa.Column('cover_image_path', sa.String(length=500), nullable=False),
     sa.PrimaryKeyConstraint('id')
     )
     op.create_table('users',
@@ -43,7 +43,7 @@ def upgrade():
     sa.Column('title', sa.String(length=100), nullable=False),
     sa.Column('description', sa.String(length=255), nullable=True),
     sa.Column('is_private', sa.Boolean(), nullable=False),
-    sa.Column('genre', sa.String(length=50), nullable=True),
+    sa.Column('vibe', sa.String(length=50), nullable=True),
     sa.Column('password', sa.String(length=100), nullable=True),
     sa.Column('owner_id', sa.Integer(), nullable=False),
     sa.ForeignKeyConstraint(['owner_id'], ['users.id'], ),
