@@ -6,7 +6,7 @@ from ..models.models import Music, db
 # BASIC MUSIC operation
 musics_blp = Blueprint("Musics", __name__, url_prefix="/api/v1/musics")
 @musics_blp.route('/add_songs_to_database', methods=['POST'])
-@musics_blp.response(201, AddMusicDB)
+@musics_blp.arguments(AddMusicDB)
 def add_songs_to_database(musicData):
     title = musicData.get('title')
     artist = musicData.get('artist')
@@ -29,6 +29,40 @@ def add_songs_to_database(musicData):
 
     return {"message": "Music added to database successfully.", "music_id": new_music.id}, 201
 
+# TEST GET SONG OPERATION
+@musics_blp.route('/get_all_songs', methods=['GET'])
+def get_all_songs():
+    songs = Music.query.all()
+    songs_list = []
+    for song in songs:
+        songs_list.append({
+            "id": song.id,
+            "title": song.title,
+            "artist": song.artist,
+            "album": song.album,
+            "genre": song.genre,
+            "audio_file_path": song.audio_file_path,
+            "cover_image_path": song.cover_image_path
+        })
+
+    return {"songs": songs_list}, 200
+
+@musics_blp.route('/get_random/<int:limit>', methods=['GET'])
+def get_random_song(limit):
+    songs = Music.query.order_by(db.func.random()).limit(limit).all()
+    songs_list = []
+    for song in songs:
+        songs_list.append({
+            "id": song.id,
+            "title": song.title,
+            "artist": song.artist,
+            "album": song.album,
+            "genre": song.genre,
+            "audio_file_path": song.audio_file_path,
+            "cover_image_path": song.cover_image_path
+        })
+
+    return {"songs": songs_list}, 200
 
 # play music individually
 # pause music individually

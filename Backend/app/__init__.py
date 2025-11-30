@@ -26,8 +26,10 @@ def create_app():
     from .controllers.auth import auth_blp
     from .controllers.rooms import rooms_blp
     from .controllers.utils import utils_blp
+    from .controllers.musics import musics_blp
     app.register_blueprint(auth_blp)
     app.register_blueprint(rooms_blp)
     app.register_blueprint(utils_blp)
+    app.register_blueprint(musics_blp)
 
     return app
