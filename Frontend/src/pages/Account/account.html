@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Account</title>
+
+    <script type="module">
+        import { checkAuth } from '../../auth.js';
+        checkAuth();
+    </script>
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <link rel="stylesheet" href="../../css/global.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+</head>
+<body class="bg-gradient-to-tr from-slate-950 via-slate-900 to-slate-950 min-h-screen font-[Poppins] relative overflow-x-hidden">
+    <!-- Navigation -->
+    <nav class="fixed top-0 left-0 right-0 z-50 bg-black/30 backdrop-blur-md border-b border-white/5">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <!-- Left: logo + mobile menu button -->
+                <div class="flex items-center gap-3">
+                    <!-- Mobile menu button -->
+                    <button id="mobileMenuBtn" aria-label="Toggle menu" class="lg:hidden p-2 rounded-md text-white hover:bg-white/5 transition">
+                        <!-- Menu icon -->
+                         <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16" />
+                        </svg>
+                    </button>
+
+                    <!-- Logo -->
+                    <a href="../landing_page/landing.html" class="flex items-center gap-2 select-none">
+                        <span class="text-2xl lg:text-3xl font-bold text-white">LUNA</span>
+                    </a>
+                </div>
+
+                <div class="hidden sm:flex flex-1 justify-center px-4">
+                    <div class="w-full max-w-lg">
+                        <label for="search" class="sr-only">Search</label>
+                        <div class="relative">
+                            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-white/70">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-4.35-4.35M11 19a8 8 0 1 0 0-16 8 8 0 0 0 0 16z"/>
+                                </svg>
+                            </div>
+
+                            <input
+                                id="search"
+                                type="search"
+                                placeholder="Search Musics..."
+                                class="w-full pl-10 pr-4 py-2 rounded-full bg-slate-800/80 text-white placeholder-white/60 focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
+                            />
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right: nav links -->
+                <div class="flex items-center gap-2">
+                    <ul class="hidden lg:flex items-center gap-4 mr-2">
+                        <li class="">
+                            <!-- i want understand to change color gradient  -->
+                            <a href="#" class="flex items-center gap-2 px-3 py-2 rounded-md text-white/90 hover:opacity-70  transition">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M3 10a2 2 0 0 1 .709-1.528l7-6a2 2 0 0 1 2.582 0l7 6A2 2 0 0 1 21 10v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+                                </svg>
+                                <span>Home</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" class="flex items-center gap-2 px-3 py-2 rounded-md text-white/90 hover:bg-white/5 transition">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2zM12 7v5l3 3"/>
+                                </svg>
+                                <span>Explore</span>
+                            </a>
+                        </li>
+                        <li >
+                            <a href="#" class="open-create-room-modal bg-gradient-to-br from-purple-700 via-blue-500 to-purple-700 flex items-center gap-2 px-3 py-2 rounded-md text-white/90 hover:opacity-70 transition">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/>
+                                </svg>
+                                <span>Create</span>
+                            </a>
+                        </li>
+                    </ul>
+
+                    <!-- Search icon for small -->
+                    <button id="mobileSearchBtn" class="sm:hidden p-2 rounded-md text-white hover:bg-white/5 transition" aria-label="Open search">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-4.35-4.35M11 19a8 8 0 1 0 0-16 8 8 0 0 0 0 16z"/>
+                        </svg>
+                    </button>
+
+                    <!-- Profile -->
+                    <div class="relative underline text-white underline-offset-8">
+                        <button id="profileBtn" class="flex items-center gap-2 px-3 py-2 rounded-md bg-white/6 text-white hover:bg-white/8 transition">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 rounded-full" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/>
+                                <circle cx="12" cy="7" r="4" stroke-width="1.5"/>
+                            </svg>
+                            <span class="hidden lg:inline">Profile</span>
+                        </button>
+                        <!-- simple profile dropdown -->
+                         <!-- want smoothe dropdown Effects -->
+
+                        <div id="profileMenu" class="hidden absolute mt-2 w-44 bg-slate-900/90 border border-white/5 rounded-md py-1 shadow-lg">
+                            <a href="#" class="cursor-pointer block px-4 py-2 text-sm text-white/90 hover:bg-white/5">Account</a>
+                            <!-- <a href="#" class="cursor-pointer block px-4 py-2 text-sm text-white/90 hover:bg-white/5">
+                                <span>Setting</span>
+                            </a> -->
+                            <a id="logoutBtn" href="#" class="cursor-pointer block px-4 py-2 text-sm text-red-400 hover:bg-white/5">Sign out</a>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mobile slide-over menu -->
+        <div id="mobileMenu" class="lg:hidden hidden border-t border-white/5 backdrop-blur-md">
+            <div class="px-4 py-3">
+                <div class="mb-3">
+                    <label for="mobileSearch" class="sr-only">Search</label>
+                    <div class="relative">
+                        <div class="absolute inset-y-0 left-0 pl-3 flex items-center text-white/70 pointer-events-none">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-4.35-4.35M11 19a8 8 0 1 0 0-16 8 8 0 0 0 0 16z"/>
+                            </svg>
+                        </div>
+
+                        <input
+                            id="mobileSearch"
+                            type="search"
+                            placeholder="Search projects, users, tags..."
+                            class="w-full pl-9 pr-3 py-2 rounded-full bg-slate-800/80 text-white placeholder-white/60 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        />
+                    </div>
+                </div>
+
+                <ul class="space-y-1">
+                    <li>
+                        <a href="#" class="flex items-center gap-3 px-3 py-2 rounded-md text-white/90 hover:bg-white/5 transition">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M3 10a2 2 0 0 1 .709-1.528l7-6a2 2 0 0 1 2.582 0l7 6A2 2 0 0 1 21 10v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>
+                            Home
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" class="flex items-center gap-3 px-3 py-2 rounded-md text-white/90 hover:bg-white/5 transition">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2zM12 7v5l3 3"/></svg>
+                            Explore
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" class="open-create-room-modal flex items-center gap-3 px-3 py-2 rounded-md text-white/90 hover:bg-white/5 transition">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/></svg>
+                            Create
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" class="flex items-center gap-3 px-3 py-2 rounded-md text-white/90 hover:bg-white/5 transition">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                            Profile
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- MAIN SECTION -->
+    <section class="flex flex-col px-24 pt-24 min-h-screen">
+
+        <!-- section 1 -->
+        <div class="bg-gradient-to-br from-purple-600/10 to-pink-600/10 rounded-3xl ">
+            <div class="flex flex-row gap-8 p-8">
+                <div class="p-8 bg-gradient-to-br from-purple-600 to-pink-600 rounded-full  flex items-center justify-center size-28 border-4 border-purple-950 shadow-lg relative group">
+                    <!-- profile -->
+                    <svg xmlns="http://www.w3.org/2000/svg" width="70" height="70" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-user-icon lucide-user"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+
+                    <!-- change profile icon -->
+                    <div id="change-profile-pic" class="bg-purple-900 rounded-full size-10 border-4 border-slate-900 flex items-center justify-center opacity-0 hover:bg-purple-700 hover:scale-105 group-hover:opacity-100 transition-opacity absolute bottom-[-15px] right-[-15px] mb-2 mr-2 cursor-pointer">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-camera-icon lucide-camera"><path d="M13.997 4a2 2 0 0 1 1.76 1.05l.486.9A2 2 0 0 0 18.003 7H20a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V9a2 2 0 0 1 2-2h1.997a2 2 0 0 0 1.759-1.048l.489-.904A2 2 0 0 1 10.004 4z"/><circle cx="12" cy="13" r="3"/></svg>
+                    </div>
+                </div>
+                <div class="flex flex-col gap-3 w-full">
+                    <span id="User-name" class="text-white text-3xl font-semibold"></span>
+                    <p id="User-email" class="text-slate-400 text-lg"></p>
+                    <div class="p-2">
+                        <button class="bg-purple-600 px-3 py-1 rounded-md flex justify-center items-center hover:bg-purple-500 transition gap-2">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-square-pen-icon lucide-square-pen"><path d="M12 3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.375 2.625a1 1 0 0 1 3 3l-9.013 9.014a2 2 0 0 1-.853.505l-2.873.84a.5.5 0 0 1-.62-.62l.84-2.873a2 2 0 0 1 .506-.852z"/></svg>
+                            <span class="text-white text-sm font-medium">Edit Profile</span>
+                        </button>
+                        <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mt-5">
+                            <!-- Rooms Created -->
+                            <div id="num-room-created" class="flex flex-col p-5 rounded-2xl bg-black/30 border border-white/10 hover:border-white/20 transition gap-3">
+                                <div class="rounded-xl size-10 flex justify-center items-center bg-gradient-to-br from-purple-600 to-pink-600" >
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-music-icon lucide-music"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>
+                                </div>
+                                <p id="num-room-created-count" class="text-white text-3xl">...</p>
+                                <p class="text-slate-400 text-lg">Rooms Created</p>
+                            </div>
+
+                            <!-- Rooms Joined -->
+                            <div id="num-room-joined" class="flex flex-col p-5 rounded-2xl bg-black/30 border border-white/10 hover:border-white/20 transition gap-3">
+                                <div class="rounded-xl size-10 flex justify-center items-center bg-gradient-to-br from-blue-600 to-cyan-600" >
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-user-icon lucide-user"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                                </div>
+                                <p id="num-room-joined-count" class="text-white text-3xl">...</p>
+                                <p class="text-slate-400 text-lg">Rooms Joined</p>
+                            </div>
+
+                            <!-- Hours Listened -->
+                            <div id="num-hours-listened" class="flex flex-col p-5 rounded-2xl bg-black/30 border border-white/10 hover:border-white/20 transition gap-3">
+                                <div class="rounded-xl size-10 flex justify-center items-center bg-gradient-to-br from-green-600 to-lime-600" >
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-clock"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                                </div>
+                                <p id="num-hours-listened-count" class="text-white text-3xl">...</p>
+                                <p class="text-slate-400 text-lg">Hours Listened</p>
+                            </div>
+
+                            <!-- Favourite Track -->
+                            <div id="num-fav-track" class="flex flex-col p-5 rounded-2xl bg-black/30 border border-white/10 hover:border-white/20 transition gap-3">
+                                <div class="rounded-xl size-10 flex justify-center items-center bg-gradient-to-br from-pink-600 to-red-600" >
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-heart-icon lucide-heart"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+                                </div>
+                                <p id="num-fav-track-count" class="text-white text-3xl">...</p>
+                                <p class="text-slate-400 text-lg">Favourite Tracks</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- section 2 -->
+        <div class="bg-gradient-to-br from-slate-800/50 to-slate-900/50 p-8 rounded-3xl mt-8">
+            <h2 class="text-white text-2xl mb-6">Preferences</h2>
+
+            <!-- dark mode -->
+            <div class="flex flex-row p-4 rounded-xl bg-white/5 gap-4 items-center hover:bg-white/10 transition cursor-pointer mb-4">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-moon-icon lucide-moon text-purple-400"><path d="M20.985 12.486a9 9 0 1 1-9.473-9.472c.405-.022.617.46.402.803a6 6 0 0 0 8.268 8.268c.344-.215.825-.004.803.401"/></svg>
+                <div class="flex flex-col gap-1">
+                    <h2 class="text-white font-medium text-sm">Dark Mode</h2>
+                    <p class="text-slate-400 text-xs">Toggle dark/light mode</p>
+                </div>
+            </div>
+
+            <!-- notification -->
+            <div class="flex flex-row p-4 rounded-xl bg-white/5 gap-4 items-center hover:bg-white/10 transition cursor-pointer mb-4 opacity-20">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-settings-icon lucide-settings text-blue-400"><path d="M9.671 4.136a2.34 2.34 0 0 1 4.659 0 2.34 2.34 0 0 0 3.319 1.915 2.34 2.34 0 0 1 2.33 4.033 2.34 2.34 0 0 0 0 3.831 2.34 2.34 0 0 1-2.33 4.033 2.34 2.34 0 0 0-3.319 1.915 2.34 2.34 0 0 1-4.659 0 2.34 2.34 0 0 0-3.32-1.915 2.34 2.34 0 0 1-2.33-4.033 2.34 2.34 0 0 0 0-3.831A2.34 2.34 0 0 1 6.35 6.051a2.34 2.34 0 0 0 3.319-1.915"/><circle cx="12" cy="12" r="3"/></svg>
+                <div class="flex flex-col gap-1">
+                    <h2 class="text-white font-medium text-sm">Notification</h2>
+                    <p class="text-slate-400 text-xs">Get notified about room activity</p>
+                </div>
+            </div>
+
+            <!-- Auto Play Next -->
+            <div class="flex flex-row p-4 rounded-xl bg-white/5 gap-4 items-center hover:bg-white/10 transition cursor-pointer mb-4 opacity-20">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-music-icon lucide-music text-green-400"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>
+                <div class="flex flex-col gap-1">
+                    <h2 class="text-white font-medium text-sm">Auto Play Next</h2>
+                    <p class="text-slate-400 text-xs">Automatically play next track in queue</p>
+                </div>
+            </div>
+
+            <hr class="border-white/10 my-6">
+            <h2 class="text-white text-2xl mb-6">Account</h2>
+
+            <!-- update username input -->
+            <div class="flex flex-col mb-3">
+                <h3 class="text-sm text-white">Username</h3>
+                <input type="text" id="update-username-input" class="mt-2 mb-4 px-3 py-1 rounded-md bg-white/5 border border-white/10 text-white focus:outline-none focus:ring-2 focus:ring-blue-500 transition" value="">
+            </div>
+
+            <!-- update email input -->
+            <div class="flex flex-col mb-4">
+                <h3 class="text-sm text-white">Email</h3>
+                <input type="text" id="update-email-input" class="mt-2 mb-4 px-3 py-1 rounded-md bg-white/5 border border-white/10 text-white focus:outline-none focus:ring-2 focus:ring-blue-500 transition" value="">
+            </div>
+
+            <button class="text-white text-sm flex justify-center items-center font-medium bg-purple-600 px-4 py-2 rounded-lg hover:bg-purple-700">Save Changes</button>
+
+            <hr class="border-white/10 my-6">
+
+            <div class="p-4 rounded-xl bg-red-900/10 border border-red-500/20">
+                <h2 class="text-red-400 text-lg font-semibold mb-2">Delete Account</h2>
+                <p class="text-red-300 text-sm mb-4">These actions are permanent and cannot be undone.</p>
+                <button id="delete-account-btn" class="bg-red-600 px-4 py-2 rounded-lg text-white text-sm hover:bg-red-700 transition">Delete Account</button>
+            </div>
+        </div>
+
+
+    </section>
+
+    <script type="module" src="./account.js"></script>
+</body>
+</html>

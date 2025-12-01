@@ -15,10 +15,10 @@ function playSong(path) {
     if (currentSongPath === fullPath) {
         if (audio.paused) {
             audio.play();
-            playPauseBtn.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="black" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-pause-icon lucide-pause"><rect x="14" y="3" width="5" height="18" rx="1"/><rect x="5" y="3" width="5" height="18" rx="1"/></svg>`;
+            playPauseBtn.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="black" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-pause-icon lucide-pause"><rect x="14" y="3" width="5" height="18" rx="1"/><rect x="5" y="3" width="5" height="18" rx="1"/></svg>`;
         } else {
             audio.pause();
-            playPauseBtn.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="black" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-play-icon lucide-play"><path d="M5 5a2 2 0 0 1 3.008-1.728l11.997 6.998a2 2 0 0 1 .003 3.458l-12 7A2 2 0 0 1 5 19z"/></svg>`;
+            playPauseBtn.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="black" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-play-icon lucide-play"><path d="M5 5a2 2 0 0 1 3.008-1.728l11.997 6.998a2 2 0 0 1 .003 3.458l-12 7A2 2 0 0 1 5 19z"/></svg>`;
         }
         return;
     }
@@ -32,7 +32,7 @@ function playSong(path) {
 
     // Play new song
     audio.play();
-    playPauseBtn.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="black" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-pause-icon lucide-pause"><rect x="14" y="3" width="5" height="18" rx="1"/><rect x="5" y="3" width="5" height="18" rx="1"/></svg>`;
+    playPauseBtn.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="black" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-pause-icon lucide-pause"><rect x="14" y="3" width="5" height="18" rx="1"/><rect x="5" y="3" width="5" height="18" rx="1"/></svg>`;
 
     // Update seek bar as song plays
     audio.addEventListener("timeupdate", () => {
@@ -62,10 +62,10 @@ playPauseBtn?.addEventListener("click", () => {
 
     if (audio.paused) {
         audio.play();
-        playPauseBtn.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="black" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-pause-icon lucide-pause"><rect x="14" y="3" width="5" height="18" rx="1"/><rect x="5" y="3" width="5" height="18" rx="1"/></svg>`;
+        playPauseBtn.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="black" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-pause-icon lucide-pause"><rect x="14" y="3" width="5" height="18" rx="1"/><rect x="5" y="3" width="5" height="18" rx="1"/></svg>`;
     } else {
         audio.pause();
-        playPauseBtn.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="black" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-play-icon lucide-play"><path d="M5 5a2 2 0 0 1 3.008-1.728l11.997 6.998a2 2 0 0 1 .003 3.458l-12 7A2 2 0 0 1 5 19z"/></svg>`;
+        playPauseBtn.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="black" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-play-icon lucide-play"><path d="M5 5a2 2 0 0 1 3.008-1.728l11.997 6.998a2 2 0 0 1 .003 3.458l-12 7A2 2 0 0 1 5 19z"/></svg>`;
     }
 });
 
@@ -75,8 +75,8 @@ seekBar?.addEventListener("input", () => {
 });
 
 // ------------------- VOLUMNE  -------------------
-const volumeSlider = document.getElementById("volumn");
-const volumeIcon = document.getElementById("volumnIcon");
+const volumeSlider = document.getElementById("volume");
+const volumeIcon = document.getElementById("volumeIcon");
 
 volumeSlider?.addEventListener("input", () => {
     const vol = volumeSlider.value / 100;
@@ -155,26 +155,26 @@ songs.forEach((song) => {
 
     songDiv.className =
     //  i want glass like background
-      "music-container relative flex flex-col items-center gap-4 p-3 bg-white/10 backdrop-blur-lg px-7 rounded-2xl cursor-pointer hover:bg-white/20 transition duration-300 group overflow-hidden shadow-lg";
+      "music-container relative flex flex-col items-center gap-4 p-1 bg-white/10 backdrop-blur-lg px-4 rounded-2xl cursor-pointer hover:bg-white/20 transition duration-300 group overflow-hidden shadow-lg";
 
     // Create inner HTML with a placeholder for duration
     songDiv.innerHTML = `
-        <div class="flex flex-row gap-4 items-center w-full">
+        <div class="flex flex-row gap-7 items-center w-full">
             <img src="${BACKEND_URL}${song.cover_image_path}"
-                style="width: 70px; height: 70px; object-fit: cover;"
+                style="width: 50px; height: 50px; object-fit: cover;"
                 class="rounded-md transition duration-300 group-hover:blur-sm group-hover:brightness-50" />
             <div class="mt-2 text-start transition duration-300 group-hover:blur-sm group-hover:opacity-40 ">
-                <div class="text-white font-medium text-xl">${song.title}</div>
-                <div class="text-white font-extralight text-sm md:text-base">${song.artist}</div>
+                <div class="text-white font-medium text-lg">${song.title}</div>
+                <div class="text-white font-extralight text-xs md:text-base">${song.artist}</div>
             </div>
             <!--  i want duration to be add the end of the div -->
-            <div class="flex flex-auto justify-end mt-2 text-white font-light text-xl duration-display group-hover:blur-sm group-hover:opacity-40"></div>
+            <div class="flex flex-auto justify-end mt-2 text-white font-light text-lg duration-display group-hover:blur-sm group-hover:opacity-40"></div>
         </div>
 
         <!-- PLAY ICON (hidden until hover) -->
         <div class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition duration-300 pointer-events-none">
             <svg xmlns="http://www.w3.org/2000/svg"
-                width="70" height="70" fill="white"
+                width="50" height="50" fill="white"
                 viewBox="0 0 24 24">
                 <path d="M8 5v14l11-7z"/>
             </svg>

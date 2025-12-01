@@ -63,5 +63,16 @@
         </div>
     </section>
     <script src="login.js"></script>
+    <script type="module">
+        const urlParams = new URLSearchParams(window.location.search);
+        const msg = urlParams.get("msg");
+        const loginMessage = document.getElementById("generalError");
+
+        if (msg === "login_required") {
+            loginMessage.textContent = "You must be logged in to access this page.";
+            loginMessage.classList.remove("hidden"); // make it visible
+            setTimeout(() => loginMessage.classList.add("hidden"), 5000);
+        }
+    </script>
 </body>
 </html>
