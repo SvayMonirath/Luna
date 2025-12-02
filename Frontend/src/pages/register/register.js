@@ -7,7 +7,6 @@ form.addEventListener('submit', async (e) => {
     // Clear previous errors
     generalError.textContent = '';
     generalError.classList.add('hidden');
-    generalError.classList.remove('border-red-900/10', 'bg-red-500/20', 'border-green-900/10', 'bg-green-500/20');
 
     setTimeout(() => {
         generalError.classList.add('hidden');
@@ -23,6 +22,8 @@ form.addEventListener('submit', async (e) => {
     if (!username || !email || !password || !confirmPassword) {
         generalError.textContent = 'All fields are required.';
         generalError.classList.remove('hidden');
+        generalError.classList.remove('border-green-900/10', 'bg-green-500/20');
+        generalError.classList.add('border-red-900/10', 'bg-red-500/20');
         setTimeout(() => {
             generalError.classList.add('hidden');
         }, 5000);
@@ -32,6 +33,8 @@ form.addEventListener('submit', async (e) => {
     if (password !== confirmPassword) {
         generalError.textContent = 'Passwords do not match.';
         generalError.classList.remove('hidden');
+        generalError.classList.remove('border-green-900/10', 'bg-green-500/20');
+        generalError.classList.add('border-red-900/10', 'bg-red-500/20');
         setTimeout(() => {
             generalError.classList.add('hidden');
         }, 5000);
@@ -69,6 +72,8 @@ form.addEventListener('submit', async (e) => {
         console.error('Error:', err);
         generalError.textContent = 'Error connecting to server.';
         generalError.classList.remove('hidden');
+        generalError.classList.remove('border-green-900/10', 'bg-green-500/20');
+        generalError.classList.add('border-red-900/10', 'bg-red-500/20');
         setTimeout(() => {
             generalError.classList.add('hidden');
         }, 5000);

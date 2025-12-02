@@ -1,5 +1,4 @@
 const BACKEND_URL = 'http://localhost:5001/';
-const roomsContainer = document.getElementById('rooms-container');
 
 // ------------------ Handle Room Pop-up ------------------
 const createRoomModal = document.getElementById('create-room-modal');
@@ -140,8 +139,10 @@ function createRoomCard(room) {
     return roomDiv;
 }
 
+
+const roomsContainer = document.getElementById('rooms-container');
 // ------------------ Load Rooms ------------------
-async function loadRooms() {
+export async function loadRooms() {
     const token = localStorage.getItem('accessToken');
     if (!token) return console.error("No access token found");
 
@@ -175,6 +176,3 @@ async function loadRooms() {
         console.error("Error loading rooms:", err);
     }
 }
-
-// Export loadRooms
-export { loadRooms };

@@ -48,3 +48,16 @@ def edit_user(user_data):
 
     db.session.commit()
     return {"message": "User updated successfully."}, 200
+
+@user_blp.route('/delete_user', methods=['DELETE'])
+@jwt_required()
+def delete_account():
+    user_id = int(get_jwt_identity())
+    user = db.session.get(User, user_id)
+
+    if not user:
+        return {"message": "User not found."}, 404
+
+    db.session.delete(user)
+    db.session.commit()
+    return {"message": "User account deleted successfully."}, 200

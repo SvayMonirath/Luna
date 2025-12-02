@@ -9,7 +9,6 @@ rooms_blp = Blueprint("Rooms", __name__, url_prefix="/api/v1/rooms")
 @rooms_blp.route('/create', methods=['POST'])
 @jwt_required()
 @rooms_blp.arguments(CreateRoomSchema)
-
 def create_room(room_data):
     # backend will get the user id
     user_id = get_jwt_identity()
@@ -30,13 +29,14 @@ def create_room(room_data):
     # check if the user has a room with the same title
     existing_room = Room.query.filter_by(title=title, owner_id=user_id).first()
     if existing_room:
-        abort(400, message="You already have a room with this title.")
+        return {"message": "You already have a room with this title."}, 400
+
 
     # if the room is private, password is required
     if room.is_private:
         password = room_data.get('password')
         if not password:
-            abort(400, message="Password is required for private rooms.")
+            return {"message": "Password is required for private rooms."}, 400
         room.password = password
 
     db.session.add(room)
@@ -51,7 +51,7 @@ def delete_room(room_id):
     room = Room.query.get_or_404(room_id)
 
     if room.owner_id != user_id:
-        abort(403, message="You do not have permission to delete this room.")
+        return {"message": "You do not have permission to delete this room."}, 403
 
     db.session.delete(room)
     db.session.commit()
@@ -101,7 +101,7 @@ def update_room(room_data, room_id):
     room = Room.query.get_or_404(room_id)
 
     if room.owner_id != user_id:
-        abort(403, message="You do not have permission to update this room.")
+        return {"message": "You do not have permission to update this room."}, 403
 
     # handle just name and genre for now
     if 'name' in room_data:
@@ -109,7 +109,7 @@ def update_room(room_data, room_id):
     elif 'vibe' in room_data:
         room.vibe = room_data['vibe']
     else:
-        abort(400, message="No valid fields to update.")
+        return {"message": "No valid fields to update."}, 400
 
     db.session.commit()
     return {"message": "Room updated successfully."}, 200

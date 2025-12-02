@@ -14,6 +14,8 @@ form.addEventListener('submit', async(e) => {
     if (!username || !password) {
         generalError.textContent = 'Username and password are required.';
         generalError.classList.remove('hidden');
+        generalError.classList.remove('border-green-900/10', 'bg-green-500/20');
+        generalError.classList.add('border-red-900/10', 'bg-red-500/20');
         setTimeout(() => {
             generalError.classList.add('hidden');
         }, 5000);
@@ -35,6 +37,8 @@ form.addEventListener('submit', async(e) => {
             // Show backend error inline
             generalError.textContent = data.message || 'Login failed';
             generalError.classList.remove('hidden');
+            generalError.classList.remove('border-green-900/10', 'bg-green-500/20');
+            generalError.classList.add('border-red-900/10', 'bg-red-500/20');
             setTimeout(() => {
                 generalError.classList.add('hidden');
             }, 5000);
@@ -46,6 +50,8 @@ form.addEventListener('submit', async(e) => {
         console.error('Error:', err);
         generalError.textContent = 'Error connecting to server.';
         generalError.classList.remove('hidden');
+        generalError.classList.remove('border-green-900/10', 'bg-green-500/20');
+        generalError.classList.add('border-red-900/10', 'bg-red-500/20');
         setTimeout(() => {
             generalError.classList.add('hidden');
         }, 5000);

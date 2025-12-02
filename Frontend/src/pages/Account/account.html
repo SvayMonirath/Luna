@@ -290,7 +290,17 @@
             </div>
         </div>
 
+        <div id="delete_account_overlay" class="fixed inset-0 bg-black/30 backdrop-blur-md z-40"></div>
 
+        <!-- DELETE ACCOUNT CONFIRMATION POPUP -->
+        <div id="delete_account_confirmation" class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-red-900/30 border border-red-500/40 backdrop-blur-md p-10 rounded-lg flex flex-col items-center justify-center shadow-lg  z-50 gap-7">
+            <h2 class="text-white text-5xl font-semibold">Delete Account</h2>
+            <p class="text-white font-normal text-md">These actions are permanent and cannot be undone.</p>
+            <div>
+                <button id="confirm_delete_account_btn" class="bg-red-600 px-4 py-2 rounded-lg text-white text-sm hover:bg-red-700 transition mr-4">Delete</button>
+                <button id="cancel_delete_account_btn" class="bg-white/10 px-4 py-2 rounded-lg text-white text-sm hover:bg-white/20 transition">Cancel</button>
+            </div>
+        </div>
     </section>
 
     <script type="module" src="./account.js"></script>

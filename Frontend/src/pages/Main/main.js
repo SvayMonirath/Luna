@@ -1,4 +1,3 @@
-import { showPopup } from '../Account/account_utils.js';
 import { loadSongsHeader, loadTrendingSongs , fetchUser  } from './main_utils.js';
 import { loadRooms } from './main_room.js';
 
@@ -6,6 +5,8 @@ document.addEventListener("DOMContentLoaded", () => {
     fetchUser();
     loadSongsHeader();
     loadTrendingSongs();
+
+    // FIXME[]: loadRooms function not get called ever
     loadRooms();
 
     // Mobile menu toggle
