@@ -47,36 +47,48 @@ const ChangeRoomNameInput = document.getElementById("room-name-input");
 const ChangeRoomVibeInput = document.getElementById("room-vibe-input");
 
 export async function fetchRoomInfo() {
-
-
     const params = new URLSearchParams(window.location.search);
     const room_id = params.get('room_id');
+
+    const roomToken = localStorage.getItem(`roomToken_${room_id}`);
+    const accessToken = localStorage.getItem('accessToken');
+
+    if (!roomToken) {
+        showPopup("You cannot access this room.", "error");
+        window.location.href = '../Main/main.html';
+        return;
+    }
 
     try {
         const res = await fetch(`${BACKEND_URL}/rooms/get_room/${room_id}`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
+                'Authorization': `Bearer ${roomToken}`
             }
         });
+
         const data = await res.json();
-        if(!res.ok){
-            console.error("→ Error fetching room info:", data.message);
-        } else {
-            console.log("→ Fetched room info:", data);
-            roomName.textContent = data.room.title;
-            roomVibe.textContent = data.room.vibe;
 
-            ChangeRoomNameInput.value = data.room.title;
-            ChangeRoomVibeInput.value = data.room.vibe;
-
+        if (!res.ok) {
+            showPopup(data.message || "You cannot access this room.", "error");
+            window.location.href = '../Main/main.html';
+            return;
         }
+
+        // All good → update UI
+        roomName.textContent = data.room.title;
+        roomVibe.textContent = data.room.vibe;
+        ChangeRoomNameInput.value = data.room.title;
+        ChangeRoomVibeInput.value = data.room.vibe;
 
     } catch (err) {
         console.error('Error fetching room info:', err);
+        showPopup("Server unreachable", "error");
     }
-
 }
+
+
 
 // TODO[X]: SHOW SETTING BTN
 
@@ -179,7 +191,7 @@ ChangeRoomVibeInput.addEventListener('input', toggleUpdateButton);
 async function updateRoomInfo() {
     const params = new URLSearchParams(window.location.search);
     const room_id = params.get('room_id');
-    const token = localStorage.getItem('accessToken');
+    const token = localStorage.getItem(`roomToken_${room_id}`)
 
     const newRoomName = ChangeRoomNameInput.value.trim();
     const newRoomVibe = ChangeRoomVibeInput.value.trim();
@@ -201,7 +213,9 @@ async function updateRoomInfo() {
         console.log("→ update response:", data);
 
         if (!res.ok) {
-            showPopup(data.message || "Failed to update room", "error");
+            console.error("→ Error fetching room info:", data.message);
+            showPopup("You cannot access this room.", "error");
+            window.location.href = '../Main/main.html';
             return;
         }
 
@@ -246,7 +260,7 @@ cancelDeleteRoomBtn?.addEventListener('click', () => {
 async function deleteRoom() {
     const params = new URLSearchParams(window.location.search);
     const room_id = params.get('room_id');
-    const token = localStorage.getItem('accessToken');
+    const token = localStorage.getItem(`roomToken_${room_id}`)
 
     try {
         const res = await fetch(`${BACKEND_URL}/rooms/delete_room/${room_id}`, {
@@ -260,7 +274,9 @@ async function deleteRoom() {
         console.log("→ delete response:", data);
 
         if (!res.ok) {
-            showPopup(data.message || "Failed to delete room", "error");
+            console.error("→ Error fetching room info:", data.message);
+            showPopup("You cannot access this room.", "error");
+            window.location.href = '../Main/main.html';
             return;
         }
 

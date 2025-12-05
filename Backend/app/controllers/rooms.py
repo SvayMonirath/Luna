@@ -1,10 +1,10 @@
 from flask import request
 from flask_smorest import Blueprint, abort
-from flask_jwt_extended import jwt_required, get_jwt_identity
+from flask_jwt_extended import jwt_required, get_jwt_identity, create_access_token, get_jwt,  verify_jwt_in_request
 
 from ..services.room_state import get_room_state, add_song, play, pause, leave, join, rooms_state
 from ..schemas.room_schemas import CreateRoomSchema, EditRoomSchema
-from ..models.models import Room, db
+from ..models.models import Room, db, User
 
 rooms_blp = Blueprint("Rooms", __name__, url_prefix="/api/v1/rooms")
 
@@ -40,7 +40,6 @@ def create_room(room_data):
         if not password:
             return {"message": "Password is required for private rooms."}, 400
         room.password = password
-
     db.session.add(room)
     db.session.commit()
 
@@ -75,10 +74,43 @@ def check_room_password(room_id):
     data = request.get_json()
     entered_password = data.get("password")
     room = Room.query.get_or_404(room_id)
-    if room.password == entered_password:
-        return {'access': True}, 200
-    else:
+
+    if room.password != entered_password:
         return {'access': False}, 200
+
+    # Allow request with OR without JWT token
+    verify_jwt_in_request(optional=True)
+    user_id = get_jwt_identity()  # returns None if no login
+
+    room_access_token = create_access_token(
+        identity=user_id,   # logged in user, otherwise None
+        additional_claims={
+            "room_id": room.id,
+            "type": "room_token"   # used to verify access later
+        }
+    )
+
+    return {
+        'access': True,
+        'room_token': room_access_token,
+        'user_id': user_id
+    }, 200
+
+def require_room_access(room_id):
+    room = Room.query.get_or_404(room_id)
+    if not room.is_private:
+        return
+
+    verify_jwt_in_request(optional=True)
+    claims = get_jwt() or {}
+
+    # current_user = get_jwt_identity()
+    # if room.owner_id == current_user:
+    #     return
+
+    if claims.get("type") != "room_token" or claims.get("room_id") != room_id:
+        abort(403, message="Access to this private room is forbidden.")
+
 
 # GET ALL ROOMS OPERATION
 @rooms_blp.route('/get_all_owned_rooms', methods=['GET'])
@@ -102,9 +134,11 @@ def get_all_owned_rooms():
 
 # GET ROOM BY ID OPERATION
 @rooms_blp.route('/get_room/<int:room_id>', methods=['GET'])
+@jwt_required()
 def get_room_by_id(room_id):
     room = Room.query.get_or_404(room_id)
 
+    require_room_access(room_id)
 
     room_data = {
         "id": room.id,

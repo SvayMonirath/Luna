@@ -182,6 +182,8 @@ function createRoomCard(room) {
         closePrivateRoomModal();
     });
 
+    const roomToken = localStorage.getItem(`roomToken_${room.id}`);
+
     privateRoomPasswordSubmitBtn?.addEventListener('click', async () => {
         const enteredPassword = privateRoomPasswordInput.value;
 
@@ -203,7 +205,8 @@ function createRoomCard(room) {
             if (!res.ok) {
                 showPopup(data.message || 'Incorrect password', 'error');
             } else if (data.access) {
-                window.location.href = `../room/room.html?room_id=${room.id}?room_password=${enteredPassword}`;
+                localStorage.setItem(`roomToken_${room.id}`, data.room_token);
+                window.location.href = `../room/room.html?room_id=${room.id}`;
             }
 
     }
@@ -214,10 +217,12 @@ function createRoomCard(room) {
 
     roomDiv.addEventListener('click', () => {
 
-        if (room.is_private) {
+        if (room.is_private && !roomToken) {
             privateRoomOverlay.classList.remove('hidden');
             privateRoomPwdConfirmation.classList.remove('hidden');
 
+        } else if(room.is_private && roomToken) {
+            window.location.href = `../room/room.html?room_id=${room.id}`;
         } else {
             window.location.href = `../room/room.html?room_id=${room.id}`;
         }
