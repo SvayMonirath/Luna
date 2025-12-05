@@ -1,3 +1,4 @@
+from flask import request
 from flask_smorest import Blueprint, abort
 from flask_jwt_extended import jwt_required, get_jwt_identity
 
@@ -63,6 +64,35 @@ def get_random_song(limit):
         })
 
     return {"songs": songs_list}, 200
+
+
+@musics_blp.route('/search', methods=['GET'])
+def search_songs():
+    query = request.args.get('q', '')
+    if not query:
+        return {"songs": []}, 200
+
+    results = Music.query.filter(
+        (Music.title.ilike(f'%{query}%')) |
+        (Music.artist.ilike(f'%{query}%')) |
+        (Music.album.ilike(f'%{query}%')) |
+        (Music.genre.ilike(f'%{query}%'))
+    ).all()
+
+    song_list = [
+        {
+            "id": song.id,
+            "title": song.title,
+            "artist": song.artist,
+            "album": song.album,
+            "genre": song.genre,
+            "audio_file_path": song.audio_file_path,
+            "cover_image_path": song.cover_image_path
+        }
+        for song in results
+    ]
+
+    return {"songs": song_list}, 200
 
 # play music individually
 # pause music individually

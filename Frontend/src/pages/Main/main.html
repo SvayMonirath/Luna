@@ -47,21 +47,30 @@
                 </div>
 
                 <div class="hidden sm:flex flex-1 justify-center px-4">
-                    <div class="w-full max-w-lg">
-                        <label for="search" class="sr-only">Search</label>
-                        <div class="relative">
-                            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-white/70">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
-                                    <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-4.35-4.35M11 19a8 8 0 1 0 0-16 8 8 0 0 0 0 16z"/>
-                                </svg>
-                            </div>
+                    <div class="hidden sm:flex flex-1 justify-center px-4">
+                        <div class="hidden sm:flex flex-1 justify-center px-4">
+                            <div class="w-full max-w-lg">
+                                <label for="search" class="sr-only">Search</label>
+                                <div class="relative">
+                                    <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-white/70">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+                                            <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-4.35-4.35M11 19a8 8 0 1 0 0-16 8 8 0 0 0 0 16z"/>
+                                        </svg>
+                                    </div>
 
-                            <input
-                                id="search"
-                                type="search"
-                                placeholder="Search Musics..."
-                                class="w-full pl-10 pr-4 py-2 rounded-full bg-slate-800/80 text-white placeholder-white/60 focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
-                            />
+                                    <input
+                                        id="search"
+                                        type="search"
+                                        placeholder="Search Musics..."
+                                        class="w-full pl-10 pr-4 py-2 rounded-full bg-slate-800/80 text-white placeholder-white/60 focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
+                                    />
+                                </div>
+
+                                <!-- Search results container -->
+                                <div id="searchResults"
+                                    class="absolute top-full w-1/4 mt-2 max-h-96 overflow-y-auto grid grid-cols-1 gap-2 p-2 bg-slate-900/80 backdrop-blur-md rounded-lg z-50 shadow-lg">
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>

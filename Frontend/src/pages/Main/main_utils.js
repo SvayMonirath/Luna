@@ -2,6 +2,81 @@ const BACKEND_URL = 'http://localhost:5001/';
 let audio = new Audio();
 let currentSongPath = null;
 
+// ------------------- SEARCH FUNCTIONALITY -------------------
+const searchInput = document.getElementById("search");
+const searchResults = document.getElementById("searchResults");
+
+searchInput.addEventListener("input", async () => {
+  const query = searchInput.value.trim();
+  if (!query) {
+    searchResults.innerHTML = "";
+    return;
+  }
+
+  try {
+    const res = await fetch(
+      `${BACKEND_URL}api/v1/musics/search?q=${encodeURIComponent(query)}`
+    );
+    const data = await res.json();
+
+    displaySearchResults(data.songs);
+  } catch (err) {
+    console.error("Search failed:", err);
+  }
+});
+
+function displaySearchResults(songs) {
+    searchResults.innerHTML = '';
+
+    if (songs.length === 0) {
+        searchResults.innerHTML = `<div class="text-white/70">No songs found.</div>`;
+        return;
+    }
+
+    songs.forEach(song => {
+        const div = document.createElement('div');
+        div.className = `
+            music-container relative flex items-center gap-3 p-2 bg-white/10 backdrop-blur-lg rounded-xl cursor-pointer
+            hover:bg-white/20 transition duration-300 group
+        `;
+
+        div.innerHTML = `
+            <!-- Cover -->
+            <img src="${BACKEND_URL}${song.cover_image_path}"
+                style="width:50px;height:50px;object-fit:cover;" class="rounded-md transition duration-300 group-hover:blur-sm group-hover:brightness-50"/>
+
+            <!-- Text -->
+            <div class="flex-1 text-white overflow-hidden">
+                <div class="font-medium text-sm truncate">${song.title}</div>
+                <div class="font-light text-xs truncate">${song.artist}</div>
+            </div>
+
+            <!-- Duration -->
+            <div class="text-white font-light text-xs duration-display group-hover:blur-sm group-hover:opacity-50"></div>
+        `;
+
+        // Load audio to get duration
+        const audioTemp = new Audio(`${BACKEND_URL}${song.audio_file_path}`);
+        const durationEl = div.querySelector('.duration-display');
+        audioTemp.addEventListener('loadedmetadata', () => {
+            durationEl.textContent = formatTime(audioTemp.duration);
+        });
+
+        // Click to play song
+        div.addEventListener('click', () => {
+            document.getElementById("player-title").textContent = song.title;
+            document.getElementById("player-artist").textContent = song.artist;
+            document.getElementById("player-cover").src = `${BACKEND_URL}${song.cover_image_path}`;
+            document.getElementById("player-bar").classList.remove("hidden");
+
+            playSong(song.audio_file_path);
+        });
+
+        searchResults.appendChild(div);
+    });
+}
+
+
 // ------------------- PLAY SONG & PLAYER BAR -------------------
 
 function playSong(path) {

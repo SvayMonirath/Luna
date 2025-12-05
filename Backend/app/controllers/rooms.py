@@ -80,13 +80,13 @@ def check_room_password(room_id):
 
     # Allow request with OR without JWT token
     verify_jwt_in_request(optional=True)
-    user_id = get_jwt_identity()  # returns None if no login
+    user_id = get_jwt_identity()
 
     room_access_token = create_access_token(
-        identity=user_id,   # logged in user, otherwise None
+        identity=user_id,
         additional_claims={
             "room_id": room.id,
-            "type": "room_token"   # used to verify access later
+            "type": "room_token"
         }
     )
 
@@ -246,3 +246,8 @@ def join_route(room_id):
 def leave_route(room_id):
     room_state = leave(room_id)
     return room_state, 200
+
+@rooms_blp.route('/get_room_private_status/<int:room_id>', methods=['GET'])
+def get_room_private_status(room_id):
+    room = Room.query.get_or_404(room_id)
+    return {"is_private": room.is_private}, 200

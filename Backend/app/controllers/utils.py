@@ -14,3 +14,4 @@ def get_user():
         "username": user.username,
         "email": user.email
     }
+

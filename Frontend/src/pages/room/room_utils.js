@@ -49,12 +49,30 @@ const ChangeRoomVibeInput = document.getElementById("room-vibe-input");
 export async function fetchRoomInfo() {
     const params = new URLSearchParams(window.location.search);
     const room_id = params.get('room_id');
+    let dataPrivate = {};
+
+    try {
+        const resPrivate = await fetch(`${BACKEND_URL}/rooms/get_room_private_status/${room_id}`, {
+            method: 'GET',
+            headers: { 'Content-Type': 'application/json' }
+        });
+
+        dataPrivate = await resPrivate.json();
+
+    } catch (error) {
+        console.error('Error fetching room private status:', error);
+    }
+
 
     const roomToken = localStorage.getItem(`roomToken_${room_id}`);
     const headers = { 'Content-Type': 'application/json' };
 
-    if (roomToken) {
+    if (roomToken && dataPrivate.is_private) {
         headers['Authorization'] = `Bearer ${roomToken}`;
+    } else if (dataPrivate.is_private && !roomToken) {
+        showPopup("You cannot access this room.", "error");
+        window.location.href = '../Main/main.html';
+        return;
     }
 
     try {
