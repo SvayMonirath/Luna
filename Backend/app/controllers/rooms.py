@@ -164,7 +164,7 @@ def get_room_by_code(code):
     user_id = int(get_jwt_identity())
     user = User.query.get(user_id)
 
-    if user in room.members:
+    if user in room.members or room.owner_id == user_id:
         return {"message": "User already a member of the room."}, 400
 
     room.members.append(user)
