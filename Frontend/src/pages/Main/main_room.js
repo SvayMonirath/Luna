@@ -232,6 +232,106 @@ function createRoomCard(room) {
     return roomDiv;
 }
 
+// ------------------ SHOW/HIDE JOIN MODAL ------------------
+const joinRoomOverlay = document.getElementById('join_room_overlay');
+const joinRoomModal = document.getElementById('joinRoomModal')
+
+const showJoinModal = document.querySelector('.open-join-room-modal')
+const hideJoinModal = document.getElementById('close-join-room')
+
+// SHOW
+showJoinModal.addEventListener('click', () => {
+    joinRoomModal.classList.remove('hidden')
+    joinRoomOverlay.classList.remove('hidden')
+})
+
+// HIDE
+hideJoinModal.addEventListener('click', () => {
+    joinRoomModal.classList.add('hidden')
+    joinRoomOverlay.classList.add('hidden')
+})
+
+const joinRoomInput = document.getElementById('join-room-input')
+const joinRoomSubmit = document.getElementById('join-room-submit')
+
+// TODO[]: Implement room to actually be fetchable with code
+
+// check every time user types
+joinRoomInput.addEventListener('input', () => {
+
+    if (joinRoomInput.value.trim() !== '') {
+        joinRoomSubmit.classList.remove('opacity-30', 'cursor-not-allowed')
+        joinRoomSubmit.classList.add('hover:bg-gradient-to-r', 'hover:from-purple-800', 'hover:to-pink-800')
+        joinRoomSubmit.disabled = false
+    } else {
+        joinRoomSubmit.classList.add('opacity-30', 'cursor-not-allowed')
+        joinRoomSubmit.classList.remove('hover:bg-gradient-to-r', 'hover:from-purple-800', 'hover:to-pink-800')
+        joinRoomSubmit.disabled = true
+    }
+
+})
+
+joinRoomSubmit.addEventListener('click', async () => {
+    const code = joinRoomInput.value.trim();
+
+    try {
+        const res = await fetch(`${BACKEND_URL}api/v1/rooms/get_room_by_code/${code}`, {
+            method: 'GET',
+            headers: {
+                'Authorization': `Bearer ${localStorage.getItem('accessToken')}`,
+                'Content-Type': 'application/json'
+            }
+        });
+
+        const data = await res.json();
+
+        if (!res.ok) {
+            showPopup(data.message || 'Failed to join room', 'error');
+        } else {
+            // Redirect to room page
+            window.location.reload();
+        }
+    } catch (err) {
+        console.error("Error joining room by code:", err);
+    }
+});
+
+// ------------------ Load Joined Rooms ------------------
+const joinedRoomsContainer = document.getElementById('joined-rooms-container');
+export async function loadJoinedRooms() {
+    const token = localStorage.getItem('accessToken');
+    if (!token) return console.error("No access token found");
+
+    try {
+        const res = await fetch(`${BACKEND_URL}api/v1/rooms/get_all_joined_rooms`, {
+            method: 'GET',
+            headers: {
+                'Authorization': `Bearer ${token}`,
+                'Content-Type': 'application/json'
+            }
+        });
+
+        const data = await res.json();
+
+        if (!res.ok) {
+            console.error("Failed to load joined rooms");
+            return;
+        }
+
+        if (!data.rooms || data.rooms.length === 0) {
+            joinedRoomsContainer.innerHTML = '<p class="text-slate-400 text-xl">No joined rooms available.</p>';
+            return;
+        }
+
+        joinedRoomsContainer.innerHTML = '';
+        data.rooms.forEach(room => {
+            const roomCard = createRoomCard(room);
+            joinedRoomsContainer.appendChild(roomCard);
+        });
+    } catch (err) {
+        console.error("Error loading joined rooms:", err);
+    }
+}
 
 const roomsContainer = document.getElementById('rooms-container');
 // ------------------ Load Rooms ------------------

@@ -1,13 +1,13 @@
-import { loadSongsHeader, loadTrendingSongs , fetchUser  } from './main_utils.js';
-import { loadRooms } from './main_room.js';
+import { loadSongsHeader, loadTrendingSongs, fetchUser  } from './main_utils.js';
+import { loadRooms, loadJoinedRooms } from './main_room.js';
 
 document.addEventListener("DOMContentLoaded", () => {
     fetchUser();
     loadSongsHeader();
     loadTrendingSongs();
 
-    // FIXME[]: loadRooms function not get called ever
     loadRooms();
+    loadJoinedRooms();
 
     // Mobile menu toggle
     const mobileMenuBtn = document.getElementById('mobileMenuBtn');

@@ -273,6 +273,10 @@ function displaySongsHeader(songs) {
 function displayTrending(songs) {
   const container = document.getElementById("trendingMusic");
   container.innerHTML = "";
+  if(songs.length === 0) {
+    container.innerHTML = `<div class="text-white/70">No trending songs available.</div>`;
+    return;
+  }
 
 songs.forEach((song) => {
     const songDiv = document.createElement("div");

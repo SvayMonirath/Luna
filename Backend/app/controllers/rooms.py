@@ -25,7 +25,8 @@ def create_room(room_data):
         title=title,
         vibe=vibe,
         is_private=is_private,
-        owner_id=user_id
+        owner_id=user_id,
+        code = Room.generate_unique_code()
     )
 
     # check if the user has a room with the same title
@@ -146,9 +147,48 @@ def get_room_by_id(room_id):
         "description": room.description,
         "is_private": room.is_private,
         "vibe": room.vibe,
+        "code": room.code,
         "owner_id": room.owner_id
     }
     return {"room": room_data}, 200
+
+# GET ROOM BY CODE
+@rooms_blp.route('/get_room_by_code/<string:code>', methods=['GET'])
+@jwt_required()
+def get_room_by_code(code):
+    room = Room.query.filter_by(code=code).first_or_404()
+
+    if not room:
+        return {"message": "Room not found."}, 404
+
+    user_id = int(get_jwt_identity())
+    user = User.query.get(user_id)
+
+    if user in room.members:
+        return {"message": "User already a member of the room."}, 400
+
+    room.members.append(user)
+    db.session.commit()
+    return {"message": "User added to the room."}, 200
+
+# Get ALL JOINED ROOMS OPERATION
+@rooms_blp.route('/get_all_joined_rooms', methods=['GET'])
+@jwt_required()
+def get_all_joined_rooms():
+    user_id = int(get_jwt_identity())
+    user = User.query.get_or_404(user_id)
+    rooms = user.joined_rooms.all()
+    rooms_data = []
+    for room in rooms:
+        rooms_data.append({
+            "id": room.id,
+            "title": room.title,
+            "description": room.description,
+            "is_private": room.is_private,
+            "vibe": room.vibe,
+            "owner_id": room.owner_id
+        })
+    return {"rooms": rooms_data}, 200
 
 
 # UPDATE ROOM OPERATION

@@ -42,6 +42,7 @@ function showPopup(message, type = "success") {
 // TODO[X]: Fetch Room Vibe
 const roomName = document.getElementById('room-name');
 const roomVibe = document.getElementById('room-vibe');
+const roomCode = document.getElementById('room-code');
 
 const ChangeRoomNameInput = document.getElementById("room-name-input");
 const ChangeRoomVibeInput = document.getElementById("room-vibe-input");
@@ -92,6 +93,7 @@ export async function fetchRoomInfo() {
         // All good → update UI
         roomName.textContent = data.room.title;
         roomVibe.textContent = data.room.vibe;
+        roomCode.textContent = data.room.code;
         ChangeRoomNameInput.value = data.room.title;
         ChangeRoomVibeInput.value = data.room.vibe;
 
@@ -100,6 +102,20 @@ export async function fetchRoomInfo() {
         showPopup("Server unreachable", "error");
     }
 }
+
+// HIDE SHOW ROOM CODE
+const hideShowCodeBtn = document.getElementById("hide/show-code");
+
+hideShowCodeBtn?.addEventListener('click', () => {
+    if (roomCode.classList.contains("blur-md")) {
+        roomCode.classList.remove("blur-md");
+        hideShowCodeBtn.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-eye-icon lucide-eye"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>`;
+
+    } else {
+        roomCode.classList.add("blur-md");
+        hideShowCodeBtn.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-eye-off-icon lucide-eye-off"><path d="M10.733 5.076a10.744 10.744 0 0 1 11.205 6.575 1 1 0 0 1 0 .696 10.747 10.747 0 0 1-1.444 2.49"/><path d="M14.084 14.158a3 3 0 0 1-4.242-4.242"/><path d="M17.479 17.499a10.75 10.75 0 0 1-15.417-5.151 1 1 0 0 1 0-.696 10.75 10.75 0 0 1 4.446-5.143"/><path d="m2 2 20 20"/></svg>`
+    }
+});
 
 // TODO[X]: SHOW SETTING BTN
 

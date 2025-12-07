@@ -178,6 +178,8 @@
                 <div class="text-white/30 text-xl">Ready to vibe with music?</div>
             </div>
             <div class="flex flex-row gap-4 md:mt-0 mt-6">
+
+                <!-- TODO[]: Add Functionality to this button -->
                 <!-- join room btn -->
                 <button class="open-join-room-modal text-white bg-purple-700/30 border-2 border-purple-900/50 hover:bg-purple-700/50 rounded-xl px-4 py-2 transition font-medium"># Join Code</button>
 
@@ -216,14 +218,14 @@
             <div class="grid lg:grid-cols-2 gap-8 items-center">
 
                 <!-- Left: Album Cover -->
-                <div class="flex justify-center lg:justify-start">
-                <div class="relative group-hover:scale-105 transition-transform duration-500">
-                    <div class="absolute inset-0 bg-gradient-to-br from-purple-600 to-pink-600 blur-3xl opacity-50 group-hover:opacity-70 transition-opacity"></div>
-                    <div class="relative w-64 h-64 lg:w-80 lg:h-80 rounded-2xl overflow-hidden shadow-2xl border-4 border-white/10">
-                    <img src="https://images.unsplash.com/photo-1614149162883-504ce4d13909?w=800" alt="Now Playing Track"
-                        class="w-full h-full object-cover" />
+                <div class="flex justify-center lg:justify-start w-fit">
+                    <div class="relative group-hover:scale-105 transition-transform duration-500">
+                        <div class="absolute inset-0 bg-gradient-to-br from-purple-600 to-pink-600 blur-3xl opacity-50 group-hover:opacity-70 transition-opacity"></div>
+                        <div class="relative w-64 h-64 lg:w-80 lg:h-80 rounded-2xl overflow-hidden shadow-2xl border-4 border-white/10">
+                        <img src="https://images.unsplash.com/photo-1614149162883-504ce4d13909?w=800" alt="Now Playing Track"
+                            class="w-full h-full object-cover" />
+                        </div>
                     </div>
-                </div>
                 </div>
 
                 <!-- Right: Room Info -->
@@ -273,7 +275,7 @@
 
                 <!-- Active Listeners -->
                 <div class="flex items-center gap-4">
-                    <button class="px-4 py-2 rounded-xl bg-purple-600 hover:bg-purple-700 text-white flex items-center gap-2">
+                    <button class="open-join-room-modal px-4 py-2 rounded-xl bg-purple-600 hover:bg-purple-700 text-white flex items-center gap-2">
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-headphones-icon lucide-headphones"><path d="M3 14h3a2 2 0 0 1 2 2v3a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-7a9 9 0 0 1 18 0v7a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3"/></svg>
                         <span>Join Room</span>
                     </button>
@@ -296,7 +298,7 @@
         "></div>
 
         <!-- Your Room -->
-        <div class="flex flex-row">
+        <div class="flex flex-row ">
             <div class="mt-10 flex gap-3 items-center text-white/80 text-3xl font-medium w-1/2">
                 <svg xmlns="http://www.w3.org/2000/svg" width="42" height="42" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-radio-icon lucide-radio text-purple-400"><path d="M16.247 7.761a6 6 0 0 1 0 8.478"/><path d="M19.075 4.933a10 10 0 0 1 0 14.134"/><path d="M4.925 19.067a10 10 0 0 1 0-14.134"/><path d="M7.753 16.239a6 6 0 0 1 0-8.478"/><circle cx="12" cy="12" r="2"/></svg>
                 <span class="font-[Poppins] font-medium text-white text-2xl">Your rooms</span>
@@ -310,6 +312,22 @@
             xl:grid-cols-4
         ">
         </div>
+        <!-- Join Room -->
+        <div class="flex flex-row ">
+            <div class="mt-10 flex gap-3 items-center text-white/80 text-3xl font-medium w-1/2">
+                <svg xmlns="http://www.w3.org/2000/svg" width="42" height="42" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-audio-waveform-icon lucide-audio-waveform text-purple-400"><path d="M2 13a2 2 0 0 0 2-2V7a2 2 0 0 1 4 0v13a2 2 0 0 0 4 0V4a2 2 0 0 1 4 0v13a2 2 0 0 0 4 0v-4a2 2 0 0 1 2-2"/></svg>
+                <span class="font-[Poppins] font-medium text-white text-2xl">Joined rooms</span>
+            </div>
+        </div>
+        <!-- Your Room container -->
+        <div id="joined-rooms-container" class="w-full grid grid-cols-4 gap-4 mt-6 mb-12
+            sm:grid-cols-1
+            md:grid-cols-2
+            lg:grid-cols-3
+            xl:grid-cols-4
+        ">
+        </div>
+
 
         <div class="flex flex-col md:flex-row gap-5">
 
@@ -616,7 +634,7 @@
     <!-- Private Room Overlay -->
     <div id="private_room_overlay" class="hidden fixed inset-0 bg-black/30 backdrop-blur-md z-40"></div>
 
-    <div id="private_room_pwd_confirmation" class="hidden absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-blue-900/30 border border-blue-500/40 backdrop-blur-md p-10 rounded-lg flex flex-col shadow-lg  z-50 gap-7">
+    <div id="private_room_pwd_confirmation" class="hidden fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-blue-900/30 border border-blue-500/40 backdrop-blur-md p-10 rounded-lg flex flex-col shadow-lg  z-50 gap-7">
         <h2 class="text-white text-5xl font-semibold">Private Room Password</h2>
         <p class="text-slate-500 font-normal text-md">Must Enter Password to Access</p>
         <div class="flex flex-col w-full gap-2">
@@ -629,17 +647,31 @@
         </div>
     </div>
 
+    <!-- TODO[X]: Fix the join room UI -->
     <!-- Join Room Overlay -->
-    <div id="join_room_overlay" class=" fixed inset-0 bg-black/30 backdrop-blur-md z-40"></div>
+    <div id="join_room_overlay" class="hidden fixed inset-0 bg-black/30 backdrop-blur-md z-40"></div>
 
-    <div>
+    <!-- JOIN ROOM MODAL -->
+    <div id="joinRoomModal"
+        class="hidden fixed inset-0 flex  justify-center items-center bg-black/60 backdrop-blur-md
+                 z-[999]">
 
-    </div>
-        <div id="join_room" class="bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 border border-purple-500/30 rounded-3xl p-8 max-w-md w-full absolute shadow-2xl z-50 inset-0">
-            <div class="bg-gradient-to-r from-purple-600 to-pink-600 text-6xl p-7 flex justify-center items-center text-white rounded-2xl ">#</div>
+        <div class="bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 border border-purple-500/30 p-6 rounded-xl shadow-xl w-80 text-center relative">
+            <div class="size-16 rounded-xl bg-gradient-to-r from-purple-600 to-pink-600 flex items-center justify-center mx-auto mb-3 text-white text-4xl">#</div>
+            <h2 class="text-white text-2xl font-light mb-2">Join by Code</h2>
+            <p class="text-slate-400 text-sm">Enter room code to join</p>
 
+            <!-- Join Room CODE INPUT -->
+            <input id="join-room-input" type="text" class="w-full px-4 py-2 rounded-lg bg-slate-800 text-white outline-none border border-purple-500/30 focus:border-purple-500 mt-4 flex text-center" placeholder="ABC123" />
+
+            <!-- JOIN ROOM Submit -->
+            <button id="join-room-submit" class="bg-gradient-to-r from-purple-600 to-pink-600 opacity-30 cursor-not-allowed rounded-xl px-4 py-2 text-white font-semibold transition w-full mt-4 mb-3">Join</button>
+            <p class="text-slate-400 text-xs mb-5">Let friends sent you a code!</p>
+
+            <!-- Cancel cross button -->
+            <button id="close-join-room" class="absolute top-4 right-4"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-x-icon lucide-x text-slate-400 hover:text-red-600"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg></button>
         </div>
-
+    </div>
 
     <script type="module" src="./main.js"></script>
 </body>
