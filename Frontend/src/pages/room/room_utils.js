@@ -232,7 +232,6 @@ function displayRoomSearchResults(songs) {
                 roomSearchInput.value = "";
                 roomSearchResults.innerHTML = "";
                 roomSearchInput.classList.add('hidden');
-                roomSearchResults.classList.add('hidden');
             } catch (err) {
                 console.error(err);
                 showPopup("Failed to add song to queue", "error");
@@ -268,8 +267,6 @@ roomSearchInput.addEventListener("input", async () => {
 });
 
 
-// TODO[]: Implement Show Music name
-// TODO[]: Implement Show Music artist
 
 // TODO[X]: Implement Add to Queue
 async function AddToQueue(song_id) {
@@ -364,6 +361,11 @@ export async function renderQueue() {
                     <div class="text-white font-light text-xs">${formatTime(songData.song.duration)}</div>
                 `;
 
+                songDiv.addEventListener('click', () => {
+                    setCurrentSong(songData.song.id);
+
+                });
+
                 queueContainer.appendChild(songDiv);
 
             } catch (err) {
@@ -375,6 +377,117 @@ export async function renderQueue() {
         console.error('Error fetching room queue:', err);
         showPopup("Server unreachable", "error");
     }
+}
+
+// TODO[]: Implement Show Music name
+// TODO[]: Implement Show Music artist
+const currentSongCover = document.getElementById('current-song-cover');
+const currentSongTitle = document.getElementById('current-song-title');
+const currentSongArtist = document.getElementById('current-song-artist');
+
+const playPauseBtn = document.getElementById('play-pause-btn');
+const prevBtn = document.getElementById('prev-btn');
+const nextBtn = document.getElementById('next-btn');
+
+const seekBar = document.getElementById('seekBar');
+const currentTimeEl = document.getElementById('current-time');
+const totalDurationEl = document.getElementById('total-duration');
+
+let currentAudio = new Audio();
+let isPlaying = false;
+
+export async function renderCurrentSong() {
+    const params = new URLSearchParams(window.location.search);
+    const room_id = params.get('room_id');
+
+    try {
+        const res = await fetch(`${BACKEND_URL}/rooms/get_current_song/${room_id}`);
+        const data = await res.json();
+
+        if (!data.current_song) {
+            currentSongCover.src = '../../assets/placeholder_music_cover.png';
+            currentSongTitle.textContent = "Music Title";
+            currentSongArtist.textContent = "Artist Name";
+            return;
+        }
+
+        const song = data.current_song;
+
+        // Update UI
+        currentSongCover.src = `${STATIC_URL}${song.cover_image_path}`;
+        currentSongTitle.textContent = song.title;
+        currentSongArtist.textContent = song.artist;
+
+        // Load song
+        currentAudio.src = `${STATIC_URL}${song.audio_file_path}`;
+        currentAudio.load();
+        currentAudio.onloadedmetadata = () => {
+            seekBar.max = currentAudio.duration;
+            totalDurationEl.textContent = formatTime(currentAudio.duration);
+        };
+
+        // Reset seek bar
+        currentAudio.ontimeupdate = () => {
+            seekBar.value = currentAudio.currentTime;
+            currentTimeEl.textContent = formatTime(currentAudio.currentTime);
+        };
+
+    } catch (err) {
+        console.error("Failed to fetch current song:", err);
+    }
+}
+
+playPauseBtn.addEventListener('click', () => {
+    if (!currentAudio.src) return;
+
+    if (isPlaying) {
+        // Pause the audio
+        currentAudio.pause();
+        isPlaying = false;
+
+        // Set play icon
+        playPauseBtn.innerHTML = `
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+             viewBox="0 0 24 24" fill="none" stroke="currentColor"
+             stroke-width="2" stroke-linecap="round" stroke-linejoin="round text-black "
+             class="lucide lucide-circle-play text-black">
+          <circle cx="12" cy="12" r="10"/>
+          <polygon points="10 8 16 12 10 16 10 8"/>
+        </svg>`;
+    } else {
+        // Play the audio
+        currentAudio.play();
+        isPlaying = true;
+        // Set pause icon
+        playPauseBtn.innerHTML = `
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+             viewBox="0 0 24 24" fill="none" stroke="currentColor"
+             stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+             class="lucide lucide-pause text-black">
+          <rect x="6" y="4" width="4" height="16" rx="1"/>
+          <rect x="14" y="4" width="4" height="16" rx="1"/>
+        </svg>`;
+    }
+});
+
+
+seekBar.addEventListener('input', () => {
+    currentAudio.currentTime = seekBar.value;
+});
+
+// Set current song
+async function setCurrentSong(songId) {
+    const params = new URLSearchParams(window.location.search);
+    const room_id = params.get('room_id');
+    const token = localStorage.getItem('accessToken');
+
+    await fetch(`${BACKEND_URL}/rooms/set_current_song/${room_id}/${songId}`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+        }
+    });
 }
 
 // TODO[]: Implement play song synchronization

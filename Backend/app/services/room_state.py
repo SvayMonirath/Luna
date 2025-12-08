@@ -34,7 +34,7 @@ def delete_room_state(room_id):
 
 def set_current_song(room_id, song_id):
     global room_state
-    if room_id in room_state and room_state[room_id]["current_song"] == None:
+    if room_id in room_state:
         room_state[room_id]["current_song"] = song_id
 
 def play_song(room_id):

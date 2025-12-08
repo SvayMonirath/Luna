@@ -247,11 +247,15 @@ def get_room_private_status(room_id):
 
 # get room state
 @rooms_blp.route('/get_room_state/<int:room_id>', methods=['GET'])
-@jwt_required()
 def get_room_state_route(room_id):
     require_room_access(room_id)
     state = _init_room(room_id)
-    return {"room_state": state}, 200
+    room_state = {
+        "current_song": state["current_song"],
+        "queue": state["queue"],
+        "is_playing": state["is_playing"]
+    }
+    return {"room_state": room_state}, 200
 
 # Add to queue route
 @rooms_blp.route('/addToQueue/<int:room_id>/<int:song_id>', methods=['POST'])
@@ -271,18 +275,42 @@ def get_room_queue_route(room_id):
     return {"queue": state["queue"]}, 200
 
 # set current song route
-@rooms_blp.route('/set_current_song/<int:room_id>/<int:song_id>', methods=['GET'])
-@jwt_required()
+@rooms_blp.route('/set_current_song/<int:room_id>/<int:song_id>', methods=['POST'])
+@jwt_required()  # optional, depending on your auth
 def set_current_song_route(room_id, song_id):
     require_room_access(room_id)
 
+    # Ensure the song exists
+    song = Music.query.get_or_404(song_id)
+
+    # Set as current
     set_current_song(room_id, song_id)
-    return {"message": "Current song set successfully."}, 200
+
+    return {"message": f"{song.title} is now playing."}, 200
+
 
 # get current song route
+
 @rooms_blp.route('/get_current_song/<int:room_id>', methods=['GET'])
-@jwt_required()
 def get_current_song_route(room_id):
     require_room_access(room_id)
     state = _init_room(room_id)
-    return {"current_song": state["current_song"]}, 200
+    if not state or not state["current_song"]:
+        return {"current_song": None}, 200
+
+    song_id = state["current_song"]
+    song = Music.query.get(song_id)
+    if not song:
+        return {"current_song": None}, 200
+
+    return {
+        "current_song": {
+            "id": song.id,
+            "title": song.title,
+            "artist": song.artist,
+            "album": song.album,
+            "audio_file_path": song.audio_file_path,
+            "cover_image_path": song.cover_image_path,
+        }
+    }, 200
+
