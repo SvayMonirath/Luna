@@ -1,8 +1,8 @@
-"""Added: add code row in Rooms Table and Added a association table to link member(not owners) and rooms
+"""Update table to include code
 
-Revision ID: 2c92ee91e06e
+Revision ID: daa767874222
 Revises: 
-Create Date: 2025-12-07 12:42:48.887834
+Create Date: 2025-12-08 08:07:25.187102
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = '2c92ee91e06e'
+revision = 'daa767874222'
 down_revision = None
 branch_labels = None
 depends_on = None

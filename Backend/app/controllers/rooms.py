@@ -190,6 +190,14 @@ def get_all_joined_rooms():
         })
     return {"rooms": rooms_data}, 200
 
+@rooms_blp.route('/get_joined_room_count', methods=['GET'])
+@jwt_required()
+def get_joined_room_count():
+    user_id = int(get_jwt_identity())
+    user = User.query.get_or_404(user_id)
+    room_count = user.joined_rooms.count()
+    return {"joined_room_count": room_count}, 200
+
 
 # UPDATE ROOM OPERATION
 @rooms_blp.route('/update_room/<int:room_id>', methods=['PUT'])

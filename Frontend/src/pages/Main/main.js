@@ -1,5 +1,5 @@
 import { loadSongsHeader, loadTrendingSongs, fetchUser  } from './main_utils.js';
-import { loadRooms, loadJoinedRooms } from './main_room.js';
+import { loadRooms, loadJoinedRooms, loadHeaderInfo } from './main_room.js';
 
 document.addEventListener("DOMContentLoaded", () => {
     fetchUser();
@@ -8,6 +8,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     loadRooms();
     loadJoinedRooms();
+    loadHeaderInfo();
 
     // Mobile menu toggle
     const mobileMenuBtn = document.getElementById('mobileMenuBtn');
