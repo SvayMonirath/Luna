@@ -301,10 +301,15 @@ async function AddToQueue(song_id) {
 
 
 const queueContainer = document.getElementById('queue-music-container');
+
+let currentQueue = [];
+let currentSongIndex = -1;
+
 export async function renderQueue() {
     const params = new URLSearchParams(window.location.search);
     const room_id = params.get('room_id');
     const token = localStorage.getItem('accessToken');
+
     console.log("renderQueue called");
 
     try {
@@ -313,7 +318,7 @@ export async function renderQueue() {
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': `Bearer ${token}`
-             }
+            }
         });
 
         const data = await res.json();
@@ -323,28 +328,43 @@ export async function renderQueue() {
             showPopup("Failed to fetch room queue", "error");
             return;
         }
+
         if (!data.queue || data.queue.length === 0) {
             queueContainer.innerHTML = `<div class="text-white/70">Queue is empty.</div>`;
+            currentQueue = [];
+            currentSongIndex = -1;
             return;
+        }
+
+        // Store queue for autoplay
+        currentQueue = data.queue;
+
+        // Fetch current song to set index
+        const resCurrent = await fetch(`${BACKEND_URL}/rooms/get_current_song/${room_id}`);
+        const dataCurrent = await resCurrent.json();
+        if (dataCurrent.current_song) {
+            currentSongIndex = currentQueue.indexOf(dataCurrent.current_song.id);
+        } else {
+            currentSongIndex = -1;
         }
 
         queueContainer.innerHTML = ''; // clear container first
 
-        for (const song of data.queue) {
+        for (const songId of currentQueue) {
             try {
-                const songRes = await fetch(`${BACKEND_URL}/musics/get_song/${song}`, {
+                const songRes = await fetch(`${BACKEND_URL}/musics/get_song/${songId}`, {
                     headers: {
                         'Authorization': `Bearer ${token}`
                     }
                 });
                 const songData = await songRes.json();
+
+                // Get duration
                 const audioTemp = new Audio(`${STATIC_URL}${songData.song.audio_file_path}`);
-                await new Promise((resolve) => {
-                    audioTemp.addEventListener('loadedmetadata', resolve);
-                });
+                await new Promise((resolve) => audioTemp.addEventListener('loadedmetadata', resolve));
                 songData.song.duration = audioTemp.duration;
 
-
+                // Create song element
                 const songDiv = document.createElement('div');
                 songDiv.className = `
                     music-container relative flex items-center gap-3 p-2 bg-white/10 backdrop-blur-lg rounded-xl cursor-pointer
@@ -361,9 +381,10 @@ export async function renderQueue() {
                     <div class="text-white font-light text-xs">${formatTime(songData.song.duration)}</div>
                 `;
 
-                songDiv.addEventListener('click', () => {
-                    setCurrentSong(songData.song.id);
-
+                // Click to set as current song
+                songDiv.addEventListener('click', async () => {
+                    currentSongIndex = currentQueue.indexOf(songData.song.id);
+                    await setCurrentSong(songData.song.id);
                 });
 
                 queueContainer.appendChild(songDiv);
@@ -432,6 +453,22 @@ export async function renderCurrentSong() {
             currentTimeEl.textContent = formatTime(currentAudio.currentTime);
         };
 
+        currentAudio.onended = async () => {
+            console.log("Song ended");
+
+            if (currentQueue.length === 0) return;
+
+            // Move to next song
+            currentSongIndex++;
+            if (currentSongIndex >= currentQueue.length) {
+                currentSongIndex = 0; // loop to start
+            }
+
+            const nextSongId = currentQueue[currentSongIndex];
+            await setCurrentSong(nextSongId);  // this will update UI and play
+        };
+
+
     } catch (err) {
         console.error("Failed to fetch current song:", err);
     }
@@ -481,6 +518,7 @@ async function setCurrentSong(songId) {
     const room_id = params.get('room_id');
     const token = localStorage.getItem('accessToken');
 
+    // Tell backend this is the current song
     await fetch(`${BACKEND_URL}/rooms/set_current_song/${room_id}/${songId}`, {
         method: 'POST',
         headers: {
@@ -488,7 +526,33 @@ async function setCurrentSong(songId) {
             'Authorization': `Bearer ${token}`
         }
     });
+
+    // Update UI and play
+    await renderCurrentSong();
+    currentAudio.play();
+    isPlaying = true;
+    updatePlayPauseIcon();
 }
+
+// Update play/pause icon
+function updatePlayPauseIcon() {
+    playPauseBtn.innerHTML = isPlaying ? `
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+             viewBox="0 0 24 24" fill="none" stroke="currentColor"
+             stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+             class="lucide lucide-pause text-black">
+          <rect x="6" y="4" width="4" height="16" rx="1"/>
+          <rect x="14" y="4" width="4" height="16" rx="1"/>
+        </svg>` :
+        `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+             viewBox="0 0 24 24" fill="none" stroke="currentColor"
+             stroke-width="2" stroke-linecap="round" stroke-linejoin="round text-black"
+             class="lucide lucide-circle-play text-black">
+          <circle cx="12" cy="12" r="10"/>
+          <polygon points="10 8 16 12 10 16 10 8"/>
+        </svg>`;
+}
+
 
 // TODO[]: Implement play song synchronization
 // TODO[]: Implement pause song synchronization
