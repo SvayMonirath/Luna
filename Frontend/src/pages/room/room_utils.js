@@ -400,15 +400,13 @@ export async function renderQueue() {
     }
 }
 
-// TODO[]: Implement Show Music name
-// TODO[]: Implement Show Music artist
+// TODO[X]: Implement Show Music name
+// TODO[X]: Implement Show Music artist
 const currentSongCover = document.getElementById('current-song-cover');
 const currentSongTitle = document.getElementById('current-song-title');
 const currentSongArtist = document.getElementById('current-song-artist');
 
 const playPauseBtn = document.getElementById('play-pause-btn');
-const prevBtn = document.getElementById('prev-btn');
-const nextBtn = document.getElementById('next-btn');
 
 const seekBar = document.getElementById('seekBar');
 const currentTimeEl = document.getElementById('current-time');
@@ -553,11 +551,35 @@ function updatePlayPauseIcon() {
         </svg>`;
 }
 
+// TODO[X]: Implement previous song functionality synchronization
+// TODO[X]: Implement skip song functionality synchronization
 
-// TODO[]: Implement play song synchronization
-// TODO[]: Implement pause song synchronization
-// TODO[]: Implement previous song functionality synchronization
-// TODO[]: Implement skip song functionality synchronization
+const prevBtn = document.getElementById('prev-btn');
+const nextBtn = document.getElementById('next-btn');
+
+nextBtn.addEventListener('click', async () => {
+    if (currentQueue.length === 0) return;
+
+    currentSongIndex++;
+    if (currentSongIndex >= currentQueue.length) currentSongIndex = 0;
+
+    const nextSongId = currentQueue[currentSongIndex];
+    await setCurrentSong(nextSongId);
+});
+
+prevBtn.addEventListener('click', async () => {
+    if (currentQueue.length === 0) return;
+
+    currentSongIndex--;
+    if (currentSongIndex < 0) currentSongIndex = currentQueue.length - 1;
+
+    const prevSongId = currentQueue[currentSongIndex];
+    await setCurrentSong(prevSongId);
+});
+
+
+// TODO[]: Implement play song not synchronization
+// TODO[]: Implement pause song not synchronization
 // TODO[]: Implement song progress bar synchronization
 
 // TODO[]: Implement sending chat message
