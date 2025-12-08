@@ -26,445 +26,506 @@
         <span id="popupText"></span>
     </div>
 
-    <!-- Navigation -->
-    <nav class="fixed top-0 left-0 right-0 z-50 bg-black/30 backdrop-blur-md border-b border-white/5">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex items-center justify-between h-16">
-                <!-- Left: logo + mobile menu button -->
-                <div class="flex items-center gap-3">
-                    <!-- Mobile menu button -->
-                    <button id="mobileMenuBtn" aria-label="Toggle menu" class="lg:hidden p-2 rounded-md text-white hover:bg-white/5 transition">
-                        <!-- Menu icon -->
-                         <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
-                            w-5 h-5<path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16" />
-                        </svg>
-                    </button>
+    <nav class="fixed top-0 left-0 right-0 z-50 bg-black/30 backdrop-blur-md border-b border-white/5 flex items-center justify-between h-16 px-4">
+        <!-- Left: logo + mobile menu button -->
+        <div class="flex items-center gap-3">
+            <!-- Mobile menu button -->
+            <button id="mobileMenuBtn" aria-label="Toggle menu" class="lg:hidden p-2 rounded-md text-white hover:bg-white/5 transition">
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16" />
+                </svg>
+            </button>
 
-                    <!-- Logo -->
-                    <a href="../landing_page/landing.html" class="flex items-center gap-2 select-none">
-                        <span class="text-2xl lg:text-3xl font-bold text-white">LUNA</span>
-                    </a>
-                </div>
+            <!-- Logo (flush left) -->
+            <a href="../landing_page/landing.html" class="flex items-center gap-2 select-none">
+                <span class="text-2xl lg:text-4xl font-bold text-white ml-6">LUNA</span>
+            </a>
+        </div>
 
-                <div class="hidden sm:flex flex-1 justify-center px-4">
-                    <div class="hidden sm:flex flex-1 justify-center px-4">
-                        <div class="hidden sm:flex flex-1 justify-center px-4">
-                            <div class="w-full max-w-lg">
-                                <label for="search" class="sr-only">Search</label>
-                                <div class="relative">
-                                    <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-white/70">
-                                        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
-                                            <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-4.35-4.35M11 19a8 8 0 1 0 0-16 8 8 0 0 0 0 16z"/>
-                                        </svg>
-                                    </div>
-
-                                    <input
-                                        id="search"
-                                        type="search"
-                                        placeholder="Search Musics..."
-                                        class="w-full pl-10 pr-4 py-2 rounded-full bg-slate-800/80 text-white placeholder-white/60 focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
-                                    />
-                                </div>
-
-                                <!-- Search results container -->
-                                <div id="searchResults"
-                                    class="absolute top-full w-1/4 mt-2 max-h-96 overflow-y-auto grid grid-cols-1 gap-2 p-2 bg-slate-900/80 backdrop-blur-md rounded-lg z-50 shadow-lg">
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Right: nav links -->
-                <div class="flex items-center gap-2">
-                    <ul class="hidden lg:flex items-center gap-4 mr-2">
-                        <li class="underline underline-offset-8">
-                            <!-- i want understand to change color gradient  -->
-                            <a href="#" class="flex items-center gap-2 px-3 py-2 rounded-md text-white/90 hover:opacity-70  transition">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
-                                    <path stroke-linecap="round" stroke-linejoin="round" d="M3 10a2 2 0 0 1 .709-1.528l7-6a2 2 0 0 1 2.582 0l7 6A2 2 0 0 1 21 10v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
-                                </svg>
-                                <span>Home</span>
-                            </a>
-                        </li>
-                        <li >
-                            <a href="#" class="open-create-room-modal bg-gradient-to-br from-purple-700 to-pink-700 flex items-center gap-2 px-3 py-2 rounded-md text-white/90 hover:opacity-70 transition">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-5 h-5 lucide lucide-circle-plus-icon lucide-circle-plus text-white"><circle cx="12" cy="12" r="10"/><path d="M8 12h8"/><path d="M12 8v8"/></svg>
-                                <span>Create</span>
-                            </a>
-                        </li>
-                    </ul>
-
-                    <!-- Search icon for small -->
-                    <button id="mobileSearchBtn" class="sm:hidden p-2 rounded-md text-white hover:bg-white/5 transition" aria-label="Open search">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-4.35-4.35M11 19a8 8 0 1 0 0-16 8 8 0 0 0 0 16z"/>
-                        </svg>
-                    </button>
-
-                    <!-- Profile -->
+        <!-- Center + Right: container for other content -->
+        <div class="flex-1 flex justify-between items-center max-w-7xl mx-auto px-4">
+            <!-- Center: search bar -->
+            <div class="hidden sm:flex flex-1 justify-center px-4">
+                <div class="w-full max-w-lg">
+                    <label for="search" class="sr-only">Search</label>
                     <div class="relative">
-                        <button id="profileBtn" class="flex items-center gap-2 px-3 py-2 rounded-md bg-white/6 text-white hover:bg-white/8 transition">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 rounded-full" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/>
-                                <circle cx="12" cy="7" r="4" stroke-width="1.5"/>
+                        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-white/70">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-4.35-4.35M11 19a8 8 0 1 0 0-16 8 8 0 0 0 0 16z"/>
                             </svg>
-                            <span class="hidden lg:inline">Profile</span>
-                        </button>
-                        <!-- simple profile dropdown -->
-                         <!-- want smoothe dropdown Effects -->
-
-                        <div id="profileMenu" class="hidden absolute mt-2 w-44 bg-slate-900/90 border border-white/5 rounded-md py-1 shadow-lg">
-                            <a href="../Account/account.html" class="cursor-pointer block px-4 py-2 text-sm text-white/90 hover:bg-white/5">Account</a>
-                            <!-- <a href="#" class="cursor-pointer block px-4 py-2 text-sm text-white/90 hover:bg-white/5">
-                                <span>Setting</span>
-                            </a> -->
-                            <a id="logoutBtn" href="#" class="cursor-pointer block px-4 py-2 text-sm text-red-400 hover:bg-white/5">Sign out</a>
                         </div>
-
+                        <input
+                            id="search"
+                            type="search"
+                            placeholder="Search Musics..."
+                            class="w-full pl-10 pr-4 py-2 rounded-full bg-slate-800/80 text-white placeholder-white/60 focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
+                        />
                     </div>
                 </div>
             </div>
-        </div>
 
-        <!-- Mobile slide-over menu -->
-        <div id="mobileMenu" class="lg:hidden hidden border-t border-white/5 backdrop-blur-md relative">
-        <div class="px-4 py-3">
-            <!-- Search Input -->
-            <div class="mb-3 relative">
-            <label for="mobileSearch" class="sr-only">Search</label>
-            <div class="relative">
-                <div class="absolute inset-y-0 left-0 pl-3 flex items-center text-white/70 pointer-events-none">
-                <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-4.35-4.35M11 19a8 8 0 1 0 0-16 8 8 0 0 0 0 16z"/>
-                </svg>
+            <!-- Right: nav links -->
+            <div class="flex items-center gap-2">
+                <ul class="hidden lg:flex items-center gap-4 mr-2">
+                    <li class="underline underline-offset-8">
+                        <a href="#" class="flex items-center gap-2 px-3 py-2 rounded-md text-white/90 hover:opacity-70 transition">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M3 10a2 2 0 0 1 .709-1.528l7-6a2 2 0 0 1 2.582 0l7 6A2 2 0 0 1 21 10v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+                            </svg>
+                            <span>Home</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" class="open-create-room-modal bg-gradient-to-br from-purple-700 to-pink-700 flex items-center gap-2 px-3 py-2 rounded-md text-white/90 hover:opacity-70 transition">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                <circle cx="12" cy="12" r="10"/>
+                                <path d="M8 12h8"/>
+                                <path d="M12 8v8"/>
+                            </svg>
+                            <span>Create</span>
+                        </a>
+                    </li>
+                </ul>
+
+                <!-- Profile button etc. -->
+                <div class="relative">
+                    <button id="profileBtn" class="flex items-center gap-2 px-3 py-2 rounded-md bg-white/6 text-white hover:bg-white/8 transition">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 rounded-full" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/>
+                            <circle cx="12" cy="7" r="4" stroke-width="1.5"/>
+                        </svg>
+                        <span class="hidden lg:inline">Profile</span>
+                    </button>
+                    <div id="profileMenu" class="hidden absolute mt-2 w-44 bg-slate-900/90 border border-white/5 rounded-md py-1 shadow-lg">
+                        <a href="../Account/account.html" class="cursor-pointer block px-4 py-2 text-sm text-white/90 hover:bg-white/5">Account</a>
+                        <a id="logoutBtn" href="#" class="cursor-pointer block px-4 py-2 text-sm text-red-400 hover:bg-white/5">Sign out</a>
+                    </div>
                 </div>
-                <input
-                id="mobileSearch"
-                type="search"
-                placeholder="Search projects, users, tags..."
-                class="w-full pl-9 pr-3 py-2 rounded-full bg-slate-800/80 text-white placeholder-white/60 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                />
             </div>
-
-            <!-- Mobile search results -->
-            <div id="mobileSearchResults"
-                class="absolute left-0 right-0 mt-2 max-h-80 overflow-y-auto bg-slate-900/90 backdrop-blur-md rounded-lg shadow-lg hidden p-2 space-y-2 z-50">
-                <!-- JS will inject results here -->
-            </div>
-            </div>
-
-            <!-- Other menu items -->
-            <ul class="space-y-1">
-            <li>
-                <a href="#" class="flex items-center gap-3 px-3 py-2 rounded-md text-white/90 hover:bg-white/5 transition">
-                <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M3 10a2 2 0 0 1 .709-1.528l7-6a2 2 0 0 1 2.582 0l7 6A2 2 0 0 1 21 10v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
-                </svg>
-                Home
-                </a>
-            </li>
-            <!-- Add other items here -->
-            </ul>
-        </div>
         </div>
     </nav>
 
-    <section class="pt-24 p-16 ">
-        <div class="flex flex-col justify-between items-center md:flex-row mb-4 w-full md:gap-10">
-            <div class="flex flex-col gap-2">
-                <div class="text-white font-[Poppins] text-2xl font-light gap-4 flex items-center text-center">Welcome,<span class="bg-gradient-to-r from-white to-purple-300 bg-clip-text text-transparent text-2xl sm:text-2xl md:text-3xl lg:text-4xl" id="usernameDisplay"></span> </div>
-
-                <div class="text-white/30 text-xl">Ready to vibe with music?</div>
-            </div>
-            <div class="flex flex-row gap-4 md:mt-0 mt-6">
-
-                <!-- TODO[X]: Add Functionality to this button -->
-                <!-- join room btn -->
-                <button class="open-join-room-modal text-white bg-purple-700/30 border-2 border-purple-900/50 hover:bg-purple-700/50 rounded-xl px-4 py-2 transition font-medium"># Join Code</button>
-
-                <!-- create room btn -->
-                <button class="open-create-room-modal text-white bg-gradient-to-br from-purple-700 to-pink-700 hover:bg-gradient-to-br hover:from-purple-800 hover:to-pink-800 rounded-xl px-4 py-2 transition font-medium">Create Room</button>
-            </div>
-        </div>
-
-        <div class="flex flex-row gap-3 mb-8 w-full">
-
-            <!-- Number of room joined -->
-            <div id="num-room-joined" class="p-3 px-6 rounded-xl bg-gradient-to-br from-purple-600/10 to-pink-600/10 border border-purple-500/20 w-1/3 hover:scale-105 transition-transform duration-300">
-
-                <p id="num-room-joined-count" class="text-white text-2xl">...</p>
-                <p class="text-slate-400 text-base">Rooms Joined</p>
-            </div>
-
-            <!-- Number of hours on the application -->
-            <div id="num-hours-on-app" class="p-3 px-6 rounded-xl bg-gradient-to-br from-blue-600/10 to-cyan-600/10 border border-blue-500/20 w-1/3 hover:scale-105 transition-transform duration-300">
-
-                <p id="num-hours-on-app-count" class="text-white text-2xl">...</p>
-                <p class="text-slate-400 text-base">Hours on App</p>
-            </div>
-
-            <!-- Top Genre -->
-            <div id="top-genre" class="p-3 px-6 rounded-xl bg-gradient-to-br from-green-600/10 to-emerald-600/10 border border-green-500/20 w-1/3 hover:scale-105 transition-transform duration-300">
-
-                <p id="top-genre-count" class="text-white text-2xl">Lo-Fi</p>
-                <p class="text-slate-400 text-base">Top Genre</p>
-            </div>
-
-        </div>
-
-        <!-- Live Hits  -->
-        <div class="relative p-8 lg:p-12 group">
-            <div class="grid lg:grid-cols-2 gap-8 items-center">
-
-                <!-- Left: Album Cover -->
-                <div class="flex justify-center lg:justify-start w-fit">
-                    <div class="relative group-hover:scale-105 transition-transform duration-500">
-                        <div class="absolute inset-0 bg-gradient-to-br from-purple-600 to-pink-600 blur-3xl opacity-50 group-hover:opacity-70 transition-opacity"></div>
-                        <div class="relative w-64 h-64 lg:w-80 lg:h-80 rounded-2xl overflow-hidden shadow-2xl border-4 border-white/10">
-                        <img src="https://images.unsplash.com/photo-1614149162883-504ce4d13909?w=800" alt="Now Playing Track"
-                            class="w-full h-full object-cover" />
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Right: Room Info -->
-                <div>
-                <!-- Live Badge -->
-                <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-red-600/20 border border-red-500/50 mb-4">
-                    <div class="w-2 h-2 rounded-full bg-red-500 animate-pulse"></div>
-                    <span class="text-red-400 text-sm uppercase tracking-wider">Featured • Live</span>
-                </div>
-
-                <h2 class="text-white text-4xl lg:text-5xl mb-3 group-hover:text-purple-400 transition-colors">
-                    Room Name Here
-                </h2>
-
-                <p class="text-slate-300 text-lg mb-6">
-                    Short description of the room goes here. Chill music & live vibes.
-                </p>
-
-                <div class="flex items-center gap-4 mb-6">
-                    <div class="flex items-center gap-2 text-purple-300">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-crown-icon lucide-crown"><path d="M11.562 3.266a.5.5 0 0 1 .876 0L15.39 8.87a1 1 0 0 0 1.516.294L21.183 5.5a.5.5 0 0 1 .798.519l-2.834 10.246a1 1 0 0 1-.956.734H5.81a1 1 0 0 1-.957-.734L2.02 6.02a.5.5 0 0 1 .798-.519l4.276 3.664a1 1 0 0 0 1.516-.294z"/><path d="M5 21h14"/></svg>
-                    <span>Host Name</span>
-                    </div>
-                    <div class="flex items-center gap-2 text-slate-300">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-users-icon lucide-users"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><path d="M16 3.128a4 4 0 0 1 0 7.744"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><circle cx="9" cy="7" r="4"/></svg>
-                    <span>listener count</span>
-                    </div>
-                </div>
-
-                <!-- Now Playing -->
-                <div class="p-4 rounded-2xl bg-white/5 backdrop-blur-sm border border-white/10 mb-6">
-                    <div class="flex items-center gap-3">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-music-icon lucide-music text-slate-700"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>
-                    <div class="flex-1 min-w-0">
-                        <div class="text-white truncate">Track Name Playing Now...</div>
-                        <div class="text-slate-400 text-sm truncate">Artist Name</div>
-                    </div>
-
-                    <!-- Live Animation -->
-                    <div class="flex items-center gap-1">
-                        <div class="w-1 h-1 rounded-full bg-green-500 animate-pulse"></div>
-                        <div class="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse delay-100"></div>
-                        <div class="w-2 h-2 rounded-full bg-green-500 animate-pulse delay-200"></div>
-                    </div>
-                    </div>
-                </div>
-
-                <!-- Active Listeners -->
-                <div class="flex items-center gap-4">
-                    <button class="open-join-room-modal px-4 py-2 rounded-xl bg-purple-600 hover:bg-purple-700 text-white flex items-center gap-2">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-headphones-icon lucide-headphones"><path d="M3 14h3a2 2 0 0 1 2 2v3a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-7a9 9 0 0 1 18 0v7a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3"/></svg>
-                        <span>Join Room</span>
-                    </button>
-                </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Start Listening to Some Tunes -->
-        <div class="flex flex-row">
-            <div class="mt-3 mb-3 flex gap-3 items-center text-white/80 text-3xl font-medium w-1/2">
-                <svg xmlns="http://www.w3.org/2000/svg" width="42" height="42" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-music-icon lucide-music text-purple-400"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>
-                <span class="font-[Poppins] font-medium text-white text-2xl">Start Listening</span>
-            </div>
-        </div>
-        <div id="song-container" class=" grid gap-4 mt-3
-            sm:grid-cols-2
-            md:grid-cols-3
-            lg:grid-cols-4
-        "></div>
-
-        <!-- Your Room -->
-        <div class="flex flex-row ">
-            <div class="mt-10 flex gap-3 items-center text-white/80 text-3xl font-medium w-1/2">
-                <svg xmlns="http://www.w3.org/2000/svg" width="42" height="42" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-radio-icon lucide-radio text-purple-400"><path d="M16.247 7.761a6 6 0 0 1 0 8.478"/><path d="M19.075 4.933a10 10 0 0 1 0 14.134"/><path d="M4.925 19.067a10 10 0 0 1 0-14.134"/><path d="M7.753 16.239a6 6 0 0 1 0-8.478"/><circle cx="12" cy="12" r="2"/></svg>
-                <span class="font-[Poppins] font-medium text-white text-2xl">Your rooms</span>
-            </div>
-        </div>
-        <!-- Your Room container -->
-        <div id="rooms-container" class="w-full grid grid-cols-4 gap-4 mt-6
-            sm:grid-cols-1
-            md:grid-cols-2
-            lg:grid-cols-3
-            xl:grid-cols-4
-        ">
-        </div>
-        <!-- Join Room -->
-        <div class="flex flex-row ">
-            <div class="mt-10 flex gap-3 items-center text-white/80 text-3xl font-medium w-1/2">
-                <svg xmlns="http://www.w3.org/2000/svg" width="42" height="42" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-audio-waveform-icon lucide-audio-waveform text-purple-400"><path d="M2 13a2 2 0 0 0 2-2V7a2 2 0 0 1 4 0v13a2 2 0 0 0 4 0V4a2 2 0 0 1 4 0v13a2 2 0 0 0 4 0v-4a2 2 0 0 1 2-2"/></svg>
-                <span class="font-[Poppins] font-medium text-white text-2xl">Joined rooms</span>
-            </div>
-        </div>
-        <!-- Your Room container -->
-        <div id="joined-rooms-container" class="w-full grid grid-cols-4 gap-4 mt-6 mb-12
-            sm:grid-cols-1
-            md:grid-cols-2
-            lg:grid-cols-3
-            xl:grid-cols-4
-        ">
-        </div>
 
 
-        <div class="flex flex-col md:flex-row gap-5">
 
-            <!-- Left side -->
-            <div class="flex flex-col w-full md:w-2/3">
-                <!-- Trending this week -->
-                <div class="flex flex-row mt-5 gap-3 items-center">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="45" height="45" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                        class="lucide lucide-trending-up-icon lucide-trending-up text-purple-400">
-                        <path d="M16 7h6v6" />
-                        <path d="m22 7-8.5 8.5-5-5L2 17" />
+    <div class="flex flex-row mt-16">
+
+        <aside class="fixed hidden top-16 left-0 w-1/6 h-[calc(100vh-4rem)] bg-black/30 border-b border-white/5 px-5 py-10 flex flex-col border-r lg:flex">
+            <nav class="mt-10 flex flex-col gap-4 font-medium text-xl ">
+                <!-- Home -->
+                <a href="#" class="text-white hover:text-white/70 transition bg-white/10 rounded-2xl px-10 py-3">Home</a>
+
+                <!-- Upload -->
+                <a href="#" class="text-white hover:bg-white/10 rounded-lg transition-all  px-10 py-3 flex flex-row gap-3 items-center">
+                    <span>Upload</span><div class="p-1 text-xs text-gray-400 border border-gray-400 rounded-md">PREVIEW</div>
+                </a>
+            </nav>
+            <h3 class="text-sm mt-8 text-gray-500 ml-10">COLLECTION</h3>
+            <nav class="flex flex-col gap-4 font-medium text-xl ">
+                <!-- Your Favorites -->
+                <a id="your-favorite" href="#" class="text-white hover:bg-white/10 transition rounded-2xl px-10 py-3 flex flex-row gap-3 items-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-heart-icon lucide-heart ">
+                        <path
+                            d="M2 9.5a5.5 5.5 0 0 1 9.591-3.676.56.56 0 0 0 .818 0A5.49 5.49 0 0 1 22 9.5c0 2.29-1.5 4-3 5.5l-5.492 5.313a2 2 0 0 1-3 .019L5 15c-1.5-1.5-3-3.2-3-5.5" />
                     </svg>
-                    <span class="text-white font-medium text-2xl ">Trending this week</span>
+                    <span>Favorites</span>
+                </a>
+
+                <!-- Listen Later -->
+                <a id="listen-later" href="#" class="text-white hover:bg-white/10 transition rounded-2xl px-10 py-3 flex flex-row gap-3 items-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-clock-icon lucide-clock">
+                        <circle cx="12" cy="12" r="10" />
+                        <path d="M12 6v6l4 2" />
+                    </svg>
+                    <span>Listen Later</span>
+                </a>
+            </nav>
+
+            <h3 class="text-sm mt-8 text-gray-500 ml-10">Rooms</h3>
+            <nav class="flex flex-col gap-4 font-medium text-xl ">
+                <!-- Your Rooms -->
+                <a id="your-rooms" href="#" class="text-white hover:bg-white/10 transition rounded-2xl px-10 py-3 flex flex-row gap-3 items-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-radio-icon lucide-radio">
+                        <path d="M16.247 7.761a6 6 0 0 1 0 8.478" />
+                        <path d="M19.075 4.933a10 10 0 0 1 0 14.134" />
+                        <path d="M4.925 19.067a10 10 0 0 1 0-14.134" />
+                        <path d="M7.753 16.239a6 6 0 0 1 0-8.478" />
+                        <circle cx="12" cy="12" r="2" />
+                    </svg>
+                    <span>Your Rooms</span>
+                </a>
+
+                <!-- Join Room -->
+                <a id="join-room" href="#" class="text-white hover:bg-white/10 transition rounded-2xl px-10 py-3 flex flex-row gap-3 items-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-headphones-icon lucide-headphones">
+                        <path d="M3 14h3a2 2 0 0 1 2 2v3a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-7a9 9 0 0 1 18 0v7a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3" />
+                    </svg>
+                    <span>Join Room</span>
+                </a>
+            </nav>
+        </aside>
+
+        <section class="ml-0 pt-24 p-16  flex-1 lg:ml-[16.6667%] ">
+            <div class="flex flex-col justify-between items-center md:flex-row mb-4 w-full md:gap-10">
+                <div class="flex flex-col gap-2">
+                    <div class="text-white font-[Poppins] text-2xl font-light gap-4 flex items-center text-center">Welcome,<span class="bg-gradient-to-r from-white to-purple-300 bg-clip-text text-transparent text-2xl sm:text-2xl md:text-3xl lg:text-4xl" id="usernameDisplay"></span> </div>
+
+                    <div class="text-white/30 text-xl">Ready to vibe with music?</div>
                 </div>
-                <!-- Trending Music -->
-                <div id="trendingMusic" class="grid grid-cols-1 lg:grid-cols-2 w-full gap-4 mt-4">
+                <div class="flex flex-row gap-4 md:mt-0 mt-6">
+
+                    <!-- TODO[X]: Add Functionality to this button -->
+                    <!-- join room btn -->
+                    <button class="open-join-room-modal text-white bg-purple-700/30 border-2 border-purple-900/50 hover:bg-purple-700/50 rounded-xl px-4 py-2 transition font-medium"># Join Code</button>
+
+                    <!-- create room btn -->
+                    <button class="open-create-room-modal text-white bg-gradient-to-br from-purple-700 to-pink-700 hover:bg-gradient-to-br hover:from-purple-800 hover:to-pink-800 rounded-xl px-4 py-2 transition font-medium">Create Room</button>
+                </div>
+            </div>
+
+            <div class="flex flex-row gap-3 mb-8 w-full">
+
+                <!-- Number of room joined -->
+                <div id="num-room-joined" class="p-3 px-6 rounded-xl bg-gradient-to-br from-purple-600/10 to-pink-600/10 border border-purple-500/20 w-1/3 hover:scale-105 transition-transform duration-300">
+
+                    <p id="joined-room-count" class="text-white text-2xl">...</p>
+                    <p class="text-slate-400 text-base">Rooms Joined</p>
                 </div>
 
+                <!-- Number of hours on the application -->
+                <div id="num-hours-on-app" class="p-3 px-6 rounded-xl bg-gradient-to-br from-blue-600/10 to-cyan-600/10 border border-blue-500/20 w-1/3 hover:scale-105 transition-transform duration-300">
 
-                <!-- Content centre -->
-                <div class="flex flex-row mt-5 justify-between items-center">
-                    <div class="flex flex-row gap-3 items-center">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="45" height="45" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-library-icon lucide-library text-purple-400"><path d="m16 6 4 14"/><path d="M12 6v14"/><path d="M8 8v12"/><path d="M4 4v16"/></svg>
-                        <span class="text-white font-medium text-2xl ">Your Library</span>
+                    <p id="num-hours-on-app-count" class="text-white text-2xl">...</p>
+                    <p class="text-slate-400 text-base">Hours on App</p>
+                </div>
+
+                <!-- Top Genre -->
+                <div id="top-genre" class="p-3 px-6 rounded-xl bg-gradient-to-br from-green-600/10 to-emerald-600/10 border border-green-500/20 w-1/3 hover:scale-105 transition-transform duration-300">
+
+                    <p id="top-genre-count" class="text-white text-2xl">Lo-Fi</p>
+                    <p class="text-slate-400 text-base">Top Genre</p>
+                </div>
+
+            </div>
+
+            <!-- Live Hits  -->
+            <div class="relative p-8 lg:p-12 group">
+                <div class="grid lg:grid-cols-2 gap-8 items-center">
+
+                    <!-- Left: Album Cover -->
+                    <div class="flex justify-center lg:justify-start w-fit">
+                        <div class="relative group-hover:scale-105 transition-transform duration-500">
+                            <div class="absolute inset-0 bg-gradient-to-br from-purple-600 to-pink-600 blur-3xl opacity-50 group-hover:opacity-70 transition-opacity"></div>
+                            <div class="relative w-64 h-64 lg:w-80 lg:h-80 rounded-2xl overflow-hidden shadow-2xl border-4 border-white/10">
+                            <img src="https://images.unsplash.com/photo-1614149162883-504ce4d13909?w=800" alt="Now Playing Track"
+                                class="w-full h-full object-cover" />
+                            </div>
+                        </div>
                     </div>
-                    <div class="flex flex-row justify-evenly gap-5">
-                        <!-- Show Playlist -->
-                        <button id="show-playlist" class="flex flex-row justify-between gap-4 py-3 px-4 bg-purple-600 rounded-xl hover:bg-purple-700 transition-colors duration-300 font-medium">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-list-music-icon lucide-list-music text-white"><path d="M16 5H3"/><path d="M11 12H3"/><path d="M11 19H3"/><path d="M21 16V5"/><circle cx="18" cy="16" r="3"/></svg>
-                            <span class="text-white">Playlists</span>
-                        </button>
 
-                        <!-- Show liked -->
-                        <button id="show-liked" class="flex flex-row justify-between text-slate-400 gap-4 py-3 px-4 rounded-xl hover:bg-slate-400 hover:text-white transition-colors duration-300 font-medium">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-heart-icon lucide-heart "><path d="M2 9.5a5.5 5.5 0 0 1 9.591-3.676.56.56 0 0 0 .818 0A5.49 5.49 0 0 1 22 9.5c0 2.29-1.5 4-3 5.5l-5.492 5.313a2 2 0 0 1-3 .019L5 15c-1.5-1.5-3-3.2-3-5.5"/></svg>
-                            <span class="">Liked</span>
+                    <!-- Right: Room Info -->
+                    <div>
+                    <!-- Live Badge -->
+                    <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-red-600/20 border border-red-500/50 mb-4">
+                        <div class="w-2 h-2 rounded-full bg-red-500 animate-pulse"></div>
+                        <span class="text-red-400 text-sm uppercase tracking-wider">Featured • Live</span>
+                    </div>
+
+                    <h2 class="text-white text-4xl lg:text-5xl mb-3 group-hover:text-purple-400 transition-colors">
+                        Room Name Here
+                    </h2>
+
+                    <p class="text-slate-300 text-lg mb-6">
+                        Short description of the room goes here. Chill music & live vibes.
+                    </p>
+
+                    <div class="flex items-center gap-4 mb-6">
+                        <div class="flex items-center gap-2 text-purple-300">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-crown-icon lucide-crown"><path d="M11.562 3.266a.5.5 0 0 1 .876 0L15.39 8.87a1 1 0 0 0 1.516.294L21.183 5.5a.5.5 0 0 1 .798.519l-2.834 10.246a1 1 0 0 1-.956.734H5.81a1 1 0 0 1-.957-.734L2.02 6.02a.5.5 0 0 1 .798-.519l4.276 3.664a1 1 0 0 0 1.516-.294z"/><path d="M5 21h14"/></svg>
+                        <span>Host Name</span>
+                        </div>
+                        <div class="flex items-center gap-2 text-slate-300">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-users-icon lucide-users"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><path d="M16 3.128a4 4 0 0 1 0 7.744"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><circle cx="9" cy="7" r="4"/></svg>
+                        <span>listener count</span>
+                        </div>
+                    </div>
+
+                    <!-- Now Playing -->
+                    <div class="p-4 rounded-2xl bg-white/5 backdrop-blur-sm border border-white/10 mb-6">
+                        <div class="flex items-center gap-3">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-music-icon lucide-music text-slate-700"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>
+                        <div class="flex-1 min-w-0">
+                            <div class="text-white truncate">Track Name Playing Now...</div>
+                            <div class="text-slate-400 text-sm truncate">Artist Name</div>
+                        </div>
+
+                        <!-- Live Animation -->
+                        <div class="flex items-center gap-1">
+                            <div class="w-1 h-1 rounded-full bg-green-500 animate-pulse"></div>
+                            <div class="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse delay-100"></div>
+                            <div class="w-2 h-2 rounded-full bg-green-500 animate-pulse delay-200"></div>
+                        </div>
+                        </div>
+                    </div>
+
+                    <!-- Active Listeners -->
+                    <div class="flex items-center gap-4">
+                        <button class="open-join-room-modal px-4 py-2 rounded-xl bg-purple-600 hover:bg-purple-700 text-white flex items-center gap-2">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-headphones-icon lucide-headphones"><path d="M3 14h3a2 2 0 0 1 2 2v3a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-7a9 9 0 0 1 18 0v7a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3"/></svg>
+                            <span>Join Now!</span>
                         </button>
                     </div>
-                </div>
-
-                <!-- playlist container -->
-                <div id="playlist-container" class="grid grid-cols-1 lg:grid-cols-3 p-7">
-                    <div id="create-playlist-btn" class="group size-60 cursor-pointer p-7 rounded-2xl bg-gradient-to-br from-slate-800/30 to-slate-900/30 border-2 border-dashed border-slate-700 hover:border-purple-500/50 transition-all duration-300 flex flex-col items-center justify-center aspect-square gap-5">
-                        <div class="text-purple-400 rounded-full size-16 flex justify-center items-center text-5xl bg-purple-600/20">+</div>
-                        <p class="text-white text-2xl">Create Playlist</p>
                     </div>
                 </div>
             </div>
 
-            <!-- right side -->
-            <div class="flex flex-col w-full md:w-1/3">
-                <!-- popular host -->
-                <div class="flex flex-row gap-3 mt-5 items-center">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-crown-icon lucide-crown text-yellow-400"><path d="M11.562 3.266a.5.5 0 0 1 .876 0L15.39 8.87a1 1 0 0 0 1.516.294L21.183 5.5a.5.5 0 0 1 .798.519l-2.834 10.246a1 1 0 0 1-.956.734H5.81a1 1 0 0 1-.957-.734L2.02 6.02a.5.5 0 0 1 .798-.519l4.276 3.664a1 1 0 0 0 1.516-.294z"/><path d="M5 21h14"/></svg>
-                    <span class="text-white font-normal text-2xl">
-                        Popular hosts
-                    </span>
+            <!-- Start Listening to Some Tunes -->
+            <div class="flex flex-row">
+                <div class="mt-3 mb-3 flex gap-3 items-center text-white/80 text-3xl font-medium w-1/2">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="42" height="42" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-music-icon lucide-music text-purple-400"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>
+                    <span class="font-[Poppins] font-medium text-white text-2xl">Start Listening</span>
                 </div>
-                <div id="popular-host-container" class="grid grid-cols-1 w-full mt-5 p-3 gap-5">
-                    <div class="flex flex-row justify-between">
-                        <div class="flex flex-row gap-3">
-                            <div class="bg-slate-500 rounded-full p-3">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-user-icon lucide-user text-white"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-                            </div>
-                            <div class="flex flex-col gap-1">
-                                <h1 class="text-white text-xl">PersonName</h1>
-                                <p class="text-slate-500 text-sm">follower-count</p>
-                            </div>
-                        </div>
-                        <div class="flex justify-center items-center">
-                            <button class="text-purple-700 text-lg hover:text-purple-800">Follow</button>
-                        </div>
-                    </div>
-                    <div class="flex flex-row justify-between">
-                        <div class="flex flex-row gap-3">
-                            <div class="bg-slate-500 rounded-full p-3">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-user-icon lucide-user text-white"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-                            </div>
-                            <div class="flex flex-col gap-1">
-                                <h1 class="text-white text-xl">PersonName</h1>
-                                <p class="text-slate-500 text-sm">follower-count</p>
-                            </div>
-                        </div>
-                        <div class="flex justify-center items-center">
-                            <button class="text-purple-700 text-lg hover:text-purple-800">Follow</button>
-                        </div>
-                    </div>
-                    <div class="flex flex-row justify-between">
-                        <div class="flex flex-row gap-3">
-                            <div class="bg-slate-500 rounded-full p-3">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-user-icon lucide-user text-white"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-                            </div>
-                            <div class="flex flex-col gap-1">
-                                <h1 class="text-white text-xl">PersonName</h1>
-                                <p class="text-slate-500 text-sm">follower-count</p>
-                            </div>
-                        </div>
-                        <div class="flex justify-center items-center">
-                            <button class="text-purple-700 text-lg hover:text-purple-800">Follow</button>
-                        </div>
-                    </div>
-                    <div class="flex flex-row justify-between">
-                        <div class="flex flex-row gap-3">
-                            <div class="bg-slate-500 rounded-full p-3">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-user-icon lucide-user text-white"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-                            </div>
-                            <div class="flex flex-col gap-1">
-                                <h1 class="text-white text-xl">PersonName</h1>
-                                <p class="text-slate-500 text-sm">follower-count</p>
-                            </div>
-                        </div>
-                        <div class="flex justify-center items-center">
-                            <button class="text-purple-700 text-lg hover:text-purple-800">Follow</button>
-                        </div>
-                    </div>
-                    <div class="flex flex-row justify-between">
-                        <div class="flex flex-row gap-3">
-                            <div class="bg-slate-500 rounded-full p-3">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-user-icon lucide-user text-white"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-                            </div>
-                            <div class="flex flex-col gap-1">
-                                <h1 class="text-white text-xl">PersonName</h1>
-                                <p class="text-slate-500 text-sm">follower-count</p>
-                            </div>
-                        </div>
-                        <div class="flex justify-center items-center">
-                            <button class="text-purple-700 text-lg hover:text-purple-800">Follow</button>
-                        </div>
-                    </div>
+            </div>
+            <div id="song-container" class=" grid gap-4 mt-3
+                sm:grid-cols-2
+                md:grid-cols-3
+                lg:grid-cols-4
+            "></div>
+
+            <!-- Your Room -->
+            <div class="flex flex-row ">
+                <div class="mt-10 flex gap-3 items-center text-white/80 text-3xl font-medium w-1/2">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="42" height="42" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-radio-icon lucide-radio text-purple-400"><path d="M16.247 7.761a6 6 0 0 1 0 8.478"/><path d="M19.075 4.933a10 10 0 0 1 0 14.134"/><path d="M4.925 19.067a10 10 0 0 1 0-14.134"/><path d="M7.753 16.239a6 6 0 0 1 0-8.478"/><circle cx="12" cy="12" r="2"/></svg>
+                    <span class="font-[Poppins] font-medium text-white text-2xl">Your rooms</span>
                 </div>
+            </div>
+            <!-- Your Room container -->
+            <div id="rooms-container" class="w-full grid grid-cols-4 gap-4 mt-6
+                sm:grid-cols-1
+                md:grid-cols-2
+                lg:grid-cols-3
+                xl:grid-cols-4
+            ">
+            </div>
+            <!-- Join Room -->
+            <div class="flex flex-row justify-between items-center mt-10">
+                <div class="mt-10 flex gap-3 items-center text-white/80 text-3xl font-medium ">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="42" height="42" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-audio-waveform-icon lucide-audio-waveform text-purple-400"><path d="M2 13a2 2 0 0 0 2-2V7a2 2 0 0 1 4 0v13a2 2 0 0 0 4 0V4a2 2 0 0 1 4 0v13a2 2 0 0 0 4 0v-4a2 2 0 0 1 2-2"/></svg>
+                    <span class="font-[Poppins] font-medium text-white text-2xl">Joined Room</span>
+                </div>
+
+                <button class="open-join-room-modal
+                    text-white bg-purple-700/30
+                    border-2 border-purple-900/50
+                    hover:bg-purple-700/50
+                    rounded-xl
+                    px-4 py-3
+                    font-medium transition">
+                    # Join Code
+                </button>
 
             </div>
-        </div>
+            <!-- Your Room container -->
+            <div id="joined-rooms-container" class="w-full grid grid-cols-4 gap-4 mt-6 mb-12
+                sm:grid-cols-1
+                md:grid-cols-2
+                lg:grid-cols-3
+                xl:grid-cols-4
+            ">
+            </div>
 
 
-    </section>
+            <div class="flex flex-col md:flex-row gap-5">
+
+                <!-- Left side -->
+                <div class="flex flex-col w-full md:w-2/3">
+                    <!-- Trending this week -->
+                    <div class="flex flex-row mt-5 gap-3 items-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="45" height="45" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                            class="lucide lucide-trending-up-icon lucide-trending-up text-purple-400">
+                            <path d="M16 7h6v6" />
+                            <path d="m22 7-8.5 8.5-5-5L2 17" />
+                        </svg>
+                        <span class="text-white font-medium text-2xl ">Trending this week</span>
+                    </div>
+                    <!-- Trending Music -->
+                    <div id="trendingMusic" class="grid grid-cols-1 lg:grid-cols-2 w-full gap-4 mt-4">
+                    </div>
+
+
+                    <!-- Content centre -->
+                    <div class="flex flex-row mt-5 justify-between items-center">
+                        <div class="flex flex-row gap-3 items-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="45" height="45" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-library-icon lucide-library text-purple-400"><path d="m16 6 4 14"/><path d="M12 6v14"/><path d="M8 8v12"/><path d="M4 4v16"/></svg>
+                            <span class="text-white font-medium text-2xl ">Your Library</span>
+                        </div>
+                        <div class="flex flex-row justify-evenly gap-5">
+                            <!-- Show Playlist -->
+                            <button id="show-playlist" class="flex flex-row justify-between gap-4 py-3 px-4 bg-purple-600 rounded-xl hover:bg-purple-700 transition-colors duration-300 font-medium">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-list-music-icon lucide-list-music text-white"><path d="M16 5H3"/><path d="M11 12H3"/><path d="M11 19H3"/><path d="M21 16V5"/><circle cx="18" cy="16" r="3"/></svg>
+                                <span class="text-white">Playlists</span>
+                            </button>
+
+                            <!-- Show liked -->
+                            <button id="show-liked" class="flex flex-row justify-between text-slate-400 gap-4 py-3 px-4 rounded-xl hover:bg-slate-400 hover:text-white transition-colors duration-300 font-medium">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-heart-icon lucide-heart "><path d="M2 9.5a5.5 5.5 0 0 1 9.591-3.676.56.56 0 0 0 .818 0A5.49 5.49 0 0 1 22 9.5c0 2.29-1.5 4-3 5.5l-5.492 5.313a2 2 0 0 1-3 .019L5 15c-1.5-1.5-3-3.2-3-5.5"/></svg>
+                                <span class="">Liked</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- playlist container -->
+                    <div id="playlist-container" class="grid grid-cols-1 lg:grid-cols-3 p-7">
+                        <div id="create-playlist-btn" class="group size-60 cursor-pointer p-7 rounded-2xl bg-gradient-to-br from-slate-800/30 to-slate-900/30 border-2 border-dashed border-slate-700 hover:border-purple-500/50 transition-all duration-300 flex flex-col items-center justify-center aspect-square gap-5">
+                            <div class="text-purple-400 rounded-full size-16 flex justify-center items-center text-5xl bg-purple-600/20">+</div>
+                            <p class="text-white text-2xl">Create Playlist</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- right side -->
+                <div class="flex flex-col w-full md:w-1/3">
+                    <!-- popular host -->
+                    <div class="flex flex-row gap-3 mt-5 items-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-crown-icon lucide-crown text-yellow-400"><path d="M11.562 3.266a.5.5 0 0 1 .876 0L15.39 8.87a1 1 0 0 0 1.516.294L21.183 5.5a.5.5 0 0 1 .798.519l-2.834 10.246a1 1 0 0 1-.956.734H5.81a1 1 0 0 1-.957-.734L2.02 6.02a.5.5 0 0 1 .798-.519l4.276 3.664a1 1 0 0 0 1.516-.294z"/><path d="M5 21h14"/></svg>
+                        <span class="text-white font-normal text-2xl">
+                            Popular hosts
+                        </span>
+                    </div>
+                    <div id="popular-host-container" class="grid grid-cols-1 w-full mt-5 p-3 gap-5">
+                        <div class="flex flex-row justify-between">
+                            <div class="flex flex-row gap-3">
+                                <div class="bg-slate-500 rounded-full p-3">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-user-icon lucide-user text-white"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                                </div>
+                                <div class="flex flex-col gap-1">
+                                    <h1 class="text-white text-xl">PersonName</h1>
+                                    <p class="text-slate-500 text-sm">follower-count</p>
+                                </div>
+                            </div>
+                            <div class="flex justify-center items-center">
+                                <button class="text-purple-700 text-lg hover:text-purple-800">Follow</button>
+                            </div>
+                        </div>
+                        <div class="flex flex-row justify-between">
+                            <div class="flex flex-row gap-3">
+                                <div class="bg-slate-500 rounded-full p-3">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-user-icon lucide-user text-white"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                                </div>
+                                <div class="flex flex-col gap-1">
+                                    <h1 class="text-white text-xl">PersonName</h1>
+                                    <p class="text-slate-500 text-sm">follower-count</p>
+                                </div>
+                            </div>
+                            <div class="flex justify-center items-center">
+                                <button class="text-purple-700 text-lg hover:text-purple-800">Follow</button>
+                            </div>
+                        </div>
+                        <div class="flex flex-row justify-between">
+                            <div class="flex flex-row gap-3">
+                                <div class="bg-slate-500 rounded-full p-3">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-user-icon lucide-user text-white"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                                </div>
+                                <div class="flex flex-col gap-1">
+                                    <h1 class="text-white text-xl">PersonName</h1>
+                                    <p class="text-slate-500 text-sm">follower-count</p>
+                                </div>
+                            </div>
+                            <div class="flex justify-center items-center">
+                                <button class="text-purple-700 text-lg hover:text-purple-800">Follow</button>
+                            </div>
+                        </div>
+                        <div class="flex flex-row justify-between">
+                            <div class="flex flex-row gap-3">
+                                <div class="bg-slate-500 rounded-full p-3">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-user-icon lucide-user text-white"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                                </div>
+                                <div class="flex flex-col gap-1">
+                                    <h1 class="text-white text-xl">PersonName</h1>
+                                    <p class="text-slate-500 text-sm">follower-count</p>
+                                </div>
+                            </div>
+                            <div class="flex justify-center items-center">
+                                <button class="text-purple-700 text-lg hover:text-purple-800">Follow</button>
+                            </div>
+                        </div>
+                        <div class="flex flex-row justify-between">
+                            <div class="flex flex-row gap-3">
+                                <div class="bg-slate-500 rounded-full p-3">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-user-icon lucide-user text-white"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                                </div>
+                                <div class="flex flex-col gap-1">
+                                    <h1 class="text-white text-xl">PersonName</h1>
+                                    <p class="text-slate-500 text-sm">follower-count</p>
+                                </div>
+                            </div>
+                            <div class="flex justify-center items-center">
+                                <button class="text-purple-700 text-lg hover:text-purple-800">Follow</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Upcoming Event -->
+                    <div class="flex flex-row gap-3 mt-5 mb-5 items-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-calendar-icon lucide-calendar text-blue-400">
+                            <path d="M8 2v4" />
+                            <path d="M16 2v4" />
+                            <rect width="18" height="18" x="3" y="4" rx="2" />
+                            <path d="M3 10h18" />
+                        </svg>
+                        <span class="text-white font-normal text-2xl">
+                            Upcoming
+                        </span>
+                    </div>
+                    <div class="flex flex-col gap-3">
+                        <div class="p-3 rounded-lg bg-gradient-to-br from-slate-800/30 to-slate-900/30 border border-white/10 flex flex-row">
+                            <div class="flex flex-col gap-3">
+                                <img src="https://i.pinimg.com/1200x/ae/a6/5a/aea65a7613c40fe1a560bffaeaacbe25.jpg" alt="" class="object-cover w-16 rounded-2xl h-16">
+
+                                <p class="text-sm text-blue-400">Time / Date</p>
+                            </div>
+                            <div class="flex flex-col">
+                                <h1 class="text-white text-sm mb-0.5">Event Titles</h1>
+                                <p class="text-xs text-slate-400 truncate">Event Host</p>
+                            </div>
+                        </div>
+
+                        <div class="p-3 rounded-lg bg-gradient-to-br from-slate-800/30 to-slate-900/30 border border-white/10 flex flex-row">
+                            <div class="flex flex-col gap-3">
+                                <img src="https://i.pinimg.com/736x/fa/b8/85/fab88507e51bbe732a71a0032928ac69.jpg" alt="" class="object-cover w-16 rounded-2xl h-16">
+
+                                <p class="text-sm text-blue-400">Time / Date</p>
+                            </div>
+                            <div class="flex flex-col">
+                                <h1 class="text-white text-sm mb-0.5">Event Titles</h1>
+                                <p class="text-xs text-slate-400 truncate">Event Host</p>
+                            </div>
+                        </div>
+
+                        <div class="p-3 rounded-lg bg-gradient-to-br from-slate-800/30 to-slate-900/30 border border-white/10 flex flex-row">
+                            <div class="flex flex-col gap-3">
+                                <img src="https://i.pinimg.com/736x/dd/c0/e2/ddc0e21aee890466270fcf3206f2ad0b.jpg" alt="" class="object-cover w-16 rounded-2xl h-16">
+
+                                <p class="text-sm text-blue-400">Time / Date</p>
+                            </div>
+                            <div class="flex flex-col">
+                                <h1 class="text-white text-sm mb-0.5">Event Titles</h1>
+                                <p class="text-xs text-slate-400 truncate">Event Host</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+        </section>
+    </div>
 
     <!-- Player - Bar -->
     <div id="player-bar"

@@ -95,7 +95,7 @@ async function createRoom() {
         password: password || null
     };
 
-    console.log("Sending body:", body);  // <--- see what you send
+    console.log("Sending body:", body);
 
     try {
         const res = await fetch(`${BACKEND_URL}api/v1/rooms/create`, {
@@ -108,7 +108,7 @@ async function createRoom() {
         });
 
         const data = await res.json();
-        console.log("Response from backend:", data);  // <--- see real error
+        console.log("Response from backend:", data);
 
         if (!res.ok) {
             alert(data.message || JSON.stringify(data));
@@ -236,15 +236,15 @@ function createRoomCard(room) {
 const joinRoomOverlay = document.getElementById('join_room_overlay');
 const joinRoomModal = document.getElementById('joinRoomModal')
 
-const showJoinModal = document.querySelector('.open-join-room-modal')
 const hideJoinModal = document.getElementById('close-join-room')
 
 // SHOW
-showJoinModal.addEventListener('click', () => {
-    joinRoomModal.classList.remove('hidden')
-    joinRoomOverlay.classList.remove('hidden')
-})
-
+document.querySelectorAll('.open-join-room-modal').forEach(btn => {
+    btn.addEventListener('click', () => {
+        joinRoomModal.classList.remove('hidden')
+        joinRoomOverlay.classList.remove('hidden')
+    });
+});
 // HIDE
 hideJoinModal.addEventListener('click', () => {
     joinRoomModal.classList.add('hidden')
@@ -254,7 +254,7 @@ hideJoinModal.addEventListener('click', () => {
 const joinRoomInput = document.getElementById('join-room-input')
 const joinRoomSubmit = document.getElementById('join-room-submit')
 
-// TODO[]: Implement room to actually be fetchable with code
+// TODO[X]: Implement room to actually be fetchable with code
 
 // check every time user types
 joinRoomInput.addEventListener('input', () => {
@@ -367,5 +367,33 @@ export async function loadRooms() {
         });
     } catch (err) {
         console.error("Error loading rooms:", err);
+    }
+}
+
+// ------------------ Header Info ------------------
+const joinedRoomCountSpan = document.getElementById('joined-room-count');
+
+export async function loadHeaderInfo() {
+    const token = localStorage.getItem('accessToken');
+    if (!token) return console.error("No access token found");
+
+    try {
+        const res = await fetch(`${BACKEND_URL}api/v1/rooms/get_joined_room_count`, {
+            method: 'GET',
+            headers: {
+                'Authorization': `Bearer ${token}`,
+                'Content-Type': 'application/json'
+            }
+        });
+
+        const data = await res.json();
+        if (!res.ok) {
+            console.error("Failed to load joined room count");
+            return;
+        }
+
+        joinedRoomCountSpan.textContent = data.joined_room_count;
+    } catch (err) {
+        console.error("Error loading joined room count:", err);
     }
 }
