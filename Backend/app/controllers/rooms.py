@@ -2,9 +2,9 @@ from flask import request
 from flask_smorest import Blueprint, abort
 from flask_jwt_extended import jwt_required, get_jwt_identity, create_access_token, get_jwt,  verify_jwt_in_request
 
-from ..services.room_state import get_room_state, add_song, play, pause, leave, join, rooms_state
+from ..services.room_state import _init_room, delete_room_state, add_to_queue, set_current_song
 from ..schemas.room_schemas import CreateRoomSchema, EditRoomSchema
-from ..models.models import Room, db, User
+from ..models.models import Music, Room, db, User
 
 rooms_blp = Blueprint("Rooms", __name__, url_prefix="/api/v1/rooms")
 
@@ -41,15 +41,11 @@ def create_room(room_data):
         if not password:
             return {"message": "Password is required for private rooms."}, 400
         room.password = password
+
     db.session.add(room)
     db.session.commit()
 
-    rooms_state[room.id] = {
-        'queue': [],
-        'current_song': None,
-        'is_playing': False,
-        'listeners': 0
-    }
+    _init_room(room.id)
 
     return {"message": "Room created successfully.", "room_id": room.id}, 201
 
@@ -66,7 +62,7 @@ def delete_room(room_id):
     db.session.delete(room)
     db.session.commit()
 
-    rooms_state.pop(room_id, None)
+    delete_room_state(room_id)
 
     return {"message": "Room deleted successfully."}, 200
 
@@ -242,60 +238,51 @@ def get_owned_room_count():
     room_count = Room.query.filter_by(owner_id=user_id).count()
     return {"owned_room_count": room_count}, 200
 
-@rooms_blp.route('/state/get_all_room_state', methods=['GET'])
-def get_all_room_state():
-    return rooms_state, 200
-
-# Get live room state
-@rooms_blp.route('/state/<int:room_id>', methods=['GET'])
-@jwt_required()
-def get_live_state(room_id):
-    state = get_room_state(room_id)
-    if not state:
-        return {"message": "Room not found"}, 404
-    return {"room_state": state}, 200
-
-
-# Add a song
-@rooms_blp.route('/state/<int:room_id>/add_song', methods=['POST'])
-@jwt_required()
-def add_song_route(room_id):
-    data = request.get_json()
-    song = data.get("song")
-    room_state = add_song(room_id, song)
-    return room_state, 200
-
-
-# Play / Pause
-@rooms_blp.route('/state/<int:room_id>/play', methods=['POST'])
-@jwt_required()
-def play_route(room_id):
-    room_state = play(room_id)
-    return room_state, 200
-
-
-@rooms_blp.route('/state/<int:room_id>/pause', methods=['POST'])
-@jwt_required()
-def pause_route(room_id):
-    room_state = pause(room_id)
-    return room_state, 200
-
-
-# Join / Leave
-@rooms_blp.route('/state/<int:room_id>/join', methods=['POST'])
-@jwt_required()
-def join_route(room_id):
-    room_state = join(room_id)
-    return room_state, 200
-
-
-@rooms_blp.route('/state/<int:room_id>/leave', methods=['POST'])
-@jwt_required()
-def leave_route(room_id):
-    room_state = leave(room_id)
-    return room_state, 200
-
 @rooms_blp.route('/get_room_private_status/<int:room_id>', methods=['GET'])
 def get_room_private_status(room_id):
     room = Room.query.get_or_404(room_id)
     return {"is_private": room.is_private}, 200
+
+# -------------------- Room Routes --------------------
+
+# get room state
+@rooms_blp.route('/get_room_state/<int:room_id>', methods=['GET'])
+@jwt_required()
+def get_room_state_route(room_id):
+    require_room_access(room_id)
+    state = _init_room(room_id)
+    return {"room_state": state}, 200
+
+# Add to queue route
+@rooms_blp.route('/addToQueue/<int:room_id>/<int:song_id>', methods=['POST'])
+@jwt_required()
+def add_to_queue_route(room_id, song_id):
+    require_room_access(room_id)
+    song = Music.query.get_or_404(song_id)
+    add_to_queue(room_id, song_id)
+    return {"message": "Song added to queue successfully."}, 200
+
+# get room queue route
+@rooms_blp.route('/get_room_queue/<int:room_id>', methods=['GET'])
+@jwt_required()
+def get_room_queue_route(room_id):
+    require_room_access(room_id)
+    state = _init_room(room_id)
+    return {"queue": state["queue"]}, 200
+
+# set current song route
+@rooms_blp.route('/set_current_song/<int:room_id>/<int:song_id>', methods=['GET'])
+@jwt_required()
+def set_current_song_route(room_id, song_id):
+    require_room_access(room_id)
+
+    set_current_song(room_id, song_id)
+    return {"message": "Current song set successfully."}, 200
+
+# get current song route
+@rooms_blp.route('/get_current_song/<int:room_id>', methods=['GET'])
+@jwt_required()
+def get_current_song_route(room_id):
+    require_room_access(room_id)
+    state = _init_room(room_id)
+    return {"current_song": state["current_song"]}, 200

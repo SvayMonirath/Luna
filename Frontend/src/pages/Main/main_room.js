@@ -356,7 +356,7 @@ export async function loadRooms() {
         }
 
         if (!data.rooms || data.rooms.length === 0) {
-            roomsContainer.innerHTML = '<p class="text-white font-medium">No rooms available.</p>';
+            roomsContainer.innerHTML = '<p class="text-gray-400 text-xl font-medium">No rooms available.</p>';
             return;
         }
 

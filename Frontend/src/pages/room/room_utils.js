@@ -164,11 +164,219 @@ chatBtn.addEventListener('click', () => {
     underline.style.left = '50%';
 });
 
+// TODO[X]: Implement search for song in queue
+const roomSearchInput = document.getElementById("search-input");
+const roomSearchResults = document.getElementById("search-results-container");
+const addToQueueBtn = document.getElementById("add-to-queue-btn");
+addToQueueBtn?.addEventListener('click', () => {
+    roomSearchInput.value = "";
+    roomSearchResults.innerHTML = "";
+    const searchBarContainer = document.getElementById("search-bar-container");
+    if(searchBarContainer.classList.contains("hidden")) {
+        searchBarContainer.classList.remove("hidden");
+        roomSearchInput.classList.remove('hidden');
+    } else {
+        searchBarContainer.classList.add("hidden");
+        roomSearchInput.classList.add('hidden');
+    }
+});
+
+const STATIC_URL = 'http://localhost:5001';
+
+// Format audio duration
+function formatTime(duration) {
+    const mins = Math.floor(duration / 60);
+    const secs = Math.floor(duration % 60);
+    return `${mins}:${secs.toString().padStart(2, '0')}`;
+}
+
+// Display search results
+function displayRoomSearchResults(songs) {
+    roomSearchResults.innerHTML = '';
+
+    if (!songs || songs.length === 0) {
+        roomSearchResults.innerHTML = `<div class="text-white/70">No songs found.</div>`;
+        return;
+    }
+
+    songs.forEach(song => {
+        const div = document.createElement('div');
+        div.className = `
+            music-container relative flex items-center gap-3 p-2 bg-white/10 backdrop-blur-lg rounded-xl cursor-pointer
+            hover:bg-white/20 transition duration-300 group
+        `;
+
+        div.innerHTML = `
+            <img src="${STATIC_URL}${song.cover_image_path}" alt="Cover"
+                 style="width:50px;height:50px;object-fit:cover;"
+                 class="rounded-md transition duration-300 group-hover:blur-sm group-hover:brightness-50"/>
+            <div class="flex-1 text-white overflow-hidden">
+                <div class="font-medium text-sm truncate">${song.title}</div>
+                <div class="font-light text-xs truncate">${song.artist}</div>
+            </div>
+            <div class="text-white font-light text-xs duration-display group-hover:blur-sm group-hover:opacity-50"></div>
+        `;
+
+        // Load audio to get duration
+        const audioTemp = new Audio(`${STATIC_URL}${song.audio_file_path}`);
+        const durationEl = div.querySelector('.duration-display');
+        audioTemp.addEventListener('loadedmetadata', () => {
+            durationEl.textContent = formatTime(audioTemp.duration);
+        });
+
+        // Click to add to queue or play
+        div.addEventListener('click', async () => {
+            try {
+                await AddToQueue(song.id);
+                await renderQueue();
+                roomSearchInput.value = "";
+                roomSearchResults.innerHTML = "";
+                roomSearchInput.classList.add('hidden');
+                roomSearchResults.classList.add('hidden');
+            } catch (err) {
+                console.error(err);
+                showPopup("Failed to add song to queue", "error");
+            }
+        });
+
+        roomSearchResults.appendChild(div);
+    });
+}
+
+// Fetch search results on input
+roomSearchInput.addEventListener("input", async () => {
+    const query = roomSearchInput.value.trim();
+    if (!query) {
+        roomSearchResults.innerHTML = "";
+        return;
+    }
+
+    try {
+        const res = await fetch(
+            `${BACKEND_URL}/musics/search?q=${encodeURIComponent(query)}`
+        );
+        if (!res.ok) {
+            throw new Error('Search request failed');
+        }
+
+        const data = await res.json();
+        displayRoomSearchResults(data.songs);
+    } catch (err) {
+        console.error("Search failed:", err);
+        roomSearchResults.innerHTML = `<div class="text-white/70">Search failed. Try again.</div>`;
+    }
+});
 
 
 // TODO[]: Implement Show Music name
 // TODO[]: Implement Show Music artist
-// TODO[]: Implement Add to Queue
+
+// TODO[X]: Implement Add to Queue
+async function AddToQueue(song_id) {
+    const params = new URLSearchParams(window.location.search);
+    const room_id = params.get('room_id');
+    const token = localStorage.getItem('accessToken');
+
+    try {
+        const res = await fetch(`${BACKEND_URL}/rooms/addToQueue/${room_id}/${song_id}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
+            }
+        });
+        const data = await res.json();
+        console.log("→ add to queue response:", data);
+
+        if (!res.ok) {
+            console.error("→ Error adding song to queue:", data.message);
+            showPopup("Failed to add song to queue", "error");
+            return;
+        }
+
+        showPopup("Song added to queue!", "success");
+
+    } catch (err) {
+        console.error(err);
+        showPopup("Failed to add song to queue", "error");
+    }
+}
+
+
+const queueContainer = document.getElementById('queue-music-container');
+export async function renderQueue() {
+    const params = new URLSearchParams(window.location.search);
+    const room_id = params.get('room_id');
+    const token = localStorage.getItem('accessToken');
+    console.log("renderQueue called");
+
+    try {
+        const res = await fetch(`${BACKEND_URL}/rooms/get_room_queue/${room_id}`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
+             }
+        });
+
+        const data = await res.json();
+
+        if (!res.ok) {
+            console.error("→ Error fetching room queue:", data.message);
+            showPopup("Failed to fetch room queue", "error");
+            return;
+        }
+        if (!data.queue || data.queue.length === 0) {
+            queueContainer.innerHTML = `<div class="text-white/70">Queue is empty.</div>`;
+            return;
+        }
+
+        queueContainer.innerHTML = ''; // clear container first
+
+        for (const song of data.queue) {
+            try {
+                const songRes = await fetch(`${BACKEND_URL}/musics/get_song/${song}`, {
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+                const songData = await songRes.json();
+                const audioTemp = new Audio(`${STATIC_URL}${songData.song.audio_file_path}`);
+                await new Promise((resolve) => {
+                    audioTemp.addEventListener('loadedmetadata', resolve);
+                });
+                songData.song.duration = audioTemp.duration;
+
+
+                const songDiv = document.createElement('div');
+                songDiv.className = `
+                    music-container relative flex items-center gap-3 p-2 bg-white/10 backdrop-blur-lg rounded-xl cursor-pointer
+                    hover:bg-white/20 transition duration-300
+                `;
+                songDiv.innerHTML = `
+                    <img src="${STATIC_URL}${songData.song.cover_image_path}" alt="Cover"
+                        style="width:50px;height:50px;object-fit:cover;"
+                        class="rounded-md"/>
+                    <div class="flex-1 text-white overflow-hidden">
+                        <div class="font-medium text-sm truncate">${songData.song.title}</div>
+                        <div class="font-light text-xs truncate">${songData.song.artist}</div>
+                    </div>
+                    <div class="text-white font-light text-xs">${formatTime(songData.song.duration)}</div>
+                `;
+
+                queueContainer.appendChild(songDiv);
+
+            } catch (err) {
+                console.error("→ Error fetching song details:", err);
+            }
+        }
+
+    } catch (err) {
+        console.error('Error fetching room queue:', err);
+        showPopup("Server unreachable", "error");
+    }
+}
+
 // TODO[]: Implement play song synchronization
 // TODO[]: Implement pause song synchronization
 // TODO[]: Implement previous song functionality synchronization
@@ -287,13 +495,13 @@ cancelDeleteRoomBtn?.addEventListener('click', () => {
 async function deleteRoom() {
     const params = new URLSearchParams(window.location.search);
     const room_id = params.get('room_id');
-    const token = localStorage.getItem(`roomToken_${room_id}`)
+    const accessToken = localStorage.getItem('accessToken');
 
     try {
         const res = await fetch(`${BACKEND_URL}/rooms/delete_room/${room_id}`, {
             method: 'DELETE',
             headers: {
-                'Authorization': `Bearer ${token}`
+                'Authorization': `Bearer ${accessToken}`
             }
         });
 

@@ -30,6 +30,8 @@ def add_songs_to_database(musicData):
 
     return {"message": "Music added to database successfully.", "music_id": new_music.id}, 201
 
+
+
 # TEST GET SONG OPERATION
 @musics_blp.route('/get_all_songs', methods=['GET'])
 def get_all_songs():
@@ -93,6 +95,23 @@ def search_songs():
     ]
 
     return {"songs": song_list}, 200
+
+@musics_blp.route('/get_song/<int:song_id>', methods=['GET'])
+@jwt_required()
+def get_song(song_id):
+    song = Music.query.get_or_404(song_id)
+    if not song:
+        return {"message": "Song not found."}, 404
+    data = {
+        "id": song.id,
+        "title": song.title,
+        "artist": song.artist,
+        "album": song.album,
+        "genre": song.genre,
+        "audio_file_path": song.audio_file_path,
+        "cover_image_path": song.cover_image_path
+    }
+    return {"song": data}, 200
 
 # play music individually
 # pause music individually

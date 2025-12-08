@@ -77,13 +77,13 @@
 
             <div class="flex flex-col text-center justify-center items-center z-10">
                 <!-- MUSIC COVER  -->
-                <img id="music-cover" src="../../assets/placeholder_music_cover.png" alt="Music Cover" class="w-56 h-56 rounded-3xl shadow-lg shadow-purple-700/20 border border-white/10 object-cover md:w-72 md:h-72 xl:w-[35rem] xl:h-[35rem]" />
+                <img id="current-song-cover" src="../../assets/placeholder_music_cover.png" alt="Music Cover" class="w-56 h-56 rounded-3xl shadow-lg shadow-purple-700/20 border border-white/10 object-cover md:w-72 md:h-72 xl:w-[35rem] xl:h-[35rem]" />
 
                 <!-- MUSIC TITLE -->
-                <h2 id="music-title" class="text-white text-3xl font-semibold mt-6">Music Title</h2>
+                <h2 id="current-song-title" class="text-white text-3xl font-semibold mt-6">Music Title</h2>
 
                 <!-- MUSIC ARTIST -->
-                <p id="music-artist" class="text-white/70 text-lg mt-2">Artist Name</p>
+                <p id="current-song-artist" class="text-white/70 text-lg mt-2">Artist Name</p>
 
                 <div class="flex flex-col w-96 items-center gap-4 mt-6 lg-6">
                     <!-- SEEK BAR -->
@@ -241,12 +241,18 @@
                 </div>
 
                 <!-- QUEUE CONTENT -->
-                <div id="queue-content" class="flex flex-col gap-4">
+                <div id="queue-content" class="relative flex flex-col gap-4">
                     <button id="add-to-queue-btn" class="text-white font-medium rounded-xl w-full bg-purple-600 py-2 hover:opacity-65 transition-opacity">
                         + Add to Queue
                     </button>
-                    <div id="queue-music-container" class="flex flex-col gap-4 mt-4"></div>
+                    <!-- search bar  -->
+                    <div id="search-bar-container" class="hidden flex flex-col gap-4 absolute left-1/2 top-10 transform -translate-x-1/2 rounded-lg p-6 w-full max-w-lg max-h-[70vh] overflow-y-auto z-50">
+                        <input id="search-input" type="text" placeholder="Search for songs..." class="px-4 py-2 rounded-lg bg-black/50 border border-white/20 text-white focus:outline-none focus:ring-2 focus:ring-purple-600 w-full" />
+                        <div id="search-results-container" class="flex flex-col gap-4"></div>
+                    </div>
+                    <div id="queue-music-container" class="flex flex-col gap-4 mt-14"></div>
                 </div>
+
 
                 <!-- CHAT CONTENT -->
                 <div id="chat-content" class="hidden flex flex-col flex-grow gap-2">
