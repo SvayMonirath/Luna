@@ -314,3 +314,16 @@ def get_current_song_route(room_id):
         }
     }, 200
 
+# Get is_playing status
+@rooms_blp.route('/get_is_playing/<int:room_id>', methods=['GET'])
+def get_is_playing(room_id):
+    state = _init_room(room_id)
+    return {"is_playing": state["is_playing"]}, 200
+
+# Set is_playing status
+@rooms_blp.route('/set_is_playing/<int:room_id>/<string:status>', methods=['POST'])
+def set_is_playing(room_id, status):
+    state = _init_room(room_id)
+    state["is_playing"] = status.lower() == "true"
+    return {"message": f"is_playing set to {state['is_playing']}"}, 200
+

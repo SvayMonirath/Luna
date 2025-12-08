@@ -385,6 +385,10 @@ export async function renderQueue() {
                 songDiv.addEventListener('click', async () => {
                     currentSongIndex = currentQueue.indexOf(songData.song.id);
                     await setCurrentSong(songData.song.id);
+                    await fetch(`${BACKEND_URL}/rooms/set_is_playing/${room_id}/true`, {
+                        method: 'POST',
+                        headers: { 'Authorization': `Bearer ${token}` }
+                    });
                 });
 
                 queueContainer.appendChild(songDiv);
@@ -427,6 +431,8 @@ export async function renderCurrentSong() {
             currentSongCover.src = '../../assets/placeholder_music_cover.png';
             currentSongTitle.textContent = "Music Title";
             currentSongArtist.textContent = "Artist Name";
+            isPlaying = false;
+            updatePlayPauseIcon();
             return;
         }
 
@@ -440,69 +446,61 @@ export async function renderCurrentSong() {
         // Load song
         currentAudio.src = `${STATIC_URL}${song.audio_file_path}`;
         currentAudio.load();
+
         currentAudio.onloadedmetadata = () => {
             seekBar.max = currentAudio.duration;
             totalDurationEl.textContent = formatTime(currentAudio.duration);
         };
 
-        // Reset seek bar
         currentAudio.ontimeupdate = () => {
             seekBar.value = currentAudio.currentTime;
             currentTimeEl.textContent = formatTime(currentAudio.currentTime);
         };
 
         currentAudio.onended = async () => {
-            console.log("Song ended");
-
             if (currentQueue.length === 0) return;
-
-            // Move to next song
             currentSongIndex++;
-            if (currentSongIndex >= currentQueue.length) {
-                currentSongIndex = 0; // loop to start
-            }
-
+            if (currentSongIndex >= currentQueue.length) currentSongIndex = 0;
             const nextSongId = currentQueue[currentSongIndex];
-            await setCurrentSong(nextSongId);  // this will update UI and play
+            await setCurrentSong(nextSongId);
         };
 
+        // ← Put it here, after the UI & audio src is set
+        isPlaying = data.is_playing; // from backend
+        updatePlayPauseIcon();       // button matches backend state
+        if (isPlaying) {
+            currentAudio.play().catch(() => {
+                console.warn("Autoplay blocked by browser. Audio is paused but UI shows 'playing'");
+            });
+        }
 
     } catch (err) {
         console.error("Failed to fetch current song:", err);
     }
 }
 
-playPauseBtn.addEventListener('click', () => {
+
+playPauseBtn.addEventListener('click', async () => {
     if (!currentAudio.src) return;
 
-    if (isPlaying) {
-        // Pause the audio
-        currentAudio.pause();
-        isPlaying = false;
+    isPlaying = !isPlaying;
 
-        // Set play icon
-        playPauseBtn.innerHTML = `
-        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-             viewBox="0 0 24 24" fill="none" stroke="currentColor"
-             stroke-width="2" stroke-linecap="round" stroke-linejoin="round text-black "
-             class="lucide lucide-circle-play text-black">
-          <circle cx="12" cy="12" r="10"/>
-          <polygon points="10 8 16 12 10 16 10 8"/>
-        </svg>`;
-    } else {
-        // Play the audio
+    if (isPlaying) {
         currentAudio.play();
-        isPlaying = true;
-        // Set pause icon
-        playPauseBtn.innerHTML = `
-        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-             viewBox="0 0 24 24" fill="none" stroke="currentColor"
-             stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-             class="lucide lucide-pause text-black">
-          <rect x="6" y="4" width="4" height="16" rx="1"/>
-          <rect x="14" y="4" width="4" height="16" rx="1"/>
-        </svg>`;
+    } else {
+        currentAudio.pause();
     }
+
+    updatePlayPauseIcon();
+
+    // Sync with backend
+    const params = new URLSearchParams(window.location.search);
+    const room_id = params.get('room_id');
+    const token = localStorage.getItem('accessToken');
+    await fetch(`${BACKEND_URL}/rooms/set_is_playing/${room_id}/${isPlaying}`, {
+        method: 'POST',
+        headers: { 'Authorization': `Bearer ${token}` }
+    });
 });
 
 
@@ -510,7 +508,6 @@ seekBar.addEventListener('input', () => {
     currentAudio.currentTime = seekBar.value;
 });
 
-// Set current song
 async function setCurrentSong(songId) {
     const params = new URLSearchParams(window.location.search);
     const room_id = params.get('room_id');
@@ -525,12 +522,28 @@ async function setCurrentSong(songId) {
         }
     });
 
-    // Update UI and play
-    await renderCurrentSong();
-    currentAudio.play();
+    // Immediately set frontend state to playing
     isPlaying = true;
     updatePlayPauseIcon();
+
+    // Update UI with new song
+    await renderCurrentSong();
+
+    // Try to play
+    currentAudio.play().catch(() => {
+        console.warn("Autoplay blocked by browser");
+        isPlaying = false;
+        updatePlayPauseIcon();
+    });
+
+    // Sync backend state
+    await fetch(`${BACKEND_URL}/rooms/set_is_playing/${room_id}/true`, {
+        method: 'POST',
+        headers: { 'Authorization': `Bearer ${token}` }
+    });
 }
+
+
 
 // Update play/pause icon
 function updatePlayPauseIcon() {
