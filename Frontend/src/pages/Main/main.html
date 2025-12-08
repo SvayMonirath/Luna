@@ -26,82 +26,146 @@
         <span id="popupText"></span>
     </div>
 
-    <nav class="fixed top-0 left-0 right-0 z-50 bg-black/30 backdrop-blur-md border-b border-white/5 flex items-center justify-between h-16 px-4">
-        <!-- Left: logo + mobile menu button -->
-        <div class="flex items-center gap-3">
-            <!-- Mobile menu button -->
-            <button id="mobileMenuBtn" aria-label="Toggle menu" class="lg:hidden p-2 rounded-md text-white hover:bg-white/5 transition">
-                <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16" />
-                </svg>
-            </button>
+    <nav class="fixed top-0 left-0 right-0 z-50 bg-black/30 backdrop-blur-md border-b border-white/5">
+        <div class="w-full px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-evenly h-16 ">
+                <!-- Left: logo + mobile menu button -->
+                <div class="flex items-center gap-3 ">
+                    <!-- Mobile menu button -->
+                    <button id="mobileMenuBtn" aria-label="Toggle menu" class="lg:hidden p-2 rounded-md text-white hover:bg-white/5 transition">
+                        <!-- Menu icon -->
+                         <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+                            w-5 h-5<path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16" />
+                        </svg>
+                    </button>
 
-            <!-- Logo (flush left) -->
-            <a href="../landing_page/landing.html" class="flex items-center gap-2 select-none">
-                <span class="text-2xl lg:text-4xl font-bold text-white ml-6">LUNA</span>
-            </a>
+                    <!-- Logo -->
+                    <a href="../landing_page/landing.html" class="flex items-center gap-2 select-none lg:ml-4">
+                        <span class="text-2xl lg:text-4xl font-bold text-white">LUNA</span>
+                    </a>
+                </div>
+
+                <div class="hidden sm:flex flex-1 justify-center px-4">
+                    <div class="hidden sm:flex flex-1 justify-center px-4">
+                        <div class="hidden sm:flex flex-1 justify-center px-4">
+                            <div class="w-full max-w-lg">
+                                <label for="search" class="sr-only">Search</label>
+                                <div class="relative">
+                                    <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-white/70">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+                                            <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-4.35-4.35M11 19a8 8 0 1 0 0-16 8 8 0 0 0 0 16z"/>
+                                        </svg>
+                                    </div>
+
+                                    <input
+                                        id="search"
+                                        type="search"
+                                        placeholder="Search Musics..."
+                                        class="w-full pl-10 pr-4 py-2 rounded-full bg-slate-800/80 text-white placeholder-white/60 focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
+                                    />
+                                </div>
+
+                                <!-- Search results container -->
+                                <div id="searchResults"
+                                    class="absolute top-full w-1/4 mt-2 max-h-96 overflow-y-auto grid grid-cols-1 gap-2 p-2 bg-slate-900/80 backdrop-blur-md rounded-lg z-50 shadow-lg">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right: nav links -->
+                <div class="flex items-center gap-2">
+                    <ul class="hidden lg:flex items-center gap-4 mr-2">
+                        <li class="underline underline-offset-8">
+                            <!-- i want understand to change color gradient  -->
+                            <a href="#" class="flex items-center gap-2 px-3 py-2 rounded-md text-white/90 hover:opacity-70  transition">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M3 10a2 2 0 0 1 .709-1.528l7-6a2 2 0 0 1 2.582 0l7 6A2 2 0 0 1 21 10v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+                                </svg>
+                                <span>Home</span>
+                            </a>
+                        </li>
+                        <li >
+                            <a href="#" class="open-create-room-modal bg-gradient-to-br from-purple-700 to-pink-700 flex items-center gap-2 px-3 py-2 rounded-md text-white/90 hover:opacity-70 transition">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-5 h-5 lucide lucide-circle-plus-icon lucide-circle-plus text-white"><circle cx="12" cy="12" r="10"/><path d="M8 12h8"/><path d="M12 8v8"/></svg>
+                                <span>Create</span>
+                            </a>
+                        </li>
+                    </ul>
+
+                    <!-- Search icon for small -->
+                    <button id="mobileSearchBtn" class="sm:hidden p-2 rounded-md text-white hover:bg-white/5 transition" aria-label="Open search">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-4.35-4.35M11 19a8 8 0 1 0 0-16 8 8 0 0 0 0 16z"/>
+                        </svg>
+                    </button>
+
+                    <!-- Profile -->
+                    <div class="relative">
+                        <button id="profileBtn" class="flex items-center gap-2 px-3 py-2 rounded-md bg-white/6 text-white hover:bg-white/8 transition">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 rounded-full" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/>
+                                <circle cx="12" cy="7" r="4" stroke-width="1.5"/>
+                            </svg>
+                            <span class="hidden lg:inline">Profile</span>
+                        </button>
+                        <!-- simple profile dropdown -->
+                         <!-- want smoothe dropdown Effects -->
+
+                        <div id="profileMenu" class="hidden absolute mt-2 w-44 bg-slate-900/90 border border-white/5 rounded-md py-1 shadow-lg">
+                            <a href="../Account/account.html" class="cursor-pointer block px-4 py-2 text-sm text-white/90 hover:bg-white/5">Account</a>
+                            <!-- <a href="#" class="cursor-pointer block px-4 py-2 text-sm text-white/90 hover:bg-white/5">
+                                <span>Setting</span>
+                            </a> -->
+                            <a id="logoutBtn" href="#" class="cursor-pointer block px-4 py-2 text-sm text-red-400 hover:bg-white/5">Sign out</a>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
         </div>
 
-        <!-- Center + Right: container for other content -->
-        <div class="flex-1 flex justify-between items-center max-w-7xl mx-auto px-4">
-            <!-- Center: search bar -->
-            <div class="hidden sm:flex flex-1 justify-center px-4">
-                <div class="w-full max-w-lg">
-                    <label for="search" class="sr-only">Search</label>
-                    <div class="relative">
-                        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-white/70">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-4.35-4.35M11 19a8 8 0 1 0 0-16 8 8 0 0 0 0 16z"/>
-                            </svg>
-                        </div>
-                        <input
-                            id="search"
-                            type="search"
-                            placeholder="Search Musics..."
-                            class="w-full pl-10 pr-4 py-2 rounded-full bg-slate-800/80 text-white placeholder-white/60 focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
-                        />
-                    </div>
+        <!-- Mobile slide-over menu -->
+        <div id="mobileMenu" class="lg:hidden hidden border-t border-white/5 backdrop-blur-md relative">
+        <div class="px-4 py-3">
+            <!-- Search Input -->
+            <div class="mb-3 relative">
+            <label for="mobileSearch" class="sr-only">Search</label>
+            <div class="relative">
+                <div class="absolute inset-y-0 left-0 pl-3 flex items-center text-white/70 pointer-events-none">
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-4.35-4.35M11 19a8 8 0 1 0 0-16 8 8 0 0 0 0 16z"/>
+                </svg>
                 </div>
+                <input
+                id="mobileSearch"
+                type="search"
+                placeholder="Search projects, users, tags..."
+                class="w-full pl-9 pr-3 py-2 rounded-full bg-slate-800/80 text-white placeholder-white/60 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                />
             </div>
 
-            <!-- Right: nav links -->
-            <div class="flex items-center gap-2">
-                <ul class="hidden lg:flex items-center gap-4 mr-2">
-                    <li class="underline underline-offset-8">
-                        <a href="#" class="flex items-center gap-2 px-3 py-2 rounded-md text-white/90 hover:opacity-70 transition">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M3 10a2 2 0 0 1 .709-1.528l7-6a2 2 0 0 1 2.582 0l7 6A2 2 0 0 1 21 10v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
-                            </svg>
-                            <span>Home</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#" class="open-create-room-modal bg-gradient-to-br from-purple-700 to-pink-700 flex items-center gap-2 px-3 py-2 rounded-md text-white/90 hover:opacity-70 transition">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                                <circle cx="12" cy="12" r="10"/>
-                                <path d="M8 12h8"/>
-                                <path d="M12 8v8"/>
-                            </svg>
-                            <span>Create</span>
-                        </a>
-                    </li>
-                </ul>
-
-                <!-- Profile button etc. -->
-                <div class="relative">
-                    <button id="profileBtn" class="flex items-center gap-2 px-3 py-2 rounded-md bg-white/6 text-white hover:bg-white/8 transition">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 rounded-full" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/>
-                            <circle cx="12" cy="7" r="4" stroke-width="1.5"/>
-                        </svg>
-                        <span class="hidden lg:inline">Profile</span>
-                    </button>
-                    <div id="profileMenu" class="hidden absolute mt-2 w-44 bg-slate-900/90 border border-white/5 rounded-md py-1 shadow-lg">
-                        <a href="../Account/account.html" class="cursor-pointer block px-4 py-2 text-sm text-white/90 hover:bg-white/5">Account</a>
-                        <a id="logoutBtn" href="#" class="cursor-pointer block px-4 py-2 text-sm text-red-400 hover:bg-white/5">Sign out</a>
-                    </div>
-                </div>
+            <!-- Mobile search results -->
+            <div id="mobileSearchResults"
+                class="absolute left-0 right-0 mt-2 max-h-80 overflow-y-auto bg-slate-900/90 backdrop-blur-md rounded-lg shadow-lg hidden p-2 space-y-2 z-50">
+                <!-- JS will inject results here -->
             </div>
+            </div>
+
+            <!-- Other menu items -->
+            <ul class="space-y-1">
+            <li>
+                <a href="#" class="flex items-center gap-3 px-3 py-2 rounded-md text-white/90 hover:bg-white/5 transition">
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M3 10a2 2 0 0 1 .709-1.528l7-6a2 2 0 0 1 2.582 0l7 6A2 2 0 0 1 21 10v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+                </svg>
+                Home
+                </a>
+            </li>
+            <!-- Add other items here -->
+            </ul>
+        </div>
         </div>
     </nav>
 
@@ -110,8 +174,8 @@
 
     <div class="flex flex-row mt-16">
 
-        <aside class="fixed hidden top-16 left-0 w-1/6 h-[calc(100vh-4rem)] bg-black/30 border-b border-white/5 px-5 py-10 flex flex-col border-r lg:flex">
-            <nav class="mt-10 flex flex-col gap-4 font-medium text-xl ">
+        <aside class="fixed hidden top-16 left-0 w-[1/8] h-[calc(100vh-4rem)] bg-black/30 border-b border-white/5 px-5 py-10 flex flex-col border-r lg:flex">
+            <nav class="mt-10 flex flex-col gap-4 font-medium text-lg ">
                 <!-- Home -->
                 <a href="#" class="text-white hover:text-white/70 transition bg-white/10 rounded-2xl px-10 py-3">Home</a>
 
@@ -121,7 +185,7 @@
                 </a>
             </nav>
             <h3 class="text-sm mt-8 text-gray-500 ml-10">COLLECTION</h3>
-            <nav class="flex flex-col gap-4 font-medium text-xl ">
+            <nav class="flex flex-col gap-4 font-medium text-lg ">
                 <!-- Your Favorites -->
                 <a id="your-favorite" href="#" class="text-white hover:bg-white/10 transition rounded-2xl px-10 py-3 flex flex-row gap-3 items-center">
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
@@ -144,7 +208,7 @@
             </nav>
 
             <h3 class="text-sm mt-8 text-gray-500 ml-10">Rooms</h3>
-            <nav class="flex flex-col gap-4 font-medium text-xl ">
+            <nav class="flex flex-col gap-4 font-medium text-lg ">
                 <!-- Your Rooms -->
                 <a id="your-rooms" href="#" class="text-white hover:bg-white/10 transition rounded-2xl px-10 py-3 flex flex-row gap-3 items-center">
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
@@ -169,7 +233,7 @@
             </nav>
         </aside>
 
-        <section class="ml-0 pt-24 p-16  flex-1 lg:ml-[16.6667%] ">
+        <section class="ml-0 pt-24 p-16  flex-1 lg:ml-[12.5%] ">
             <div class="flex flex-col justify-between items-center md:flex-row mb-4 w-full md:gap-10">
                 <div class="flex flex-col gap-2">
                     <div class="text-white font-[Poppins] text-2xl font-light gap-4 flex items-center text-center">Welcome,<span class="bg-gradient-to-r from-white to-purple-300 bg-clip-text text-transparent text-2xl sm:text-2xl md:text-3xl lg:text-4xl" id="usernameDisplay"></span> </div>
