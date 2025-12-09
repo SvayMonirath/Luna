@@ -151,6 +151,7 @@ function updateCreateRoomButton() {
 // Initialize button
 updateCreateRoomButton();
 
+
 // ------------------ Room Cards ------------------
 function createRoomCard(room) {
     const roomDiv = document.createElement('div');

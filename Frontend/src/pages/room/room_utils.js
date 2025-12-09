@@ -1,3 +1,10 @@
+import { io } from "https://cdn.socket.io/4.7.2/socket.io.esm.min.js";
+
+const socket = io('http://localhost:5001');
+
+export default socket;
+
+
 const BACKEND_URL = 'http://localhost:5001/api/v1';
 const popupText = document.getElementById("popupText");
 const popupMessage = document.getElementById("popupMessage");
@@ -36,8 +43,6 @@ function showPopup(message, type = "success") {
     }, 7000);
 }
 
-
-
 // TODO[X]: Fetch Room Name
 // TODO[X]: Fetch Room Vibe
 const roomName = document.getElementById('room-name');
@@ -51,6 +56,26 @@ export async function fetchRoomInfo() {
     const params = new URLSearchParams(window.location.search);
     const room_id = params.get('room_id');
     let dataPrivate = {};
+
+    const user = await fetchUser();
+
+    if(!user) {
+        showPopup("You must be logged in to access this room.", "error");
+        window.location.href = '../Main/main.html';
+        return;
+    }
+
+    const listenersCount = document.getElementById('listener-count');
+    console.log("listenersCount element:", listenersCount);
+
+    socket.emit('join_room', { room_id, user_id: user.id });
+
+    socket.on('listener_count_update', (data) => {
+        console.log("Received listener_count_update:", data);
+        if (data.room_id.toString() === room_id) {
+            listenersCount.textContent = data.listeners_count;
+        }
+    });
 
     try {
         const resPrivate = await fetch(`${BACKEND_URL}/rooms/get_room_private_status/${room_id}`, {
@@ -142,7 +167,15 @@ settingBtn?.addEventListener('click', () => {
 
 // TODO[X]: Implement leave room button redirect to main page
 const leaveRoomBtn = document.getElementById('leave-room-btn');
-leaveRoomBtn?.addEventListener('click', () => {
+leaveRoomBtn?.addEventListener('click', async () => {
+
+    const params = new URLSearchParams(window.location.search);
+    const room_id = params.get('room_id');
+
+    const user = await fetchUser();
+
+    socket.emit('leave_room', { room_id, user_id: user.id });
+
     window.location.href = '../Main/main.html';
 });
 
@@ -422,9 +455,14 @@ let isPlaying = false;
 export async function renderCurrentSong() {
     const params = new URLSearchParams(window.location.search);
     const room_id = params.get('room_id');
+    const token = localStorage.getItem('accessToken');
 
     try {
-        const res = await fetch(`${BACKEND_URL}/rooms/get_current_song/${room_id}`);
+        const res = await fetch(`${BACKEND_URL}/rooms/get_current_song/${room_id}`, {
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        });
         const data = await res.json();
 
         if (!data.current_song) {
@@ -590,13 +628,11 @@ prevBtn.addEventListener('click', async () => {
     await setCurrentSong(prevSongId);
 });
 
-
 // TODO[]: Implement play song not synchronization
 // TODO[]: Implement pause song not synchronization
 // TODO[]: Implement song progress bar synchronization
 
 // TODO[]: Implement sending chat message
-
 // TODO[]: Implement Setting Private Room
 
 // TODO[X]: Implement Change Room Vibe/Name
@@ -735,6 +771,33 @@ async function deleteRoom() {
         console.error(err);
         showPopup("Server unreachable", "error");
     }
+}
+
+async function fetchUser() {
+    const accessToken = localStorage.getItem('accessToken');
+    try {
+        const res = await fetch(`${BACKEND_URL}/utils/get_user`, {
+            method: 'GET',
+            headers: {
+                'Authorization': `Bearer ${accessToken}`
+            }
+        });
+
+        const data = await res.json();
+        console.log("→ user data:", data);
+
+        if (!res.ok) {
+            console.error("→ Error fetching user info:", data.message);
+            return null;
+        }
+
+        return data.user;
+
+    } catch (err) {
+        console.error(err);
+        return null;
+    }
+
 }
 
 confirmDeleteRoomBtn?.addEventListener('click', deleteRoom);

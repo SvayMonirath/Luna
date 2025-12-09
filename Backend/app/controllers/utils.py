@@ -9,9 +9,13 @@ def get_user():
     user_id = int(get_jwt_identity())
     user = db.session.get(User, user_id)
 
-    return {
+    user_data = {
         "id": user.id,
         "username": user.username,
         "email": user.email
     }
+
+    return {
+        'user': user_data
+    }, 200
 

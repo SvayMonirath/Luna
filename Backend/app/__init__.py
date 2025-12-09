@@ -5,6 +5,7 @@ from flask import Flask
 from flask_jwt_extended import JWTManager
 from flask_migrate import Migrate
 from flask_cors import CORS
+from flask_socketio import SocketIO
 
 from .models.models import db
 from .configs.config import Config
@@ -13,6 +14,7 @@ load_dotenv()
 jwt = JWTManager()
 migrate = Migrate()
 cors = CORS()
+socketio = SocketIO(cors_allowed_origins="*")
 
 def create_app():
     app = Flask(__name__)
@@ -34,5 +36,7 @@ def create_app():
     app.register_blueprint(utils_blp)
     app.register_blueprint(musics_blp)
     app.register_blueprint(user_blp)
+
+    socketio.init_app(app)
 
     return app

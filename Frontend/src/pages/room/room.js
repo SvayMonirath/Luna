@@ -1,9 +1,9 @@
 import { fetchRoomInfo, renderQueue, renderCurrentSong} from "./room_utils.js";
 
-document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener("DOMContentLoaded", async () => {
 
-    fetchRoomInfo();
-    renderQueue();
+    await fetchRoomInfo();
+    await renderQueue();
     renderCurrentSong();
 
 });

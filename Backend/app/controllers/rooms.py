@@ -1,10 +1,12 @@
 from flask import request
 from flask_smorest import Blueprint, abort
 from flask_jwt_extended import jwt_required, get_jwt_identity, create_access_token, get_jwt,  verify_jwt_in_request
+from flask_socketio import join_room, leave_room, emit
 
-from ..services.room_state import _init_room, delete_room_state, add_to_queue, set_current_song
+from ..services.room_state import _init_room, delete_room_state, add_to_queue, set_current_song, join, leave
 from ..schemas.room_schemas import CreateRoomSchema, EditRoomSchema
 from ..models.models import Music, Room, db, User
+from app import socketio
 
 rooms_blp = Blueprint("Rooms", __name__, url_prefix="/api/v1/rooms")
 
@@ -243,7 +245,42 @@ def get_room_private_status(room_id):
     room = Room.query.get_or_404(room_id)
     return {"is_private": room.is_private}, 200
 
-# -------------------- Room Routes --------------------
+# -------------------- Socket Events --------------------
+@socketio.on('join_room')
+def handle_join_room(data):
+    room_id = data.get('room_id')
+    user_id = data.get('user_id')
+
+    if not room_id:
+        return
+
+    join(room_id, user_id) #update csot
+
+    join_room(str(room_id)) # place user in socketio room
+
+    state = _init_room(room_id)
+    emit('listener_count_update', {
+        "room_id": room_id,
+        "listeners_count": len(state["listeners_count"])
+    }, room=str(room_id))
+
+@socketio.on('leave_room')
+def handle_leave_room(data):
+    room_id = data.get('room_id')
+    user_id = data.get('user_id')
+    if not room_id:
+        return
+
+    leave(room_id, user_id) # update count
+    leave_room(str(room_id)) # remove user from socketio room
+
+    state = _init_room(room_id)
+    emit('listener_count_update', {
+        "room_id": room_id,
+        "listeners_count": len(state["listeners_count"])
+    }, room=str(room_id))
+
+# -------------------- Room State Routes --------------------
 
 # get room state
 @rooms_blp.route('/get_room_state/<int:room_id>', methods=['GET'])
@@ -253,7 +290,8 @@ def get_room_state_route(room_id):
     room_state = {
         "current_song": state["current_song"],
         "queue": state["queue"],
-        "is_playing": state["is_playing"]
+        "is_playing": state["is_playing"],
+        "listeners_count": len(state["listeners_count"])
     }
     return {"room_state": room_state}, 200
 
@@ -276,14 +314,12 @@ def get_room_queue_route(room_id):
 
 # set current song route
 @rooms_blp.route('/set_current_song/<int:room_id>/<int:song_id>', methods=['POST'])
-@jwt_required()  # optional, depending on your auth
+@jwt_required()
 def set_current_song_route(room_id, song_id):
     require_room_access(room_id)
 
-    # Ensure the song exists
     song = Music.query.get_or_404(song_id)
 
-    # Set as current
     set_current_song(room_id, song_id)
 
     return {"message": f"{song.title} is now playing."}, 200
@@ -292,6 +328,7 @@ def set_current_song_route(room_id, song_id):
 # get current song route
 
 @rooms_blp.route('/get_current_song/<int:room_id>', methods=['GET'])
+@jwt_required()
 def get_current_song_route(room_id):
     require_room_access(room_id)
     state = _init_room(room_id)
@@ -316,14 +353,15 @@ def get_current_song_route(room_id):
 
 # Get is_playing status
 @rooms_blp.route('/get_is_playing/<int:room_id>', methods=['GET'])
+@jwt_required()
 def get_is_playing(room_id):
     state = _init_room(room_id)
     return {"is_playing": state["is_playing"]}, 200
 
 # Set is_playing status
 @rooms_blp.route('/set_is_playing/<int:room_id>/<string:status>', methods=['POST'])
+@jwt_required()
 def set_is_playing(room_id, status):
     state = _init_room(room_id)
     state["is_playing"] = status.lower() == "true"
     return {"message": f"is_playing set to {state['is_playing']}"}, 200
-
