@@ -326,6 +326,11 @@ def set_current_song_route(room_id, song_id):
     song = Music.query.get_or_404(song_id)
 
     set_current_song(room_id, song_id)
+
+    socketio.emit('current_song_update', {
+        "room_id": room_id,
+    }, room=str(room_id))
+
     return {"message": f"{song.title} is now playing."}, 200
 
 
@@ -370,5 +375,10 @@ def get_is_playing(room_id):
 def set_is_playing(room_id, status):
     state = _init_room(room_id)
     state["is_playing"] = status.lower() == "true"
+
+    socketio.emit('toggle_play', {
+        "room_id": room_id,
+        "is_playing": state["is_playing"]
+    }, room=str(room_id))
 
     return {"message": f"is_playing set to {state['is_playing']}"}, 200

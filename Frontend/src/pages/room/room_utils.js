@@ -274,7 +274,9 @@ function displayRoomSearchResults(songs) {
     });
 }
 
-// real time update queue
+// ----------------------- SOCKET EVENTS -----------------------
+
+// queue update
 socket.on('queue_update', (data) => {
     const params = new URLSearchParams(window.location.search);
     const room_id = params.get('room_id');
@@ -282,6 +284,34 @@ socket.on('queue_update', (data) => {
         renderQueue();
     }
 });
+
+// current song update
+socket.on('current_song_update', (data) => {
+    const params = new URLSearchParams(window.location.search);
+    const room_id = params.get('room_id');
+    if (data.room_id.toString() === room_id) {
+        renderCurrentSong();
+    }
+});
+
+// playback status update
+socket.on('toggle_play', (data) => {
+    const params = new URLSearchParams(window.location.search);
+    const room_id = params.get('room_id');
+
+    if (data.room_id.toString() !== room_id) return;
+
+    isPlaying = data.is_playing;
+
+    if (isPlaying) {
+        currentAudio.play();
+    } else {
+        currentAudio.pause();
+    }
+
+    updatePlayPauseIcon();
+});
+
 
 // Fetch search results on input
 roomSearchInput.addEventListener("input", async () => {
@@ -426,7 +456,19 @@ export async function renderQueue() {
                 songDiv.addEventListener('click', async () => {
                     currentSongIndex = currentQueue.indexOf(songData.song.id);
                     await setCurrentSong(songData.song.id);
-                    await fetch(`${BACKEND_URL}/rooms/set_is_playing/${room_id}/true`, {
+
+                    const isPlayingRes = await fetch(`${BACKEND_URL}/rooms/get_room/${room_id}`, {
+                        headers: {
+                            'Authorization': `Bearer ${token}`
+                        }
+                    });
+                    const isPlayingData = await isPlayingRes.json();
+                    isPlaying = isPlayingData.is_playing;
+
+
+
+
+                    await fetch(`${BACKEND_URL}/rooms/set_is_playing/${room_id}/${!isPlaying}`, {
                         method: 'POST',
                         headers: { 'Authorization': `Bearer ${token}` }
                     });
@@ -539,16 +581,17 @@ playPauseBtn.addEventListener('click', async () => {
         currentAudio.pause();
     }
 
-    updatePlayPauseIcon();
-
     // Sync with backend
     const params = new URLSearchParams(window.location.search);
     const room_id = params.get('room_id');
+
+
     const token = localStorage.getItem('accessToken');
     await fetch(`${BACKEND_URL}/rooms/set_is_playing/${room_id}/${isPlaying}`, {
         method: 'POST',
         headers: { 'Authorization': `Bearer ${token}` }
     });
+
 });
 
 
