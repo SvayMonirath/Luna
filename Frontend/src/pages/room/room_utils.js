@@ -664,22 +664,21 @@ const nextBtn = document.getElementById('next-btn');
 nextBtn.addEventListener('click', async () => {
     if (currentQueue.length === 0) return;
 
-    currentSongIndex++;
-    if (currentSongIndex >= currentQueue.length) currentSongIndex = 0;
-
+    currentSongIndex = (currentSongIndex + 1) % currentQueue.length;
     const nextSongId = currentQueue[currentSongIndex];
+
     await setCurrentSong(nextSongId);
 });
 
 prevBtn.addEventListener('click', async () => {
     if (currentQueue.length === 0) return;
 
-    currentSongIndex--;
-    if (currentSongIndex < 0) currentSongIndex = currentQueue.length - 1;
-
+    currentSongIndex = (currentSongIndex - 1 + currentQueue.length) % currentQueue.length;
     const prevSongId = currentQueue[currentSongIndex];
+
     await setCurrentSong(prevSongId);
 });
+
 
 // TODO[]: Implement play song not synchronization
 // TODO[]: Implement pause song not synchronization
