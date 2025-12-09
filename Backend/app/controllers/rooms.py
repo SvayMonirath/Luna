@@ -302,6 +302,11 @@ def add_to_queue_route(room_id, song_id):
     require_room_access(room_id)
     song = Music.query.get_or_404(song_id)
     add_to_queue(room_id, song_id)
+
+    socketio.emit('queue_update', {
+        "room_id": room_id,
+    }, room=str(room_id))
+
     return {"message": "Song added to queue successfully."}, 200
 
 # get room queue route
@@ -321,7 +326,6 @@ def set_current_song_route(room_id, song_id):
     song = Music.query.get_or_404(song_id)
 
     set_current_song(room_id, song_id)
-
     return {"message": f"{song.title} is now playing."}, 200
 
 
@@ -366,4 +370,5 @@ def get_is_playing(room_id):
 def set_is_playing(room_id, status):
     state = _init_room(room_id)
     state["is_playing"] = status.lower() == "true"
+
     return {"message": f"is_playing set to {state['is_playing']}"}, 200

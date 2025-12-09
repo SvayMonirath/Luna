@@ -261,7 +261,6 @@ function displayRoomSearchResults(songs) {
         div.addEventListener('click', async () => {
             try {
                 await AddToQueue(song.id);
-                await renderQueue();
                 roomSearchInput.value = "";
                 roomSearchResults.innerHTML = "";
                 roomSearchInput.classList.add('hidden');
@@ -274,6 +273,15 @@ function displayRoomSearchResults(songs) {
         roomSearchResults.appendChild(div);
     });
 }
+
+// real time update queue
+socket.on('queue_update', (data) => {
+    const params = new URLSearchParams(window.location.search);
+    const room_id = params.get('room_id');
+    if (data.room_id.toString() === room_id) {
+        renderQueue();
+    }
+});
 
 // Fetch search results on input
 roomSearchInput.addEventListener("input", async () => {
