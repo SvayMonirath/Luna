@@ -450,9 +450,9 @@ const currentTimeEl = document.getElementById('current-time');
 const totalDurationEl = document.getElementById('total-duration');
 
 let currentAudio = new Audio();
-let isPlaying = false;
+let isPlaying = true;
 
-export async function renderCurrentSong() {
+export async function renderCurrentSong(forcePlay = false) {
     const params = new URLSearchParams(window.location.search);
     const room_id = params.get('room_id');
     const token = localStorage.getItem('accessToken');
@@ -503,12 +503,14 @@ export async function renderCurrentSong() {
             await setCurrentSong(nextSongId);
         };
 
-        // ← Put it here, after the UI & audio src is set
-        isPlaying = data.is_playing; // from backend
-        updatePlayPauseIcon();       // button matches backend state
+        isPlaying = forcePlay ? true : data.is_playing;
+        updatePlayPauseIcon();
+
         if (isPlaying) {
             currentAudio.play().catch(() => {
-                console.warn("Autoplay blocked by browser. Audio is paused but UI shows 'playing'");
+                console.warn("Autoplay blocked by browser");
+                isPlaying = false;
+                updatePlayPauseIcon();
             });
         }
 
@@ -565,7 +567,7 @@ async function setCurrentSong(songId) {
     updatePlayPauseIcon();
 
     // Update UI with new song
-    await renderCurrentSong();
+    await renderCurrentSong(true);
 
     // Try to play
     currentAudio.play().catch(() => {

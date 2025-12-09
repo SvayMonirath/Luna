@@ -335,6 +335,8 @@ def get_current_song_route(room_id):
     if not state or not state["current_song"]:
         return {"current_song": None}, 200
 
+    isPlaying = state["is_playing"]
+
     song_id = state["current_song"]
     song = Music.query.get(song_id)
     if not song:
@@ -348,7 +350,7 @@ def get_current_song_route(room_id):
             "album": song.album,
             "audio_file_path": song.audio_file_path,
             "cover_image_path": song.cover_image_path,
-        }
+        }, "is_playing": isPlaying
     }, 200
 
 # Get is_playing status
