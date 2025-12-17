@@ -491,8 +491,6 @@ export async function renderQueue() {
 // TODO[X]: Implement Show Music artist
 // i want to select all class name for current song cover, title, artist
 const currentSongCover = document.querySelector('.current-song-cover');
-const currentSongTitle = document.querySelector('.current-song-title');
-const currentSongArtist = document.querySelector('.current-song-artist');
 
 const playerSongCover = document.getElementById('player-bar-cover');
 const playerSongTitle = document.getElementById('player-bar-title');
@@ -523,8 +521,6 @@ export async function renderCurrentSong(forcePlay = false) {
 
         if (!data.current_song) {
             currentSongCover.src = '../../assets/placeholder_music_cover.png';
-            currentSongTitle.textContent = "Music Title";
-            currentSongArtist.textContent = "Artist Name";
             isPlaying = false;
             updatePlayPauseIcon();
             return;
@@ -535,9 +531,7 @@ export async function renderCurrentSong(forcePlay = false) {
         // Update UI
         currentSongCover.src = `${STATIC_URL}${song.cover_image_path}`;
         playerSongCover.src = `${STATIC_URL}${song.cover_image_path}`;
-        currentSongTitle.textContent = song.title;
         playerSongTitle.textContent = song.title;
-        currentSongArtist.textContent = song.artist;
         playerSongArtist.textContent = song.artist;
 
         // Load song
@@ -650,7 +644,6 @@ async function setCurrentSong(songId) {
 }
 
 
-
 // Update play/pause icon
 function updatePlayPauseIcon() {
     playPauseBtn.innerHTML = isPlaying ? `
@@ -693,6 +686,24 @@ prevBtn.addEventListener('click', async () => {
 
     await setCurrentSong(prevSongId);
 });
+
+// ------------------- VOLUMNE  -------------------
+const volumeSlider = document.getElementById("volume");
+const volumeIcon = document.getElementById("volumeIcon");
+
+volumeSlider?.addEventListener("input", () => {
+    const vol = volumeSlider.value / 100;
+    currentAudio.volume = vol;
+
+    if (vol === 0) {
+        volumeIcon.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-volume-icon lucide-volume"><path d="M11 4.702a.705.705 0 0 0-1.203-.498L6.413 7.587A1.4 1.4 0 0 1 5.416 8H3a1 1 0 0 0-1 1v6a1 1 0 0 0 1 1h2.416a1.4 1.4 0 0 1 .997.413l3.383 3.384A.705.705 0 0 0 11 19.298z"/></svg>`;
+    } else if (vol <= 0.5) {
+        volumeIcon.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-volume1-icon lucide-volume-1"><path d="M11 4.702a.705.705 0 0 0-1.203-.498L6.413 7.587A1.4 1.4 0 0 1 5.416 8H3a1 1 0 0 0-1 1v6a1 1 0 0 0 1 1h2.416a1.4 1.4 0 0 1 .997.413l3.383 3.384A.705.705 0 0 0 11 19.298z"/><path d="M16 9a5 5 0 0 1 0 6"/></svg>`;
+    } else {
+        volumeIcon.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-volume2-icon lucide-volume-2"><path d="M11 4.702a.705.705 0 0 0-1.203-.498L6.413 7.587A1.4 1.4 0 0 1 5.416 8H3a1 1 0 0 0-1 1v6a1 1 0 0 0 1 1h2.416a1.4 1.4 0 0 1 .997.413l3.383 3.384A.705.705 0 0 0 11 19.298z"/><path d="M16 9a5 5 0 0 1 0 6"/><path d="M19.364 18.364a9 9 0 0 0 0-12.728"/></svg>`;
+    }
+});
+
 
 
 // TODO[]: Implement play song not synchronization
