@@ -491,6 +491,7 @@ export async function renderQueue() {
 // TODO[X]: Implement Show Music artist
 // i want to select all class name for current song cover, title, artist
 const currentSongCover = document.querySelector('.current-song-cover');
+const currentSongBackground = document.getElementById('background-cover');
 
 const playerSongCover = document.getElementById('player-bar-cover');
 const playerSongTitle = document.getElementById('player-bar-title');
@@ -530,6 +531,7 @@ export async function renderCurrentSong(forcePlay = false) {
 
         // Update UI
         currentSongCover.src = `${STATIC_URL}${song.cover_image_path}`;
+        currentSongBackground.src = `${STATIC_URL}${song.cover_image_path}`;
         playerSongCover.src = `${STATIC_URL}${song.cover_image_path}`;
         playerSongTitle.textContent = song.title;
         playerSongArtist.textContent = song.artist;
