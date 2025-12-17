@@ -489,11 +489,17 @@ export async function renderQueue() {
 
 // TODO[X]: Implement Show Music name
 // TODO[X]: Implement Show Music artist
-const currentSongCover = document.getElementById('current-song-cover');
-const currentSongTitle = document.getElementById('current-song-title');
-const currentSongArtist = document.getElementById('current-song-artist');
+// i want to select all class name for current song cover, title, artist
+const currentSongCover = document.querySelector('.current-song-cover');
+const currentSongTitle = document.querySelector('.current-song-title');
+const currentSongArtist = document.querySelector('.current-song-artist');
+
+const playerSongCover = document.getElementById('player-bar-cover');
+const playerSongTitle = document.getElementById('player-bar-title');
+const playerSongArtist = document.getElementById('player-bar-artist');
 
 const playPauseBtn = document.getElementById('play-pause-btn');
+const player = document.getElementById('player-bar');
 
 const seekBar = document.getElementById('seekBar');
 const currentTimeEl = document.getElementById('current-time');
@@ -528,8 +534,11 @@ export async function renderCurrentSong(forcePlay = false) {
 
         // Update UI
         currentSongCover.src = `${STATIC_URL}${song.cover_image_path}`;
+        playerSongCover.src = `${STATIC_URL}${song.cover_image_path}`;
         currentSongTitle.textContent = song.title;
+        playerSongTitle.textContent = song.title;
         currentSongArtist.textContent = song.artist;
+        playerSongArtist.textContent = song.artist;
 
         // Load song
         currentAudio.src = `${STATIC_URL}${song.audio_file_path}`;
@@ -594,6 +603,12 @@ playPauseBtn.addEventListener('click', async () => {
 
 });
 
+// show player bar when song is loaded
+currentAudio.addEventListener('loadeddata', () => {
+    player.classList.remove('hidden');
+});
+
+// Seek bar interaction
 
 seekBar.addEventListener('input', () => {
     currentAudio.currentTime = seekBar.value;
