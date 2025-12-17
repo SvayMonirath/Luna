@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>LUNA Register</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+</head>
+
+<!-- TODO[X]: Fully redesign the register page -->
+<body class="bg-gradient-to-tr from-slate-950 via-slate-900 to-slate-950 min-h-screen font-[Poppins] relative overflow-hidden">
+
+    <!-- Background Glow Effects -->
+    <div class="absolute bottom-1/3 left-1/4 size-96 bg-pink-600/20 rounded-full blur-3xl animate-pulse"></div>
+    <div class="absolute top-1/4 left-1/4 size-72 bg-purple-600/30 rounded-full blur-3xl animate-pulse"></div>
+    <div class="absolute top-1/3 right-1/4 size-96 bg-blue-600/20 rounded-full blur-3xl animate-pulse"></div>
+
+    <!-- Navigation -->
+
+    <section class="flex items-center flex-col py- lg:flex-row">
+
+        <!-- Left Side -->
+        <div class="hidden xl:flex w-1/2 min-h-screen flex-col px-20 items-start justify-center bg-gradient-to-br from-purple-950/80 via-slate-950/80 to-pink-950/80 ">
+
+            <div  class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-purple-600/20 border border-purple-500/50 backdrop-blur-sm mb-6 hover:scale-105 transition-transform duration-300">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                    stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-music2-icon lucide-music-2 text-purple-400">
+                    <circle cx="8" cy="18" r="4" />
+                    <path d="M12 18V2l7 4" />
+                </svg>
+                <span class="font-light bg-gradient-to-r from-white to-purple-400 bg-clip-text text-transparent">
+                    Start Your Journey
+                </span>
+            </div>
+            <h2 class="text-white text-3xl mb-6 leading-tight md:text-5xl">Create Your</h2>
+            <p class="bg-gradient-to-r from-purple-400 via-pink-400 to-orange-400 bg-clip-text text-transparent text-3xl md:text-5xl mb-5">Vibe Space</p>
+            <div class="pr-14">
+                <p class="text-slate-300 text-xl mb-8">Join thousands of music lovers experiencing the future of social listening. Create rooms, share vibes, and connect with the community.</p>
+            </div>
+
+            <div class="flex flex-row mb-4">
+                <div class="size-8 rounded-full bg-purple-600/20 border border-purple-500/50 flex items-center justify-center flex-shrink-0 mt-0.5 mr-4 ">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-check-icon lucide-check text-purple-400"><path d="M20 6 9 17l-5-5"/></svg>
+                </div>
+                <div class="flex flex-col">
+                    <h2 class="text-white mb-1">Unlimited Listening Rooms</h2>
+                    <p class="text-slate-400 text-sm">Create and join as many rooms as you want</p>
+                </div>
+            </div>
+
+            <div class="flex flex-row mb-4">
+                <div class="size-8 rounded-full bg-purple-600/20 border border-purple-500/50 flex items-center justify-center flex-shrink-0 mt-0.5 mr-4 ">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-check-icon lucide-check text-purple-400"><path d="M20 6 9 17l-5-5"/></svg>
+                </div>
+                <div class="flex flex-col">
+                    <h2 class="text-white mb-1">Real-Time Synchronization</h2>
+                    <p class="text-slate-400 text-sm">Experience seamless music syncing with friends in real-time</p>
+                </div>
+            </div>
+
+            <div class="flex flex-row">
+                <div class="size-8 rounded-full bg-purple-600/20 border border-purple-500/50 flex items-center justify-center flex-shrink-0 mt-0.5 mr-4 ">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-check-icon lucide-check text-purple-400"><path d="M20 6 9 17l-5-5"/></svg>
+                </div>
+                <div class="flex flex-col">
+                    <h2 class="text-white mb-1">Live Chat & Reactions</h2>
+                    <p class="text-slate-400 text-sm">Engage with friends through live chat and expressive reactions</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Right Side -->
+        <div class="relative w-full xl:w-1/2 bg-gradient-to-br from-slate-950 via-purple-950/50 to-slate-950 min-h-screen flex flex-col justify-center p-12 px-32 md:px-52 lg:px-60">
+
+            <a class="absolute top-20 text-5xl font-semibold  bg-gradient-to-br from-white to-purple-800 text-transparent bg-clip-text cursor-pointer" href="/Backend/app/static/pages/landing_page/landing.html">LUNA</a>
+            <h2 class="text-white text-4xl mb-3">Get Started</h2>
+            <p class="text-slate-400 text-lg mb-8">Create your account and start vibing</p>
+
+            <form id="registerForm" class="flex flex-col gap-6">
+                <p class="absolute bottom-20 px-6 py-3 rounded-3xl shadow-lg text-white border border-red-900/10 bg-red-500/20 text-center text-lg font-medium hidden" id="generalError"></p>
+
+                <!-- Username -->
+                <div class="flex flex-col gap-2">
+                    <label class="block text-slate-300 text-sm mb-2">Username</label>
+                    <input type="text" name="username" placeholder="Choose a username"
+                        class="w-full h-12 pl-12 pr-4 rounded-xl bg-white/5 border border-white/10 text-white placeholder:text-slate-500 focus:outline-none focus:border-purple-500/50 focus:bg-white/10 transition-all backdrop-blur-sm" />
+                </div>
+
+                <!-- Email -->
+                <div class="flex flex-col gap-2">
+                    <label class="block text-slate-300 text-sm mb-2">Email Address</label>
+                    <input type="email" name="email" placeholder="yourEmail@example.com"
+                        class="w-full h-12 pl-12 pr-4 rounded-xl bg-white/5 border border-white/10 text-white placeholder:text-slate-500 focus:outline-none focus:border-purple-500/50 focus:bg-white/10 transition-all backdrop-blur-sm" />
+                </div>
+
+                <!-- Password -->
+                <div class="flex flex-col gap-2">
+                    <label class="block text-slate-300 text-sm mb-2">Password</label>
+                    <input type="password" name="password" placeholder="••••••••"
+                        class="w-full h-12 pl-12 pr-12 rounded-xl bg-white/5 border border-white/10 text-white placeholder:text-slate-500 focus:outline-none focus:border-purple-500/50 focus:bg-white/10 transition-all backdrop-blur-sm" />
+                </div>
+
+                    <!-- Confirm -->
+                <div class="flex flex-col gap-2">
+                    <label class="block text-slate-300 text-sm mb-2">Confirm Password</label>
+                    <input type="password" name="confirm_password" placeholder="••••••••"
+                        class="w-full h-12 pl-12 pr-12 rounded-xl bg-white/5 border border-white/10 text-white placeholder:text-slate-500 focus:outline-none focus:border-purple-500/50 focus:bg-white/10 transition-all backdrop-blur-sm" />
+                </div>
+
+                <!-- Signup button -->
+                <button
+                    type="submit" class="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white shadow-lg shadow-purple-600/20 p-3 rounded-xl  text-lg font-light mt-6
+                    hover:scale-[1.03] hover:shadow-[0_0_20px_rgba(129,0,255,0.4)] transition-transform">
+                    Create Account
+                </button>
+            </form>
+
+            <p class="text-center text-white/60 mt-8 font-light">Already have an account?
+                <a href="/Backend/app/static/pages/login/login.html" class="text-purple-300 hover:text-purple-400 transition font-light">Login</a>
+            </p>
+
+        </div>
+    </section>
+
+    <!-- link register.js -->
+    <script src="/Backend/app/static/pages/register/register.js"></script>
+</body>
+</html>

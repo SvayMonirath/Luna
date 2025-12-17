@@ -1,0 +1,36 @@
+import { loadSongsHeader, loadTrendingSongs, fetchUser  } from './main_utils.js';
+import { loadRooms, loadJoinedRooms, loadHeaderInfo } from './main_room.js';
+
+document.addEventListener("DOMContentLoaded", () => {
+    fetchUser();
+    loadSongsHeader();
+    loadTrendingSongs();
+
+    loadRooms();
+    loadJoinedRooms();
+    loadHeaderInfo();
+
+    // Mobile menu toggle
+    const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+    const mobileMenu = document.getElementById('mobileMenu');
+    mobileMenuBtn?.addEventListener('click', () => mobileMenu.classList.toggle('hidden'));
+
+    // Profile menu toggle
+    const profileBtn = document.getElementById('profileBtn');
+    const profileMenu = document.getElementById('profileMenu');
+    profileBtn?.addEventListener('click', e => {
+        e.stopPropagation();
+        profileMenu.classList.toggle('hidden');
+    });
+
+    document.addEventListener('click', () => {
+        if (!profileMenu.classList.contains('hidden')) profileMenu.classList.add('hidden');
+    });
+
+    // Logout
+    const logoutBtn = document.getElementById('logoutBtn');
+    logoutBtn?.addEventListener('click', () => {
+        localStorage.removeItem('accessToken');
+        window.location.href = '/Backend/app/static/pages/login/login.html';
+    });
+});
