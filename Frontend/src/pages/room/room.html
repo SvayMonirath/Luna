@@ -1,9 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Room</title>
+    <title>VibeRoom - Music Streaming</title>
 
     <script type="module">
         import { checkAuth } from '../../auth.js';
@@ -16,359 +17,490 @@
     <link rel="stylesheet" href="../../css/global.css">
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet" />
+
+    <style>
+        * {
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .glass-effect {
+            background: rgba(17, 24, 39, 0.5);
+            backdrop-filter: blur(10px);
+        }
+
+        .glow-purple {
+            box-shadow: 0 0 30px rgba(168, 85, 247, 0.3);
+        }
+
+        .smooth-hover {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+    </style>
 </head>
-<body class="bg-gradient-to-br from-slate-950 via-purple-950 to-slate-950 min-h-screen font-[Poppins] relative overflow-x-hidden overflow-y-hidden">
-    <!-- pop up message -->
-    <div id="popupMessage" class="opacity-0 fixed top-20 left-1/2 transform -translate-x-1/2 bg-green-500/30 border border-green-400/40 text-white px-6 py-3 rounded-md shadow-lg z-50 transition-opacity duration-300">
-        <span id="popupText"></span>
+
+<body
+    class="bg-gradient-to-br from-slate-950 via-purple-950 to-slate-950 min-h-screen font-[Poppins] relative overflow-x-hidden">
+    <!-- Notification Toast -->
+    <div id="popupMessage"
+        class="opacity-0 fixed top-8 left-1/2 transform -translate-x-1/2 bg-gradient-to-r from-green-500/20 to-emerald-500/20 border border-green-400/50 text-white px-6 py-3 rounded-xl shadow-xl z-50 transition-all duration-300 backdrop-blur-md">
+        <span id="popupText" class="flex items-center gap-2">
+            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd"
+                    d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" />
+                </path>
+            </svg>
+            <span></span>
+        </span>
     </div>
 
-    <!-- Header  -->
-    <header class="bg-gradient-to-r from-black/40 via-purple-900/20 to-black/40 border-b border-purple-500/10 shadow-lg px-6 py-4 flex items-center gap-5">
-        <div class="size-12 rounded-xl bg-gradient-to-br from-purple-600/20 to pink-600/20 flex justify-center items-center border border-white/10 shadow-lg shadow-purple-700/10">
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-music-icon lucide-music size-6 text-purple-400"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>
-        </div>
-        <div class="flex flex-col flex-grow gap-1">
-            <!-- Room Name -->
-            <h1 id="room-name" class="text-white text-2xl font-semibold">Name</h1>
-            <div class="flex flex-row items-center gap-2">
-                <div class="size-2 rounded-full bg-green-500 animate-pulse"></div>
-                <!-- Listener Count -->
-                <span id="listener-count" class="text-slate-400">..</span>
-                <span class="text-slate-400"> listening</span>
-
-                <!-- Room Vibe Tag -->
-                <div id="room-vibe" class="px-2 py-0.5 rounded-full bg-purple-600/20 border border-purple-500/30 text-purple-400 text-xs">vibe</div>
+    <!-- Header -->
+    <header class="glass-effect border-b border-purple-500/20 shadow-2xl px-8 py-5 sticky top-0 z-40">
+        <div class="flex items-center justify-between gap-6 max-w-full">
+            <!-- Logo & Room Info -->
+            <div class="flex items-center gap-4 flex-1">
+                <div
+                    class="size-14 rounded-2xl bg-gradient-to-br from-purple-600/30 to-pink-600/30 flex justify-center items-center border border-purple-400/30 glow-purple smooth-hover hover:from-purple-600/40 hover:to-pink-600/40">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                        class="text-purple-300">
+                        <path d="M9 18V5l12-2v13" />
+                        <circle cx="6" cy="18" r="3" />
+                        <circle cx="18" cy="16" r="3" />
+                    </svg>
+                </div>
+                <div class="flex flex-col gap-1">
+                    <h1 id="room-name" class="text-white text-xl font-bold tracking-wide">Loading...</h1>
+                    <div class="flex items-center gap-3">
+                        <div class="flex items-center gap-2">
+                            <div class="size-2.5 rounded-full bg-green-400 animate-pulse"></div>
+                            <span id="listener-count" class="text-slate-300 text-sm font-medium">..</span>
+                            <span class="text-slate-400 text-sm">listening</span>
+                        </div>
+                        <div id="room-vibe"
+                            class="px-3 py-1 rounded-full bg-gradient-to-r from-purple-600/30 to-purple-500/20 border border-purple-400/40 text-purple-300 text-xs font-semibold">
+                            vibe</div>
+                    </div>
+                </div>
             </div>
-        </div>
-        <div class="flex-grow text-white text-2xl flex flex-row items-center">
-            <p class="font-semibold">Code: <span id="room-code" class="font-normal blur-md mr-8">XXXXXXXX</span></p>
-            <div id="hide/show-code" class="text-white cursor-pointer">
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-eye-off-icon lucide-eye-off"><path d="M10.733 5.076a10.744 10.744 0 0 1 11.205 6.575 1 1 0 0 1 0 .696 10.747 10.747 0 0 1-1.444 2.49"/><path d="M14.084 14.158a3 3 0 0 1-4.242-4.242"/><path d="M17.479 17.499a10.75 10.75 0 0 1-15.417-5.151 1 1 0 0 1 0-.696 10.75 10.75 0 0 1 4.446-5.143"/><path d="m2 2 20 20"/></svg>
+
+            <!-- Room Code & Toggle -->
+            <div class="flex items-center gap-6 px-6 py-3 glass-effect rounded-2xl border border-white/10">
+                <div class="flex items-center gap-3">
+                    <span class="text-slate-300 text-sm font-medium">Code:</span>
+                    <span id="room-code"
+                        class="text-white font-mono font-bold text-lg blur-sm hover:blur-none transition-all cursor-default">XXXXXXXX</span>
+                </div>
+                <div id="hide/show-code"
+                    class="text-purple-400 cursor-pointer hover:text-purple-300 smooth-hover p-2 rounded-lg hover:bg-white/10">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path
+                            d="M10.733 5.076a10.744 10.744 0 0 1 11.205 6.575 1 1 0 0 1 0 .696 10.747 10.747 0 0 1-1.444 2.49" />
+                        <path d="M14.084 14.158a3 3 0 0 1-4.242-4.242" />
+                        <path
+                            d="M17.479 17.499a10.75 10.75 0 0 1-15.417-5.151 1 1 0 0 1 0-.696 10.75 10.75 0 0 1 4.446-5.143" />
+                        <path d="m2 2 20 20" />
+                    </svg>
+                </div>
             </div>
-        </div>
 
-        <div class="flex items-center gap-4">
-            <!-- Leave Room Btn -->
-            <button id="leave-room-btn" class="ml-auto px-4 py-2 rounded-lg shadow-md hover:shadow-lg transition hover:scale-[1.03] bg-gradient-to-r from-purple-600 to-blue-700 text-white font-medium flex items-center gap-2">
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-log-out-icon lucide-log-out text-white"><path d="m16 17 5-5-5-5"/><path d="M21 12H9"/><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/></svg>
-                <span class="">Leave</span>
-            </button>
-
-            <!-- setting BTN -->
-            <button id="setting-btn" class="p-2 rounded-lg hover:bg-white/10 transition">
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-settings-icon lucide-settings text-white">
-                    <path
-                        d="M9.671 4.136a2.34 2.34 0 0 1 4.659 0 2.34 2.34 0 0 0 3.319 1.915 2.34 2.34 0 0 1 2.33 4.033 2.34 2.34 0 0 0 0 3.831 2.34 2.34 0 0 1-2.33 4.033 2.34 2.34 0 0 0-3.319 1.915 2.34 2.34 0 0 1-4.659 0 2.34 2.34 0 0 0-3.32-1.915 2.34 2.34 0 0 1-2.33-4.033 2.34 2.34 0 0 0 0-3.831A2.34 2.34 0 0 1 6.35 6.051a2.34 2.34 0 0 0 3.319-1.915" />
-                    <circle cx="12" cy="12" r="3" />
-                </svg>
-            </button>
+            <!-- Action Buttons -->
+            <div class="flex items-center gap-3">
+                <button id="setting-btn"
+                    class="p-3 rounded-xl smooth-hover hover:bg-white/10 border border-transparent hover:border-purple-400/30 text-slate-300 hover:text-purple-300">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path
+                            d="M9.671 4.136a2.34 2.34 0 0 1 4.659 0 2.34 2.34 0 0 0 3.319 1.915 2.34 2.34 0 0 1 2.33 4.033 2.34 2.34 0 0 0 0 3.831 2.34 2.34 0 0 1-2.33 4.033 2.34 2.34 0 0 0-3.319 1.915 2.34 2.34 0 0 1-4.659 0 2.34 2.34 0 0 0-3.32-1.915 2.34 2.34 0 0 1-2.33-4.033 2.34 2.34 0 0 0 0-3.831A2.34 2.34 0 0 1 6.35 6.051a2.34 2.34 0 0 0 3.319-1.915" />
+                        <circle cx="12" cy="12" r="3" />
+                    </svg>
+                </button>
+                <button id="leave-room-btn"
+                    class="px-5 py-3 rounded-xl bg-gradient-to-r from-red-600/80 to-red-700/80 hover:from-red-600 hover:to-red-700 text-white font-semibold flex items-center gap-2 smooth-hover shadow-lg hover:shadow-red-500/30 border border-red-500/30">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="m16 17 5-5-5-5" />
+                        <path d="M21 12H9" />
+                        <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
+                    </svg>
+                    <span>Leave</span>
+                </button>
+            </div>
         </div>
     </header>
 
-    <!-- Main -->
-    <div class="flex flex-row flex-grow min-h-screen">
-    <section class="w-1/2 bg-gradient-to-br from-purple-900/20 via-transparent to-pink-900/20 flex justify-center items-center px-14 py-20 relative lg:w-3/4 xl:w-5/6 group overflow-hidden">
+    <!-- Main Content -->
+    <div class="flex flex-row flex-grow min-h-[calc(100vh-88px)]">
+        <!-- Music Display Section -->
+        <section
+            class="flex-1 bg-gradient-to-br from-purple-900/10 via-transparent to-pink-900/10 flex justify-center items-center px-8 py-16 relative group overflow-hidden lg:flex-[3]">
+            <!-- Animated Background -->
+            <div class="absolute inset-0 opacity-20">
+                <div
+                    class="absolute top-20 left-20 w-72 h-72 bg-purple-600 rounded-full blur-3xl opacity-20 animate-pulse">
+                </div>
+                <div class="absolute bottom-20 right-20 w-96 h-96 bg-pink-600 rounded-full blur-3xl opacity-20 animate-pulse"
+                    style="animation-delay: 2s;"></div>
+            </div>
 
-        <!-- Background Cover -->
-        <img src="" alt="" id="background-cover" class="object-cover absolute top-0 left-0 w-full h-full blur-lg opacity-10" />
+            <img src="" alt="" id="background-cover"
+                class="absolute inset-0 w-full h-full object-cover blur-2xl opacity-5" />
 
-        <!-- Music Cover Container -->
-        <div class="flex flex-col text-center justify-center items-center z-10 relative">
-            <!-- Glow effect -->
-            <div class="absolute w-64 h-64 md:w-72 md:h-72 lg:w-80 lg:h-80 xl:w-[28rem] xl:h-[28rem] rounded-3xl bg-purple-500/20 blur-3xl opacity-0 transition-all duration-500 group-hover:opacity-70"></div>
+            <!-- Music Cover Container -->
+            <div class="flex flex-col text-center justify-center items-center z-10 relative">
+                <div
+                    class="absolute w-80 h-80 md:w-96 md:h-96 lg:w-[28rem] lg:h-[28rem] rounded-3xl bg-gradient-to-br from-purple-600/30 to-pink-600/30 blur-3xl opacity-0 group-hover:opacity-100 transition-all duration-700">
+                </div>
 
-            <!-- MUSIC COVER -->
-            <img src="../../assets/placeholder_music_cover.png"
-                alt="Music Cover"
-                class="current-song-cover relative w-56 h-56 md:w-72 md:h-72 lg:w-80 lg:h-80 xl:w-[32rem] xl:h-[32rem] rounded-3xl object-cover shadow-2xl shadow-purple-700/50 border-2 border-white/10 transition-transform duration-500 group-hover:scale-105 group-hover:shadow-purple-900/70" />
-        </div>
-    </section>
+                <img src="../../assets/placeholder_music_cover.png" alt="Music Cover"
+                    class="current-song-cover relative w-64 h-64 md:w-80 md:h-80 lg:w-96 lg:h-96 rounded-3xl object-cover shadow-2xl glow-purple border-2 border-white/10 smooth-hover group-hover:scale-110 group-hover:shadow-purple-900/70" />
 
-        <aside class="w-1/2 bg-black/30 p-6 flex flex-col lg:w-1/4 xl:w-1/6 h-screen">
+            </div>
+        </section>
 
-            <!-- Tabs Header -->
-            <header class="mb-4 relative flex flex-row w-full">
-                <button id="queue-btn" class="text-white font-semibold text-lg flex-1 z-10">Queue</button>
-                <button id="chat-btn" class="text-white font-semibold text-lg flex-1 z-10">Chat</button>
+        <!-- Sidebar Panel -->
+        <aside
+            class="w-96 bg-gradient-to-b from-slate-900/40 to-slate-950/60 border-l border-purple-500/10 p-6 flex flex-col lg:w-80 xl:w-96 h-[calc(100vh-88px)] glass-effect shadow-2xl">
 
-                <!-- Purple underline -->
-                <div id="underline" class="absolute bottom-0 left-0 h-0.5 w-1/2 bg-purple-500 transition-all duration-300"></div>
-            </header>
+            <!-- Tabs Navigation -->
+            <div class="mb-6 relative flex flex-row rounded-xl bg-slate-900/30 border border-white/10 p-1">
+                <button id="queue-btn"
+                    class="text-slate-300 font-semibold text-sm flex-1 z-10 py-2 smooth-hover rounded-lg transition-colors duration-200">Queue</button>
+                <button id="chat-btn"
+                    class="text-slate-300 font-semibold text-sm flex-1 z-10 py-2 smooth-hover rounded-lg transition-colors duration-200">Chat</button>
 
-            <!-- Scrollable Content -->
-            <div id="scrollable-div" class="flex flex-col flex-grow overflow-y-auto pb-32 gap-6">
+                <div id="underline"
+                    class="absolute bottom-1 left-1 h-8 w-[calc(50%-4px)] bg-gradient-to-r from-purple-600/80 to-purple-500/80 rounded-lg transition-all duration-300 -z-0 shadow-lg glow-purple">
+                </div>
+            </div>
 
-                <!-- SETTING CONTENT -->
-                <div id="setting-content" class="hidden flex flex-col gap-4">
-                    <div class="text-center mb-4">
-                        <span class="text-white font-medium text-2xl">Room Setting</span>
+            <!-- Content Container -->
+            <div id="scrollable-div" class="flex flex-col overflow-y-auto pb-32 gap-4 pr-2 custom-scrollbar max-h-[calc(100vh-88px)]">
+
+
+                <!-- SETTINGS CONTENT -->
+                <div id="setting-content" class="hidden flex flex-col gap-5 animate-fadeIn">
+                    <div class="text-center mb-2">
+                        <h2 class="text-white font-bold text-2xl">Room Settings</h2>
+                        <p class="text-slate-400 text-sm mt-1">Customize your space</p>
                     </div>
 
-                    <!-- Room INFO -->
-                    <div class="p-5 border border-white/10 rounded-xl flex flex-col gap-5">
-                        <div class="text-white flex flex-row items-center gap-5 mb-3">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-square-pen-icon">
-                                <path d="M12 3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7" />
-                                <path d="M18.375 2.625a1 1 0 0 1 3 3l-9.013 9.014a2 2 0 0 1-.853.505l-2.873.84a.5.5 0 0 1-.62-.62l.84-2.873a2 2 0 0 1 .506-.852z" />
-                            </svg>
-                            <span class="text-xl">Room Information</span>
+                    <!-- Room Information Card -->
+                    <div
+                        class="glass-effect p-5 border border-purple-500/20 rounded-2xl flex flex-col gap-5 glow-purple hover:border-purple-500/40 smooth-hover">
+                        <div class="text-white flex flex-row items-center gap-3">
+                            <div class="p-2 rounded-lg bg-purple-600/30 border border-purple-500/30">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none"
+                                    stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                    stroke-linejoin="round" class="text-purple-300">
+                                    <path d="M12 3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7" />
+                                    <path
+                                        d="M18.375 2.625a1 1 0 0 1 3 3l-9.013 9.014a2 2 0 0 1-.853.505l-2.873.84a.5.5 0 0 1-.62-.62l.84-2.873a2 2 0 0 1 .506-.852z" />
+                                </svg>
+                            </div>
+                            <span class="text-lg font-semibold">Room Information</span>
                         </div>
 
-                        <div class="flex flex-col gap-3">
-                            <!-- Change Room Name  -->
-                            <label for="room-name-input" class="text-white font-medium">Room Name</label>
-                            <input id="room-name-input" type="text" placeholder="Enter room name"
-                                class="px-4 py-2 rounded-lg bg-black/50 border border-white/20 text-white focus:outline-none focus:ring-2 focus:ring-purple-600 w-full" />
-                        </div>
-
-                        <div class="flex flex-col gap-3">
-                            <!-- Change Room Vibe -->
-                            <label for="room-vibe-input" class="text-white font-medium">Room Vibe</label>
-                            <input id="room-vibe-input" type="text" placeholder="Enter room vibe"
-                                class="px-4 py-2 rounded-lg bg-black/50 border border-white/20 text-white focus:outline-none focus:ring-2 focus:ring-purple-600 w-full" />
-                        </div>
-
-                        <div class="flex justify-center mt-4">
-                            <button id="name/vibe-change-btn"
-                                class="px-5 py-3 cursor-not-allowed opacity-30 flex justify-center items-center text-white bg-gradient-to-br from-blue-600 to-purple-600 rounded-full w-1/2">
-                                Save Change
-                            </button>
-                        </div>
-                    </div>
-
-                    <!-- Privacy & Security -->
-                    <div class="p-5 border border-white/10 rounded-xl flex flex-col gap-5">
-                        <div class="text-white flex flex-row items-center gap-5 mb-3">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" stroke="currentColor"
-                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-shield-icon">
-                                <path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z" />
-                            </svg>
-                            <span class="text-xl">Privacy & Security</span>
-                        </div>
-
-                        <div class="flex flex-row justify-between items-center">
+                        <div class="flex flex-col gap-4">
                             <div>
-                                <p class="text-white text-lg">Private room</p>
-                                <p class="text-gray-600 text-sm">Make room private to others</p>
+                                <label for="room-name-input" class="text-white font-semibold text-sm block mb-2">Room
+                                    Name</label>
+                                <input id="room-name-input" type="text" placeholder="Enter room name"
+                                    class="px-4 py-2.5 rounded-xl bg-black/40 border border-white/20 text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-purple-600 focus:border-transparent w-full smooth-hover" />
                             </div>
-                            <button id="private-room-btn" class="text-white text-lg font-normal flex justify-center items-center bg-gradient-to-br from-blue-600 to-purple-600 rounded-full px-5 py-1">
-                                On
-                            </button>
-                        </div>
 
-                        <div class="flex flex-row justify-between items-center mt-4">
-                            <p class="text-white text-lg">Max listeners</p>
-                            <select id="max-listeners-select" class="bg-black/50 border border-white/20 px-4 py-2 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-purple-600">
-                                <option value="10">10</option>
-                                <option value="25">25</option>
-                                <option value="50">50</option>
-                                <option value="100">100</option>
-                                <option value="250">250</option>
-                                <option value="500">500</option>
-                            </select>
+                            <div>
+                                <label for="room-vibe-input" class="text-white font-semibold text-sm block mb-2">Room
+                                    Vibe</label>
+                                <input id="room-vibe-input" type="text" placeholder="e.g. Chill, Party, Work"
+                                    class="px-4 py-2.5 rounded-xl bg-black/40 border border-white/20 text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-purple-600 focus:border-transparent w-full smooth-hover" />
+                            </div>
+
+                            <button id="name/vibe-change-btn"
+                                class="px-5 py-3 cursor-not-allowed opacity-40 flex justify-center items-center text-white bg-gradient-to-r from-blue-600 to-purple-600 rounded-xl w-full font-semibold smooth-hover hover:opacity-60 mt-2">
+                                Save Changes
+                            </button>
                         </div>
                     </div>
 
-                    <!-- Danger Zone -->
-                    <div class="p-5 border border-white/10 rounded-xl flex flex-col gap-4">
-                        <div class="text-white flex flex-row items-center gap-5 mb-3">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" stroke="currentColor"
-                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                                class="lucide lucide-triangle-alert-icon">
-                                <path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3" />
-                                <path d="M12 9v4" />
-                                <path d="M12 17h.01" />
-                            </svg>
-                            <span class="text-xl">Danger Zone</span>
+                    <!-- Privacy & Security Card -->
+                    <div
+                        class="glass-effect p-5 border border-blue-500/20 rounded-2xl flex flex-col gap-5 glow-purple hover:border-blue-500/40 smooth-hover">
+                        <div class="text-white flex flex-row items-center gap-3">
+                            <div class="p-2 rounded-lg bg-blue-600/30 border border-blue-500/30">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none"
+                                    stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                    stroke-linejoin="round" class="text-blue-300">
+                                    <path
+                                        d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z" />
+                                </svg>
+                            </div>
+                            <span class="text-lg font-semibold">Privacy & Security</span>
                         </div>
 
-                        <!-- Kick User -->
-                        <div class="flex flex-col gap-6">
-                            <div class="flex flex-row justify-between items-center gap-2">
-                                <div class="flex flex-col w-2/3 text-white">
-                                    <p class="font-medium text-lg">Kick User</p>
-                                    <p class="text-gray-600 text-sm">Kick User from the room</p>
+                        <div class="space-y-4">
+                            <div
+                                class="flex flex-row justify-between items-center p-3 rounded-lg bg-black/20 border border-white/10 hover:border-white/20 smooth-hover">
+                                <div>
+                                    <p class="text-white font-semibold">Private Room</p>
+                                    <p class="text-slate-400 text-xs mt-0.5">Restrict access to invited users</p>
                                 </div>
-                                <button id="kick-user-btn" class="w-1/3 px-5 py-2 bg-red-900/30 border border-red-500/40 rounded-full text-white hover:opacity-75 transition-opacity">Kick User</button>
+                                <button id="private-room-btn"
+                                    class="text-white text-sm font-semibold px-4 py-1.5 rounded-full bg-gradient-to-r from-blue-600 to-purple-600 smooth-hover hover:shadow-lg hover:shadow-blue-500/30">
+                                    On
+                                </button>
                             </div>
 
-                            <!-- Ban User -->
-                            <div class="flex flex-row justify-between items-center gap-2">
-                                <div class="flex flex-col w-2/3 text-white">
-                                    <p class="font-medium text-lg">Ban User</p>
-                                    <p class="text-gray-600 text-sm">Permanently preventing a user from rejoining the room</p>
-                                </div>
-                                <button id="ban-user-btn" class="w-1/3 px-5 py-2 bg-red-900/30 border border-red-500/40 rounded-full text-white hover:opacity-75 transition-opacity">Ban User</button>
+                            <div
+                                class="flex flex-row justify-between items-center p-3 rounded-lg bg-black/20 border border-white/10 hover:border-white/20 smooth-hover">
+                                <label for="max-listeners-select" class="text-white font-semibold">Max Listeners</label>
+                                <select id="max-listeners-select"
+                                    class="bg-purple-600/30 border border-purple-500/30 px-3 py-1.5 rounded-lg text-white font-semibold focus:outline-none focus:ring-2 focus:ring-purple-600 text-sm smooth-hover">
+                                    <option value="10">10</option>
+                                    <option value="25">25</option>
+                                    <option value="50">50</option>
+                                    <option value="100">100</option>
+                                    <option value="250">250</option>
+                                    <option value="500">500</option>
+                                </select>
                             </div>
+                        </div>
+                    </div>
 
-                            <button id="delete-room-btn" class="w-full px-5 py-2 bg-red-900/30 border border-red-500/40 rounded-full text-white hover:opacity-75 transition-opacity text-xl">Delete Room</button>
+                    <!-- Danger Zone Card -->
+                    <div
+                        class="glass-effect p-5 border border-red-500/20 rounded-2xl flex flex-col gap-4 glow-purple hover:border-red-500/40 smooth-hover">
+                        <div class="text-white flex flex-row items-center gap-3">
+                            <div class="p-2 rounded-lg bg-red-600/30 border border-red-500/30">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none"
+                                    stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                    stroke-linejoin="round" class="text-red-300">
+                                    <path
+                                        d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3" />
+                                    <path d="M12 9v4" />
+                                    <path d="M12 17h.01" />
+                                </svg>
+                            </div>
+                            <span class="text-lg font-semibold text-red-300">Danger Zone</span>
+                        </div>
+
+                        <div class="flex flex-col gap-3">
+                            <button id="kick-user-btn"
+                                class="w-full px-4 py-2.5 bg-red-900/40 border border-red-500/50 rounded-xl text-white font-semibold hover:bg-red-900/60 smooth-hover transition-colors text-sm">
+                                Kick User</button>
+                            <button id="ban-user-btn"
+                                class="w-full px-4 py-2.5 bg-red-900/40 border border-red-500/50 rounded-xl text-white font-semibold hover:bg-red-900/60 smooth-hover transition-colors text-sm">
+                                Ban User</button>
+                            <button id="delete-room-btn"
+                                class="w-full px-4 py-3 bg-gradient-to-r from-red-900/50 to-red-800/50 border border-red-500/50 rounded-xl text-white font-bold hover:from-red-900/70 hover:to-red-800/70 smooth-hover transition-all text-sm">
+                                Delete Room</button>
                         </div>
                     </div>
                 </div>
 
                 <!-- QUEUE CONTENT -->
-                <div id="queue-content" class="relative flex flex-col gap-4">
-                    <button id="add-to-queue-btn" class="text-white font-medium rounded-xl w-full bg-purple-600 py-2 hover:opacity-65 transition-opacity">
-                        + Add to Queue
+                <div id="queue-content" class="relative flex flex-col gap-4 animate-fadeIn">
+                    <button id="add-to-queue-btn"
+                        class="text-white font-semibold rounded-xl w-full bg-gradient-to-r from-purple-600 to-purple-700 py-3 hover:from-purple-500 hover:to-purple-600 smooth-hover shadow-lg hover:shadow-purple-500/50 transition-all active:scale-95 flex items-center justify-center gap-2">
+                        Add to Queue
                     </button>
-                    <!-- search bar  -->
-                    <div id="search-bar-container" class="hidden flex flex-col gap-4 absolute left-1/2 top-10 transform -translate-x-1/2 rounded-lg p-6 w-full max-w-lg max-h-[70vh] overflow-y-auto z-50">
-                        <input id="search-input" type="text" placeholder="Search for songs..." class="px-4 py-2 rounded-lg bg-black/50 border border-white/20 text-white focus:outline-none focus:ring-2 focus:ring-purple-600 w-full" />
-                        <div id="search-results-container" class="flex flex-col gap-4"></div>
+
+                    <!-- Search Bar Container -->
+                    <div id="search-bar-container"
+                        class="hidden flex flex-col gap-4 absolute left-1/2 top-16 transform -translate-x-1/2 rounded-2xl p-5 w-[calc(100%+20px)] max-w-sm max-h-[60vh] overflow-y-auto z-50 glass-effect border border-purple-500/30 shadow-2xl glow-purple">
+                        <input id="search-input" type="text" placeholder="Search songs, artists..."
+                            class="px-4 py-2.5 rounded-xl bg-black/50 border border-purple-500/30 text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-purple-600 w-full smooth-hover" />
+                        <div id="search-results-container" class="flex flex-col gap-3 max-h-[45vh] overflow-y-auto">
+                        </div>
                     </div>
-                    <div id="queue-music-container" class="flex flex-col gap-4 mt-14"></div>
+
+                    <!-- Queue Items -->
+                    <div id="queue-music-container" class="flex flex-col gap-3 mt-2"></div>
                 </div>
 
-
                 <!-- CHAT CONTENT -->
-                <div id="chat-content" class="hidden flex flex-col flex-grow gap-2">
-                    <div id="message-container" class="flex flex-col gap-4 flex-grow overflow-y-auto pr-2"></div>
+                <div id="chat-content" class="hidden flex flex-col flex-grow gap-3 animate-fadeIn">
+                    <div id="message-container" class="flex flex-col gap-3 flex-grow overflow-y-auto pr-2 mb-4">
+                        <!-- Messages will be added here -->
+                    </div>
                     <div class="flex flex-row gap-2 mt-auto">
-                        <input id="message-input" type="text" placeholder="Type your message..." class="flex-grow px-4 py-2 rounded-lg bg-black/50 border border-white/10 text-white focus:outline-none focus:ring-2 focus:ring-purple-600" />
-                        <button id="send-message-btn" class="px-4 py-2 rounded-lg bg-purple-700 text-white hover:opacity-75 transition-opacity">Send</button>
+                        <input id="message-input" type="text" placeholder="Type a message..."
+                            class="flex-grow px-4 py-2.5 rounded-xl bg-black/40 border border-white/10 text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-purple-600 smooth-hover" />
+                        <button id="send-message-btn"
+                            class="px-5 py-2.5 rounded-xl bg-gradient-to-r from-purple-600 to-purple-700 text-white font-semibold hover:from-purple-500 hover:to-purple-600 smooth-hover shadow-lg transition-all active:scale-95">Send</button>
                     </div>
                 </div>
 
             </div>
         </aside>
-
     </div>
 
-    <!-- Player - Bar -->
-    <div
-    id="player-bar"
-    class="hidden fixed bottom-6 left-1/2 -translate-x-1/2
-            z-50 pointer-events-auto
-            w-[85%] sm:w-[70%] md:w-[55%] lg:w-[45%]
-            p-2 flex items-center justify-between
-            bg-white/10 border border-white/20 rounded-full
-            backdrop-blur-xl backdrop-saturate-150 shadow-lg">
+    <!-- Player Bar -->
+    <div id="player-bar"
+        class="hidden fixed bottom-6 left-1/2 -translate-x-1/2 z-50 pointer-events-auto w-[90%] sm:w-[75%] md:w-[65%] lg:w-[50%] xl:w-[45%] max-w-4xl p-3 flex items-center justify-between gap-4 glass-effect border border-purple-500/30 rounded-full shadow-2xl glow-purple">
 
         <!-- LEFT: Cover + Info -->
-        <div class="flex items-center gap-2 min-w-0">
-            <img
-                src=""
-                id="player-bar-cover"
-                class="w-8 h-8 ml-2 rounded-md object-cover flex-shrink-0" />
-
+        <div class="flex items-center gap-3 min-w-0">
+            <img src="" id="player-bar-cover"
+                class="w-12 h-12 ml-2 rounded-lg object-cover flex-shrink-0 border border-white/20" />
             <div class="flex flex-col min-w-0">
-                <span
-                    id="player-bar-title"
-                    class=" text-white text-xs font-medium truncate max-w-[90px] sm:max-w-[140px]">
-                    Song Title
-                </span>
-                <span
-                    id="player-bar-artist"
-                    class=" text-white/60 text-[10px] truncate max-w-[90px] sm:max-w-[140px]">
-                    Artist Name
-                </span>
+                <span id="player-bar-title"
+                    class="text-white text-sm font-semibold truncate max-w-[100px] sm:max-w-[150px]">Song Title</span>
+                <span id="player-bar-artist"
+                    class="text-slate-400 text-xs truncate max-w-[100px] sm:max-w-[150px]">Artist Name</span>
             </div>
         </div>
 
         <!-- CENTER: Controls -->
-        <div class="flex flex-col flex-grow items-center  gap-1">
-
-            <!-- Controls row -->
-            <div class="flex items-center">
-                <button id="shuffle-btn" class="p-3 rounded-full hover:bg-white/10 transition z-50">
-                    <!-- shuffle svg -->
-                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18"
-                        viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                        class="text-slate-400">
-                        <path d="m18 14 4 4-4 4"/>
-                        <path d="m18 2 4 4-4 4"/>
-                        <path d="M2 18h1.973a4 4 0 0 0 3.3-1.7l5.454-8.6a4 4 0 0 1 3.3-1.7H22"/>
-                        <path d="M2 6h1.972a4 4 0 0 1 3.6 2.2"/>
-                        <path d="M22 18h-6.041a4 4 0 0 1-3.3-1.8l-.359-.45"/>
+        <div class="flex flex-col flex-grow items-center gap-1.5">
+            <div class="flex items-center gap-1">
+                <button id="shuffle-btn"
+                    class="p-2.5 rounded-full hover:bg-white/10 transition smooth-hover text-slate-400 hover:text-purple-300">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="m18 14 4 4-4 4" />
+                        <path d="m18 2 4 4-4 4" />
+                        <path d="M2 18h1.973a4 4 0 0 0 3.3-1.7l5.454-8.6a4 4 0 0 1 3.3-1.7H22" />
+                        <path d="M2 6h1.972a4 4 0 0 1 3.6 2.2" />
+                        <path d="M22 18h-6.041a4 4 0 0 1-3.3-1.8l-.359-.45" />
                     </svg>
                 </button>
 
-                <button id="prev-btn" class="p-3 rounded-full hover:bg-white/10 transition z-50">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18"
-                        viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                        class="text-slate-400">
-                        <path d="M17.971 4.285A2 2 0 0 1 21 6v12a2 2 0 0 1-3.029 1.715l-9.997-5.998a2 2 0 0 1-.003-3.432z"/>
-                        <path d="M3 20V4"/>
+                <button id="prev-btn"
+                    class="p-2.5 rounded-full hover:bg-white/10 transition smooth-hover text-slate-400 hover:text-purple-300">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path
+                            d="M17.971 4.285A2 2 0 0 1 21 6v12a2 2 0 0 1-3.029 1.715l-9.997-5.998a2 2 0 0 1-.003-3.432z" />
+                        <path d="M3 20V4" />
                     </svg>
                 </button>
 
                 <button id="play-pause-btn"
-                    class="bg-white hover:bg-gray-300 transition rounded-full w-10 h-10 flex items-center justify-center p-1 z-50">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                        viewBox="0 0 24 24" fill="black">
-                        <rect x="14" y="3" width="5" height="18" rx="1"/>
-                        <rect x="5" y="3" width="5" height="18" rx="1"/>
+                    class="bg-white hover:bg-purple-300 transition rounded-full w-11 h-11 flex items-center justify-center p-1 smooth-hover shadow-lg hover:shadow-purple-500/50 flex-shrink-0">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="black">
+                        <rect x="14" y="3" width="5" height="18" rx="1" />
+                        <rect x="5" y="3" width="5" height="18" rx="1" />
                     </svg>
                 </button>
 
-                <button id="next-btn" class="p-3 rounded-full hover:bg-white/10 transition z-50">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18"
-                        viewBox="0 0 28 24" fill="none" stroke="currentColor"
-                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                        class="text-slate-400">
-                        <path d="M21 4v16"/>
-                        <path d="M6.029 4.285A2 2 0 0 0 3 6v12a2 2 0 0 0 3.029 1.715l9.997-5.998a2 2 0 0 0 .003-3.432z"/>
+                <button id="next-btn"
+                    class="p-2.5 rounded-full hover:bg-white/10 transition smooth-hover text-slate-400 hover:text-purple-300">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 28 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M21 4v16" />
+                        <path
+                            d="M6.029 4.285A2 2 0 0 0 3 6v12a2 2 0 0 0 3.029 1.715l9.997-5.998a2 2 0 0 0 .003-3.432z" />
                     </svg>
                 </button>
 
-                <button>
-                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18"
-                        viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                        class="text-slate-400">
-                        <path d="m16 18 4-4-4-4"/>
-                        <path d="m2 6 4-4 4 4"/>
-                        <path d="M22 6h-1.973a4 4 0 0 0-3.3 1.7l-5.454 8.6a4 4 0 0 1-3.3 1.7H2"/>
-                        <path d="M22 18h-1.972a4 4 0 0 1-3.6-2.2"/>
-                        <path d="M2 6h6.041a4 4 0 0 1 3.3 1.8l.359.45"/>
+                <button
+                    class="p-2.5 rounded-full hover:bg-white/10 transition smooth-hover text-slate-400 hover:text-purple-300">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="m16 18 4-4-4-4" />
+                        <path d="m2 6 4-4 4 4" />
+                        <path d="M22 6h-1.973a4 4 0 0 0-3.3 1.7l-5.454 8.6a4 4 0 0 1-3.3 1.7H2" />
+                        <path d="M22 18h-1.972a4 4 0 0 1-3.6-2.2" />
+                        <path d="M2 6h6.041a4 4 0 0 1 3.3 1.8l.359.45" />
                     </svg>
                 </button>
             </div>
 
-            <!-- Seek bar row -->
-            <div class="flex items-center gap-1 w-full">
-                <span id="current-time" class="text-white text-[10px]">0:00</span>
-
+            <!-- Seek Bar -->
+            <div class="flex items-center gap-2 w-full px-2">
+                <span id="current-time" class="text-slate-400 text-[11px] font-medium">0:00</span>
                 <input id="seekBar" type="range" min="0" value="0"
-                    class="flex-grow h-1 rounded-full bg-gray-600 accent-white cursor-pointer z-50" />
-
-                <span id="total-duration" class="text-white text-[10px]">0:00</span>
+                    class="flex-grow h-1.5 rounded-full bg-slate-700 accent-purple-500 cursor-pointer smooth-hover" />
+                <span id="total-duration" class="text-slate-400 text-[11px] font-medium">0:00</span>
             </div>
         </div>
 
         <!-- RIGHT: Volume -->
-        <div class="hidden sm:flex items-center gap-2 ml-1">
-            <div id="volumeIcon">
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                    viewBox="0 0 24 24" fill="none" stroke="white"
-                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M11 4.702a.705.705 0 0 0-1.203-.498L6.413 7.587A1.4 1.4 0 0 1 5.416 8H3a1 1 0 0 0-1 1v6a1 1 0 0 0 1 1h2.416a1.4 1.4 0 0 1 .997.413l3.383 3.384A.705.705 0 0 0 11 19.298z"/>
-                    <path d="M16 9a5 5 0 0 1 0 6"/>
-                </svg>
+        <div class="hidden sm:flex items-center gap-2.5 ml-1">
+            <div id="volumeIcon" class="text-slate-400 hover:text-purple-300 smooth-hover">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-volume1-icon lucide-volume-1"><path d="M11 4.702a.705.705 0 0 0-1.203-.498L6.413 7.587A1.4 1.4 0 0 1 5.416 8H3a1 1 0 0 0-1 1v6a1 1 0 0 0 1 1h2.416a1.4 1.4 0 0 1 .997.413l3.383 3.384A.705.705 0 0 0 11 19.298z"/><path d="M16 9a5 5 0 0 1 0 6"/></svg>
             </div>
-
             <input id="volume" type="range" min="0" max="100" value="50"
-                class="w-16 h-1 rounded-full bg-gray-600 accent-white cursor-pointer" />
+                class="w-20 h-1.5 rounded-full bg-slate-700 accent-purple-500 cursor-pointer smooth-hover" />
         </div>
     </div>
 
-    <!-- DELETE ROOM OVERLAY -->
-    <div id="delete_room_overlay" class="hidden fixed inset-0 bg-black/30 backdrop-blur-md z-40"></div>
+    <!-- Delete Room Overlay -->
+    <div id="delete_room_overlay" class="hidden fixed inset-0 bg-black/50 backdrop-blur-md z-40 animate-fadeIn"></div>
 
-    <!-- DELETE ACCOUNT CONFIRMATION POPUP -->
-    <div id="delete_room_confirmation" class="hidden absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-red-900/30 border border-red-500/40 backdrop-blur-md p-10 rounded-lg flex flex-col items-center justify-center shadow-lg  z-50 gap-7">
-        <h2 class="text-white text-5xl font-semibold">Delete Room</h2>
-        <p class="text-white font-normal text-md">These actions are permanent and cannot be undone.</p>
-        <div>
-            <button id="confirm_delete_room_btn" class="bg-red-600 px-4 py-2 rounded-lg text-white text-sm hover:bg-red-700 transition mr-4">Delete</button>
-            <button id="cancel_delete_room_btn" class="bg-white/10 px-4 py-2 rounded-lg text-white text-sm hover:bg-white/20 transition">Cancel</button>
+    <!-- Delete Room Confirmation -->
+    <div id="delete_room_confirmation"
+        class="hidden absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-gradient-to-br from-red-900/40 to-red-800/40 border border-red-500/40 backdrop-blur-md p-8 rounded-2xl flex flex-col items-center justify-center shadow-2xl glow-purple z-50 gap-6 animate-scaleIn">
+        <div class="text-center">
+            <h2 class="text-white text-4xl font-bold mb-2">🗑️ Delete Room</h2>
+            <p class="text-slate-300 font-normal text-sm">This action is permanent and cannot be undone.</p>
+        </div>
+        <div class="flex gap-3 w-full">
+            <button id="cancel_delete_room_btn"
+                class="flex-1 bg-slate-700/50 border border-slate-500/50 px-5 py-3 rounded-xl text-white font-semibold hover:bg-slate-700 smooth-hover transition">Cancel</button>
+            <button id="confirm_delete_room_btn"
+                class="flex-1 bg-gradient-to-r from-red-600 to-red-700 px-5 py-3 rounded-xl text-white font-semibold hover:from-red-600 hover:to-red-800 smooth-hover shadow-lg transition">Delete</button>
         </div>
     </div>
+
+    <style>
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
+        }
+
+        @keyframes scaleIn {
+            from {
+                transform: translate(-50%, -50%) scale(0.95);
+                opacity: 0;
+            }
+
+            to {
+                transform: translate(-50%, -50%) scale(1);
+                opacity: 1;
+            }
+        }
+
+        .animate-fadeIn {
+            animation: fadeIn 0.3s ease-in;
+        }
+
+        .animate-scaleIn {
+            animation: scaleIn 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: rgba(15, 23, 42, 0.5);
+            border-radius: 10px;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: rgba(168, 85, 247, 0.5);
+            border-radius: 10px;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+            background: rgba(168, 85, 247, 0.7);
+        }
+    </style>
+
     <script type="module" src="./room.js"></script>
 </body>
+
 </html>

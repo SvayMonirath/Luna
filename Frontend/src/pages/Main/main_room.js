@@ -371,6 +371,26 @@ export async function loadRooms() {
     }
 }
 
+// ------------------ ASIDE Shortcut ------------------
+
+// Your Rooms Shortcut
+const yourRoomsBtn = document.getElementById('your-rooms-shortcut');
+yourRoomsBtn.addEventListener('click', () => {
+    window.scrollTo({
+        top: roomsContainer.offsetTop - 120,
+        behavior: 'smooth'
+    });
+});
+
+// Join Room Shortcut
+const joinRoomBtn = document.getElementById('join-room-shortcut');
+joinRoomBtn.addEventListener('click', () => {
+    window.scrollTo({
+        top: joinedRoomsContainer.offsetTop - 110,
+        behavior: 'smooth'
+    });
+});
+
 // ------------------ Header Info ------------------
 const joinedRoomCountSpan = document.getElementById('joined-room-count');
 

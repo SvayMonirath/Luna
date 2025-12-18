@@ -264,6 +264,7 @@ function displayRoomSearchResults(songs) {
                 roomSearchInput.value = "";
                 roomSearchResults.innerHTML = "";
                 roomSearchInput.classList.add('hidden');
+                roomSearchResults.classList.add('hidden');
             } catch (err) {
                 console.error(err);
                 showPopup("Failed to add song to queue", "error");
