@@ -383,7 +383,7 @@ async function fetchUser() {
     }
 
     const user = await res.json();
-    usernameEL.textContent = user.username;
+    usernameEL.textContent = user.user.username;
 }
 
 
@@ -426,7 +426,6 @@ playlistBtn.addEventListener('click', () => {
         behavior: 'smooth'
     });
 });
-
 
 // ------------------- HELPER -------------------
 function formatTime(seconds) {

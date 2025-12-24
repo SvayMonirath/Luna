@@ -123,10 +123,10 @@ async function fetchUser() {
             throw new Error('Failed to fetch user data');
         } else {
             const data = await res.json();
-            username.textContent = `@${data.username}`;
-            email.textContent = data.email;
-            updateUsernameInput.value = data.username;
-            updateEmailInput.value = data.email;
+            username.textContent = `@${data.user.username}`;
+            email.textContent = data.user.email;
+            updateUsernameInput.value = data.user.username;
+            updateEmailInput.value = data.user.email;
         }
     } catch (err) {
         console.error('Error fetching user data:', err);

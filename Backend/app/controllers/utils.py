@@ -18,4 +18,3 @@ def get_user():
     return {
         'user': user_data
     }, 200
-
