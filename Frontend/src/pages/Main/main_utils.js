@@ -386,26 +386,47 @@ async function fetchUser() {
     usernameEL.textContent = user.username;
 }
 
-//  ------------------- FETCH OWNED ROOM COUNT -------------------
 
-const numOwnedRoom = document.getElementById("num-room-created-count");
+// ------------------ ASIDE Shortcut ------------------
 
-async function fetchOwnedRoomCount() {
-    const accessToken = localStorage.getItem('accessToken');
-
-    console.log("→ Fetching owned room count...");
-
-    const res = await fetch(`${BACKEND_URL}/rooms/owned-room-count`, {
-        method: 'GET',
-        headers: { Authorization: `Bearer ${accessToken}` },
+// Your Rooms Shortcut
+const yourRoomsBtn = document.getElementById('your-rooms-shortcut');
+const roomsContainer = document.getElementById('rooms-container');
+yourRoomsBtn.addEventListener('click', () => {
+    window.scrollTo({
+        top: roomsContainer.offsetTop - 120,
+        behavior: 'smooth'
     });
+});
 
-    console.log("→ Status:", res.status);
+// Join Room Shortcut
+const joinRoomBtn = document.getElementById('join-room-shortcut');
+const joinedRoomsContainer = document.getElementById('joined-rooms-container');
+joinRoomBtn.addEventListener('click', () => {
+    window.scrollTo({
+        top: joinedRoomsContainer.offsetTop - 110,
+        behavior: 'smooth'
+    });
+});
 
-    const data = await res.json();
+const trendingMusicBtn = document.getElementById('trending-music-shortcut');
+const trendingMusicContainer = document.getElementById('trendingMusic');
+trendingMusicBtn.addEventListener('click', () => {
+    window.scrollTo({
+        top: trendingMusicContainer.offsetTop - 100,
+        behavior: 'smooth'
+    });
+});
 
-    numOwnedRoom.textContent = data.owned_room_count;
-}
+const playlistBtn = document.getElementById('playlist-shortcut');
+const playlistContainer = document.getElementById('playlist-container');
+playlistBtn.addEventListener('click', () => {
+    window.scrollTo({
+        top: playlistContainer.offsetTop - 100,
+        behavior: 'smooth'
+    });
+});
+
 
 // ------------------- HELPER -------------------
 function formatTime(seconds) {
