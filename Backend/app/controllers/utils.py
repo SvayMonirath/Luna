@@ -12,7 +12,8 @@ def get_user():
     user_data = {
         "id": user.id,
         "username": user.username,
-        "email": user.email
+        "email": user.email,
+        "is_first_time": user.is_first_time
     }
 
     return {

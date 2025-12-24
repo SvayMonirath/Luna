@@ -6,7 +6,7 @@ from flask_socketio import join_room, leave_room, emit
 from ..services.room_state import _init_room, delete_room_state, add_to_queue, set_current_song, join, leave
 from ..schemas.room_schemas import CreateRoomSchema, EditRoomSchema
 from ..models.models import Music, Room, db, User
-from app import socketio
+from .. import socketio
 
 rooms_blp = Blueprint("Rooms", __name__, url_prefix="/api/v1/rooms")
 

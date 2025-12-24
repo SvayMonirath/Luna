@@ -1,5 +1,5 @@
 from flask_smorest import Blueprint
-from flask_jwt_extended import create_access_token
+from flask_jwt_extended import create_access_token, jwt_required, get_jwt_identity
 from sqlalchemy import func
 
 from ..schemas.auth_schemas import LoginInput, LoginOutput, RegisterInput, RegisterOutput
@@ -51,3 +51,16 @@ def login(data):
 
     access_token = create_access_token(identity=str(user.id))
     return {"message": "Login successful.", "accessToken": access_token}, 200
+
+# -------------------- No Longer First Time --------------------
+@auth_blp.route('/no_longer_first_time', methods=['POST'])
+@auth_blp.response(200)
+@jwt_required()
+def no_longer_first_time():
+    user_id = int(get_jwt_identity())
+    user = db.session.get(User, user_id)
+
+    user.is_first_time = False
+    db.session.commit()
+
+    return {"message": "User is no longer first time."}, 200

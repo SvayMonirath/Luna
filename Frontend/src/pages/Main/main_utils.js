@@ -384,6 +384,10 @@ async function fetchUser() {
 
     const user = await res.json();
     usernameEL.textContent = user.user.username;
+
+    if (user.user.is_first_time) {
+        showFirstTimeUserModal();
+    }
 }
 
 
@@ -426,6 +430,65 @@ playlistBtn.addEventListener('click', () => {
         behavior: 'smooth'
     });
 });
+
+// ------------------- First TIME -------------------
+const modal = document.getElementById('first_time_user_modal');
+const overlay = document.getElementById('first_time_user_overlay');
+const skipBtn = document.getElementById('first-time-user-skip-btn');
+const firstTimeJoinBtn = document.getElementById('first-time-user-join-room-btn');
+
+const joinRoomOverlay = document.getElementById('join_room_overlay');
+const joinRoomModal = document.getElementById('joinRoomModal');
+
+// Show the modal
+function showFirstTimeUserModal() {
+    modal.classList.remove('hidden');
+    overlay.classList.remove('hidden');
+}
+
+// Hide modal helper
+function hideFirstTimeModal() {
+    modal.classList.add('hidden');
+    overlay.classList.add('hidden');
+}
+
+// Update server that user is no longer first time
+async function updateFirstTimeStatus() {
+    try {
+        const token = localStorage.getItem('accessToken');
+        if (!token) return;
+
+        const res = await fetch(`${BACKEND_URL}api/v1/auth/no_longer_first_time`, {
+            method: 'POST',
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        });
+
+        if (!res.ok) {
+            console.error('Failed to update first time status');
+        }
+    } catch (err) {
+        console.error('Error updating first time status', err);
+    }
+}
+
+// ------------------- Button Handlers -------------------
+
+// Skip & Explore
+skipBtn.addEventListener('click', () => {
+    hideFirstTimeModal();
+    updateFirstTimeStatus(); // fire & forget
+});
+
+// Join Room
+firstTimeJoinBtn.addEventListener('click', () => {
+    hideFirstTimeModal();
+    joinRoomOverlay.classList.remove('hidden');
+    joinRoomModal.classList.remove('hidden');
+    updateFirstTimeStatus(); // fire & forget
+});
+
 
 // ------------------- HELPER -------------------
 function formatTime(seconds) {
