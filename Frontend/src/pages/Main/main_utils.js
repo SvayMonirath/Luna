@@ -383,11 +383,12 @@ async function fetchUser() {
     }
 
     const user = await res.json();
-    usernameEL.textContent = user.user.username;
 
     if (user.user.is_first_time) {
         showFirstTimeUserModal();
     }
+
+    usernameEL.textContent = user.user.username;
 }
 
 
